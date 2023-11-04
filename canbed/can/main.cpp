@@ -5,6 +5,40 @@
 #include "mcp_can.h"
 #include <SPI.h>
 
+enum class MotorCommand {
+  Stop,
+  Forward,
+  Reverse,
+};
+
+class CANCommand {
+  unsigned int id;
+  unsigned char buf[8];
+
+public:
+  CANCommand(unsigned int id, const unsigned char *other_buf, int buf_len) {
+    for (int i = 0; i < sizeof(buf); i++)
+      if (i < buf_len)
+        buf[i] = other_buf[i];
+      else
+        buf[i] = 0;
+  }
+
+  bool is_left_motor() const { return id == 0x100; }
+  bool is_right_motor() const { return id == 0x101; }
+
+  MotorCommand command() const {
+    switch (buf[0]) {
+    case 1:
+      return MotorCommand::Forward;
+    case 2:
+      return MotorCommand::Reverse;
+    default:
+      return MotorCommand::Stop;
+    }
+  }
+};
+
 int main() {
   Serial.begin(115200);
   MCP_CAN CAN(17); // Set CS pin
