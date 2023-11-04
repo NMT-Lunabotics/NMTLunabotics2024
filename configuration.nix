@@ -17,6 +17,9 @@
 
   services.ros.enable = true;
   programs.ros.myIP = "192.168.0.235";
-  services.ros.testPublisher.enable = true;
+  services.ros.rosbridge.enable = true;
+
   services.ros.elevationMapping.build = true;
+
+  services.ros.realsense2.enable = true;
 }
