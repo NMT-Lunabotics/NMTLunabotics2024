@@ -2,6 +2,7 @@
 
 #include <Arduino.h>
 
+#include "arduino_lib.hpp"
 #include "mcp_can.h"
 #include <SPI.h>
 
@@ -39,6 +40,47 @@ public:
   }
 };
 
+class Wheels {
+  OutPin left_fwd;
+  OutPin left_rev;
+  OutPin right_fwd;
+  OutPin right_rev;
+
+public:
+  Wheels(int left_fwd, int left_rev, int right_fwd, int right_rev)
+      : left_fwd(left_fwd), left_rev(left_rev), right_fwd(right_fwd),
+        right_rev(right_rev) {}
+
+  void dispatch(const CANCommand &command) {
+    OutPin *fwd, *rev;
+    if (command.is_left_motor()) {
+      fwd = &left_fwd;
+      rev = &left_rev;
+    } else if (command.is_right_motor()) {
+      fwd = &right_fwd;
+      rev = &right_rev;
+    } else {
+      // not a wheel command, do nothing.
+      return;
+    }
+
+    switch (command.command()) {
+    case MotorCommand::Stop:
+      *fwd = 0;
+      *rev = 0;
+      break;
+    case MotorCommand::Forward:
+      *fwd = 1;
+      *rev = 0;
+      break;
+    case MotorCommand::Reverse:
+      *fwd = 0;
+      *rev = 1;
+      break;
+    }
+  }
+};
+
 int main() {
   Serial.begin(115200);
   MCP_CAN CAN(17); // Set CS pin
@@ -49,25 +91,15 @@ int main() {
     delay(100);
   }
   Serial.println("CAN BUS OK!");
-  Serial.println("Running new mirror code");
+
+  Wheels wheels(4, 5, 6, 8);
 
   while (true) {
-    unsigned char len = 0;
+    unsigned char len;
     unsigned char buf[8];
 
-    static int count = 0;
-    count++;
-    if (count == 10000) {
-      count = 0;
-      for (int i = 0; i < 8; i++)
-        buf[i] = 0x00;
-      CAN.sendMsgBuf(0x00, 0, 8, buf);
-      Serial.println("Sent a packet");
-    }
-
-    if (CAN_MSGAVAIL == CAN.checkReceive()) {
+    if (CAN.checkReceive() == CAN_MSGAVAIL) {
       CAN.readMsgBuf(&len, buf);
-
       unsigned long canId = CAN.getCanId();
 
       Serial.println("-----------------------------");
@@ -81,10 +113,8 @@ int main() {
       }
       Serial.println();
 
-      // Send back the data, mirrored and flipped.
-      for (int i = 0; i < len; i++)
-        buf[i] = ~buf[i];
-      CAN.sendMsgBuf(0x00, 0, 8, buf);
+      CANCommand cmd(canId, buf, len);
+      wheels.dispatch(cmd);
     }
   }
 }
