@@ -24,5 +24,6 @@ public:
 int main(int argc, char **argv) {
   ros::init(argc, argv, "can_raw_node");
 
-  printf("Hello World!\n");
+  Node node;
+  ros::spin();
 }

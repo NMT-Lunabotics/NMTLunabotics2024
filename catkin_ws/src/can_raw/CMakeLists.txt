@@ -22,7 +22,10 @@ include_directories(include
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(can_raw_node src/can_raw_node.cpp)
+add_executable(can_raw_node
+  src/can_raw_node.cpp
+  src/can_interface.cpp
+)
 add_dependencies(
   can_raw_node
   ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS}
