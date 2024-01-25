@@ -1,0 +1,9 @@
+wheel_diameter: 0.101 # In meters
+wheel_base: 0.311     # In meters - distance between left and right wheel (measure from center)
+max_rpm: 255        # Cannot be higher than 255 because it is only one byte
+frame_id: 0x100     # CAN frame id - 3 digit hexadecimal
+topics:
+  - "cmd_vel"
+  - "joy_teleop/cmd_vel"
+  - "move_base/cmd_vel"
+

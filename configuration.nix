@@ -16,10 +16,27 @@
   # ---- Begin ROS configuration ----
 
   services.ros.enable = true;
+  
+  programs.ros.packages = [
+    "xacro"
+    "realsense2-camera"
+    "robot-state-publisher"
+    "teleop-twist-joy"
+    "joy"
+    "teleop-twist-keyboard"
+  ];
+
   programs.ros.myIP = "192.168.0.235";
   services.ros.rosbridge.enable = true;
 
   services.ros.elevationMapping.build = true;
 
-  services.ros.realsense2.enable = true;
+  services.ros.realsense2.enable = false;
+
+  services.ros.runServices.canRawNode = {
+    packageName = "can_raw";
+    executable = "can_raw_node";
+    workspace = "/home/lunabotics/goliath/catkin_ws";
+  };
 }
+
