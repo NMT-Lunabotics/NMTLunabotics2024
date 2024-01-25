@@ -1,3 +1,4 @@
+#include <ostream>
 #include <stdio.h>
 
 #include <can_raw/CanFrame.h>
@@ -22,8 +23,13 @@ public:
 };
 
 int main(int argc, char **argv) {
-  ros::init(argc, argv, "can_raw_node");
+  try {
+    ros::init(argc, argv, "can_raw_node");
 
-  Node node;
-  ros::spin();
+    Node node;
+    ros::spin();
+  } catch (std::string error) {
+    std::cerr << "can_raw error: " << error << '\n';
+    return EXIT_FAILURE;
+  }
 }
