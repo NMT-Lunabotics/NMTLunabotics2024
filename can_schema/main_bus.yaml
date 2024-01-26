@@ -1,0 +1,20 @@
+# The main CAN bus.
+name: BOWIE
+
+structs:
+  SingleMotorCommand:
+    - speed:
+        range: [-300, 300]
+        unit: rpm
+        size: 10
+
+messages:
+  # Please only add new messages at the end, and avoid deleting
+  # messages! This avoids the CAN ID's of every message from shifting
+  # over, so we don't have to re-flash every Arduino every time we
+  # update this file.
+  EStop:
+    - stop: bool
+  MotorCommands:
+    - left: SingleMotorCommand
+    - right: SingleMotorCommand
