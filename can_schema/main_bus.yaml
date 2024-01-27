@@ -4,9 +4,9 @@ name: BOWIE
 structs:
   SingleMotorCommand:
     - speed:
-        range: [-300, 300]
+        range: [-1024, 1024]
         unit: rpm
-        size: 10
+        size: 16
 
 messages:
   # Please only add new messages at the end, and avoid deleting
