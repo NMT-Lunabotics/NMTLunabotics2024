@@ -42,6 +42,12 @@
     workspace = "/home/lunabotics/goliath/catkin_ws";
   };
 
+  services.ros.launchServices.motor-ctrl = {
+    packageName = "motor_ctrl";
+    launchFile = "motor.launch";
+    workspace = "/home/lunabotics/goliath/catkin_ws";
+  };
+
   services.ros.staticTransforms = [
     { parent = "sensor_frame"; child = "t265_link"; z = 0.095; }
     { parent = "sensor_frame"; child = "d455_link";
