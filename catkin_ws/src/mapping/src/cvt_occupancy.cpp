@@ -39,7 +39,8 @@ int main(int argc, char** argv) {
     ros::NodeHandle nh;
 
     // Get parameters for topics
-    nh.param<std::string>("elevation_map_topic", elevation_map_topic, "elevation_mapping/elevation_map");
+    nh.param<std::string>("elevation_map_topic", elevation_map_topic, "elevation_mapping/elevation_map_raw");
+
     nh.param<std::string>("occupancy_grid_topic", occupancy_grid_topic, "/map");
 
     // Subscribe to the elevation_map topic
