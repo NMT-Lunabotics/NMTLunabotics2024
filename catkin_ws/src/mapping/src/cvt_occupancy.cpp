@@ -5,6 +5,7 @@
 
 ros::Publisher occupancy_grid_pub;
 std::string elevation_map_topic, occupancy_grid_topic;
+std::string layer = "traversability";
 
 void convertToOccupancyGrid(const grid_map::GridMap& map, const std::string& layer, nav_msgs::OccupancyGrid& occupancy_grid) {
     // Find the min and max values in the traversability layer
@@ -21,14 +22,14 @@ void elevationMapCallback(const grid_map_msgs::GridMap& msg) {
     grid_map::GridMapRosConverter::fromMessage(msg, map);
 
     // Check if the traversability layer exists
-    if (!map.exists("traversability")) {
-        ROS_WARN("Traversability layer not found in the grid map.");
+    if (!map.exists(layer)) {
+        ROS_WARN("%s layer not found in the grid map.", layer);
         return;
     }
 
     // Convert to OccupancyGrid
     nav_msgs::OccupancyGrid occupancy_grid;
-    convertToOccupancyGrid(map, "traversability", occupancy_grid);
+    convertToOccupancyGrid(map, layer, occupancy_grid);
 
     // Publish the occupancy grid
     occupancy_grid_pub.publish(occupancy_grid);
