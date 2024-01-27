@@ -24,7 +24,6 @@ include_directories(include
 
 add_executable(can_raw_node
   src/can_raw_node.cpp
-  src/can_interface.cpp
 )
 add_dependencies(
   can_raw_node
