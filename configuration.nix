@@ -51,7 +51,7 @@
   services.ros.staticTransforms = [
     { parent = "sensor_frame"; child = "t265_link"; z = 0.095; }
     { parent = "sensor_frame"; child = "d455_link";
-      x = -0.045; z = 0.185; pitch = 15; yaw = 180;
+      x = -0.045; z = 0.185; pitch = 15.0; yaw = 180.0;
     }
     { parent = "ground"; child = "sensor_frame";
       z = 0.1209;
