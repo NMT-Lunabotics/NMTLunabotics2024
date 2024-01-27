@@ -38,5 +38,17 @@
     executable = "can_raw_node";
     workspace = "/home/lunabotics/goliath/catkin_ws";
   };
+
+  services.ros.staticTransforms = [
+    { parent = "sensor_frame"; child = "t265_link"; z = 0.095; }
+    { parent = "sensor_frame"; child = "d455_link";
+      x = -0.045; z = 0.185; pitch = 15; yaw = 180;
+    }
+    { parent = "ground"; child = "sensor_frame";
+      z = 0.1209;
+    }
+
+    { parent = "t265_odom"; child = "map"; }
+  ];
 }
 
