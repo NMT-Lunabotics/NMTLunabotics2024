@@ -30,6 +30,11 @@ add_dependencies(pc_pub
     ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(pc_pub ${catkin_LIBRARIES})
 
+add_executable(cvt_occupancy src/cvt_occupancy.cpp)
+add_dependencies(cvt_occupancy
+    ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(cvt_occupancy ${catkin_LIBRARIES})
+
 install(TARGETS
     pose_pub
     pc_pub
