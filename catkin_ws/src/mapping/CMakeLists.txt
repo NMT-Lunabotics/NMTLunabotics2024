@@ -8,6 +8,8 @@ find_package(catkin REQUIRED COMPONENTS
     geometry_msgs
     sensor_msgs
     roslaunch
+    grid_map_ros
+    grid_map_msgs
 )
 roslaunch_add_file_check(launch)
 
@@ -16,9 +18,12 @@ catkin_package(CATKIN_DEPENDS
     roscpp
     nav_msgs
     geometry_msgs
-    sensor_msgs)
+    sensor_msgs
+    grid_map_ros
+    grid_map_msgs
+)
 
-include_directories(include ${catkin_INCLUDE_DIRS})
+include_directories(include ${catkin_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIR})
 
 add_executable(pose_pub src/pose_pub.cpp)
 add_dependencies(pose_pub
