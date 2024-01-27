@@ -54,7 +54,7 @@
     { parent = "sensor_frame"; child = "d455_link";
       x = -0.045; z = 0.185; pitch = 15.0; yaw = 180.0;
     }
-    { parent = "ground"; child = "sensor_frame";
+    { parent = "base_link"; child = "sensor_frame";
       z = 0.1209;
     }
 
