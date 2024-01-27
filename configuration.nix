@@ -47,6 +47,8 @@
     { parent = "ground"; child = "sensor_frame";
       z = 0.1209;
     }
+
+    { parent = "t265_odom"; child = "map"; }
   ];
 }
 
