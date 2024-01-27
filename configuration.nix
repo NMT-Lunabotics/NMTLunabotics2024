@@ -49,6 +49,12 @@
     workspace = "/home/lunabotics/goliath/catkin_ws";
   };
 
+  services.ros.launchServices.test-map = {
+    packageName = "mapping";
+    launchFile = "test_map.launch";
+    workspace = "/home/lunabotics/goliath/catkin_ws";
+  };
+
   services.ros.staticTransforms = [
     { parent = "sensor_frame"; child = "t265_link"; z = 0.095; }
     { parent = "sensor_frame"; child = "d455_link";
