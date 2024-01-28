@@ -25,6 +25,8 @@
     "joy"
     "teleop-twist-keyboard"
     "teb-local-planner"
+    "navigation"
+    "tf2-tools"
   ];
 
   programs.ros.ubuntuPackages = [
