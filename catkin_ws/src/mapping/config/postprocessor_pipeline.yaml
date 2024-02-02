@@ -1,19 +1,19 @@
 postprocessor_pipeline: # set by postprocessor_pipeline_name
   # Fill holes in the map with inpainting.
-  - name: inpaint
-    type: gridMapCv/InpaintFilter
-    params:
-      input_layer: elevation
-      output_layer: elevation_inpainted
-      radius: 0.3
+  # - name: inpaint
+  #   type: gridMapCv/InpaintFilter
+  #   params:
+  #     input_layer: elevation
+  #     output_layer: elevation_inpainted
+  #     radius: 0.3
 
   # Create a smoothed filter
   - name: mean_in_radius
     type: gridMapFilters/MeanInRadiusFilter
     params:
-      input_layer: elevation_inpainted
+      input_layer: elevation
       output_layer: elevation_smooth
-      radius: 0.3
+      radius: 0.2
 
   # Compute surface normals.
   - name: surface_normals
@@ -21,7 +21,7 @@ postprocessor_pipeline: # set by postprocessor_pipeline_name
     params:
       input_layer: elevation_smooth
       output_layers_prefix: normal_vectors_
-      radius: 0.4
+      radius: 0.2
       normal_vector_positive_axis: z
 
   # Compute slope from surface normal.
@@ -34,7 +34,7 @@ postprocessor_pipeline: # set by postprocessor_pipeline_name
   - name: traversability
     type: gridMapFilters/MathExpressionFilter
     params:
-      input_layer: elevation_inpainted
+      input_layer: elevation
       output_layer: traversability
       expression: 1 * (1.0 - (slope / 0.6))
 
@@ -48,11 +48,11 @@ postprocessor_pipeline: # set by postprocessor_pipeline_name
   #     set_to: 0.0
 
   # Set upper threshold on traversability.
-  - name: traversability_upper_threshold
-    type: gridMapFilters/ThresholdFilter
-    params:
-      condition_layer: traversability
-      output_layer: traversability
-      upper_threshold: 0.5
-      set_to: 1.0 # Other uses: .nan, .inf
+  # - name: traversability_upper_threshold
+  #   type: gridMapFilters/ThresholdFilter
+  #   params:
+  #     condition_layer: traversability
+  #     output_layer: traversability
+  #     upper_threshold: 0.5
+  #     set_to: 1.0 # Other uses: .nan, .inf
     

@@ -74,5 +74,5 @@
     </node>
 
     <!-- Occupancy grid node -->
-    <!--node pkg="david_navigation" type="occupancy_grid" name="occupancy_grid" /-->
+    <node pkg="mapping" type="cvt_occupancy" name="cvt_occupancy" />
 </launch>
