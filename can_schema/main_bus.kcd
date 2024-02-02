@@ -10,12 +10,12 @@
         </Signal>
       </Message>
       <Message id="1" name="MotorCommands">
-        <Signal name="left_speed" offset="0" length="10">
-          <Value type="unsigned" unit="rpm" slope="0.5865102639296188" intercept="-300" min="-300" max="300">
+        <Signal name="left_speed" offset="0" length="16">
+          <Value type="unsigned" unit="rpm" slope="0.03125047684443427" intercept="-1024" min="-1024" max="1024">
           </Value>
         </Signal>
-        <Signal name="right_speed" offset="10" length="10">
-          <Value type="unsigned" unit="rpm" slope="0.5865102639296188" intercept="-300" min="-300" max="300">
+        <Signal name="right_speed" offset="16" length="16">
+          <Value type="unsigned" unit="rpm" slope="0.03125047684443427" intercept="-1024" min="-1024" max="1024">
           </Value>
         </Signal>
       </Message>

@@ -4,72 +4,97 @@
 #include <stdint.h>
 #include <ostream>
 namespace can_BOWIE {
+
 inline uint64_t read(uint64_t &buffer, uint8_t bits) {
   uint64_t res = buffer & ((1 << bits) - 1);
   return buffer >>= bits, res;
 }
+
 inline void write(uint64_t &buffer, uint8_t bits, uint64_t data) {
   buffer <<= bits;
   buffer |= data;
 }
+
+inline void to_buffer(uint8_t *buffer, uint64_t number) {
+  *(uint64_t *)buffer = number;
+}
+
+inline uint64_t from_buffer(uint8_t *buffer) {
+  return *(uint64_t *)buffer;
+}
+
 enum class MessageDiscriminator {
   EStop = 0,
   MotorCommands = 1,
 };
+
 inline bool bool_deserialize(uint64_t buffer) { return buffer; }
+
 inline uint64_t serialize(bool data) { return data; }
+
 struct SingleMotorCommand {
   double speed;
 };
+
 inline SingleMotorCommand SingleMotorCommand_deserialize(uint64_t buffer) {
   SingleMotorCommand self;
-  self.speed = (double)read(buffer, 10) * 0.5865102639296188 + -300;
+  self.speed = (double)read(buffer, 16) * 0.03125047684443427 + -1024;
   return self;
 }
+
 inline uint64_t serialize(SingleMotorCommand data) {
   uint64_t ser = 0;
-  write(ser, 10, (data.speed - -300) / 0.5865102639296188);
+  write(ser, 16, (data.speed - -1024) / 0.03125047684443427);
   return ser;
 }
+
 inline std::ostream &operator<<(std::ostream &os, const SingleMotorCommand &self) {
   return os << "{ "
             << "speed = " << self.speed << ", "
             << "}";
 }
+
 struct EStop {
   bool stop;
 };
+
 inline EStop EStop_deserialize(uint64_t buffer) {
   EStop self;
   self.stop = bool_deserialize(read(buffer, 1));
   return self;
 }
+
 inline uint64_t serialize(EStop data) {
   uint64_t ser = 0;
   write(ser, 1, serialize(data.stop));
   return ser;
 }
+
 inline std::ostream &operator<<(std::ostream &os, const EStop &self) {
   return os << "{ "
             << "stop = " << self.stop << ", "
             << "}";
 }
+
 struct MotorCommands {
   SingleMotorCommand left;
   SingleMotorCommand right;
 };
+
 inline MotorCommands MotorCommands_deserialize(uint64_t buffer) {
   MotorCommands self;
-  self.left = SingleMotorCommand_deserialize(read(buffer, 10));
-  self.right = SingleMotorCommand_deserialize(read(buffer, 10));
+  self.left = SingleMotorCommand_deserialize(read(buffer, 16));
+  self.right = SingleMotorCommand_deserialize(read(buffer, 16));
   return self;
 }
+
 inline uint64_t serialize(MotorCommands data) {
   uint64_t ser = 0;
-  write(ser, 10, serialize(data.right));
-  write(ser, 10, serialize(data.left));
+  write(ser, 16, serialize(data.right));
+  write(ser, 16, serialize(data.left));
   return ser;
 }
+
 inline std::ostream &operator<<(std::ostream &os, const MotorCommands &self) {
   return os << "{ "
             << "left = " << self.left << ", "
