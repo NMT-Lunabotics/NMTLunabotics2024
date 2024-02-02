@@ -60,7 +60,7 @@
   services.ros.moveBase = {
     enable = true;
     robotSize = { width = 0.25; length = 0.4; };
-    odomFrame = "t265_odom_frame";
+    odomFrame = "base_link";
   };
 
   # services.ros.staticTransforms = [
