@@ -61,6 +61,7 @@
     enable = true;
     robotSize = { width = 0.25; length = 0.4; };
     odomFrame = "base_link";
+    limits = { forwardMin = 1.0; forward = 3.0; };
   };
 
   # services.ros.staticTransforms = [
