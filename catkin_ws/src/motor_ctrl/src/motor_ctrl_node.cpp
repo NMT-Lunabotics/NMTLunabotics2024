@@ -3,6 +3,7 @@
 #include <can_raw/CanFrame.h>
 #include <vector>
 #include <cmath>
+#include "main_bus.hpp"
 
 const double PI = 3.14159;
 ros::Publisher can_pub;
@@ -18,12 +19,20 @@ void callback(const geometry_msgs::Twist::ConstPtr& msg) {
     rpm_left = (int) std::min(max_rpm, (v_left * 60) / wheel_circumference);
     rpm_right = (int) std::min(max_rpm, (v_right * 60) / wheel_circumference);
 
+    can::MotorCommands cmd = {
+        .left = {
+            .speed = rpm_left
+        },
+        .right = {
+            .speed = rpm_right
+        }
+    };
+    uint8_t buffer[8];
+    can::to_buffer(buffer, can::serialize(cmd));
+
     can_raw::CanFrame can_frame;
-    can_frame.id = frame_id;
-    can_frame.data[0] = std::abs(rpm_left);
-    can_frame.data[1] = std::abs(rpm_right);
-    can_frame.data[2] = rpm_left >= 0 ? 1 : 0;
-    can_frame.data[3] = rpm_right >= 0 ? 1 : 0;
+    can_frame.id = (short int) can::FrameID::MotorCommands;
+    memcpy(&can_frame.data, buffer, sizeof(buffer));
 
     can_pub.publish(can_frame);
 }
