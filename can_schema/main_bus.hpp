@@ -3,7 +3,7 @@
 #define BOWIE_H
 #include <stdint.h>
 #include <ostream>
-namespace can_BOWIE {
+namespace can {
 
 inline uint64_t read(uint64_t &buffer, uint8_t bits) {
   uint64_t res = buffer & ((1 << bits) - 1);
@@ -23,7 +23,7 @@ inline uint64_t from_buffer(uint8_t *buffer) {
   return *(uint64_t *)buffer;
 }
 
-enum class MessageDiscriminator {
+enum class FrameID {
   EStop = 0,
   MotorCommands = 1,
 };
