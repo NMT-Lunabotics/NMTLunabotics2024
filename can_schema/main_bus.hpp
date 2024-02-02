@@ -19,8 +19,8 @@ inline void to_buffer(uint8_t *buffer, uint64_t number) {
   *(uint64_t *)buffer = number;
 }
 
-inline uint64_t from_buffer(uint8_t *buffer) {
-  return *(uint64_t *)buffer;
+inline uint64_t from_buffer(const uint8_t *buffer) {
+  return *(const uint64_t *)buffer;
 }
 
 enum class FrameID {
