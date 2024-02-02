@@ -57,6 +57,12 @@
     workspace = "/home/lunabotics/goliath/catkin_ws";
   };
 
+  services.ros.moveBase = {
+    enable = true;
+    robotSize = { width = 0.25; length = 0.4; };
+    odomFrame = "t265_odom_frame";
+  };
+
   # services.ros.staticTransforms = [
   #   { parent = "sensor_frame"; child = "t265_link"; z = 0.095; }
   #   { parent = "sensor_frame"; child = "d455_link";
