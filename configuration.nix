@@ -39,11 +39,12 @@
 
   services.ros.realsense2.enable = false;
 
-  services.ros.runServices.canRawNode = {
-    packageName = "can_raw";
-    executable = "can_raw_node";
-    workspace = "/home/lunabotics/goliath/catkin_ws";
-  };
+  # services.ros.runServices.canRawNode = {
+  #   packageName = "can_raw";
+  #   executable = "can_raw_node";
+  #   workspace = "/home/lunabotics/goliath/catkin_ws";
+  # };
+  # currently included in motor_ctrl/motor.launch
 
   services.ros.launchServices.motor-ctrl = {
     packageName = "motor_ctrl";
