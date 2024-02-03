@@ -5,6 +5,7 @@
 #include <iostream>
 #include <linux/can.h>
 #include <net/if.h>
+#include <sstream>
 #include <string>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
@@ -82,8 +83,11 @@ public:
               << ", " << (int)cf.data[6] //
               << ", " << (int)cf.data[7] //
               << " ]\n";
-    if (write(*sock, &cf, sizeof(cf)) != sizeof(cf))
-      throw std::string("Error transmitting CAN frame");
+    if (write(*sock, &cf, sizeof(cf)) != sizeof(cf)) {
+      std::ostringstream error_msg;
+      error_msg << "Error transmitting CAN frame: " << strerror(errno);
+      throw error_msg.str();
+    }
   }
 
   void transmit(int can_id, const uint8_t data[8]) {
