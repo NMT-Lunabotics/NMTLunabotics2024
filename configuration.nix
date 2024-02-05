@@ -46,11 +46,11 @@
   # };
   # currently included in motor_ctrl/motor.launch
 
-  services.ros.launchServices.motor-ctrl = {
-    packageName = "motor_ctrl";
-    launchFile = "motor.launch";
-    workspace = "/home/lunabotics/goliath/catkin_ws";
-  };
+  # services.ros.launchServices.motor-ctrl = {
+  #   packageName = "motor_ctrl";
+  #   launchFile = "motor.launch";
+  #   workspace = "/home/lunabotics/goliath/catkin_ws";
+  # };
 
   services.ros.launchServices.test-map = {
     packageName = "mapping";
@@ -58,12 +58,12 @@
     workspace = "/home/lunabotics/goliath/catkin_ws";
   };
 
-  # services.ros.moveBase = {
-  #   enable = true;
-  #   robotSize = { width = 0.25; length = 0.4; };
-  #   odomFrame = "base_link";
-  #   limits = { forwardMin = 1.0; forward = 3.0; };
-  # };
+  services.ros.moveBase = {
+    enable = true;
+    robotSize = { width = 0.25; length = 0.4; };
+    odomFrame = "base_link";
+    limits = { forwardMin = 1.0; forward = 3.0; };
+  };
 
   # services.ros.staticTransforms = [
   #   { parent = "sensor_frame"; child = "t265_link"; z = 0.095; }
