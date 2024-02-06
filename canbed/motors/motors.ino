@@ -9,18 +9,31 @@ const int enB = 6;
 const int in3 = 7;
 const int in4 = 8;
 
+// Min and max speeds
 int minPWM = 50;
 int maxPWM = 255;
-float multiplier = 0.5;
+float multiplier = 0.5; // Convert rpm to pwm
+
+// Dont move if message not received in timeout millisecconds
+unsigned long currentTime;
+unsigned long lastRecv;
+bool lockout = false;
+int timeout = 3000;
+
+// Store speed
+int left_speed;
+int right_speed;
 
 void setup() {
     Serial.begin(115200);
 
     // Initialize CAN Bus
     if (!CAN.begin(CanBitRate::BR_500k)) {
-        Serial.println("Starting CAN failed!");
-        while (1);
+        while (1) {
+            Serial.println("Starting CAN failed!");
+        }
     }
+    Serial.println("Starting CAN successful");
 
     // Initialize Motor Control Pins
     pinMode(enA, OUTPUT);
@@ -32,31 +45,54 @@ void setup() {
 }
 
 void loop() {
+    currentTime = millis();
+    
+    // Handle can
     if (CAN.available()) {
         CanMsg const msg = CAN.read();
 
         switch(msg.id) {
-            case (long unsigned int) can::FrameID::EStop:
-                // Left motor control
-                controlMotor(enA, in1, in2, 0);
-                // Right motor control
-                controlMotor(enB, in3, in4, 0);
-            case (long unsigned int) can::FrameID::MotorCommands:
-                can::MotorCommands cmd = can::MotorCommands_deserialize(can::from_buffer(msg.data));
-                controlMotor(enA, in1, in2, cmd.left.speed);
-                controlMotor(enB, in3, in4, cmd.right.speed);
+        case (long unsigned int) can::FrameID::EStop:
+            // TODO lockout until un-estop msg received
+            // Right now it will esotp until motor msg received
+            lockout = true;
+            lastRecv = currentTime;
+        case (long unsigned int) can::FrameID::MotorCommands:
+            lockout = false;
+            can::MotorCommands cmd = can::MotorCommands_deserialize(can::from_buffer(msg.data));
+            left_speed = cmd.left.speed;
+            right_speed = cmd.right.speed;
+            lastRecv = currentTime;
         }
-        
+    }
+
+    // lockout if message not received
+    if (currentTime - lastRecv > timeout) {
+        lockout = true;
+    }
+
+    if (!lockout) {
+        controlMotor(enA, in1, in2, right_speed);
+        controlMotor(enB, in3, in4, left_speed);
+    } else {
+        stopMotor(enA, in1, in2);
+        stopMotor(enB, in3, in4);
     }
 }
 
 void controlMotor(int enPin, int inPin1, int inPin2, int speed) {
     int pwm = abs(speed) * multiplier;
     bool dir = speed > 0;
-    if (pwm > maxPWM || pwm < minPWM && pwm != 0) {
+    if (pwm > maxPWM) {
+        pwm = maxPWM;
+    }
+
+    if (pwm < minPWM && pwm != 0) {
         Serial.print("PWM ");
         Serial.print(pwm);
-        Serial.println(" outside acceptable range");
+        Serial.print(" too low (minimum ");
+        Serial.print(minPWM);
+        Serial.println(")");
         analogWrite(enPin, 0);
     } else {
         analogWrite(enPin, pwm);
@@ -65,3 +101,8 @@ void controlMotor(int enPin, int inPin1, int inPin2, int speed) {
     }
 }
 
+void stopMotor(int enPin, int inPin1, int inPin2) {
+    analogWrite(enPin, 0);
+    digitalWrite(inPin1, false);
+    digitalWrite(inPin2, false);
+}
