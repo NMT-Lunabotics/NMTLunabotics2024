@@ -13,11 +13,14 @@ double wheel_diameter, wheel_base, max_rpm, frame_id;
 void callback(const geometry_msgs::Twist::ConstPtr& msg) {
     int rpm_left, rpm_right;
     double wheel_circumference = PI * wheel_diameter;
-    double v_left = msg->linear.x - (msg->angular.z * wheel_base / 2.0);
-    double v_right = msg->linear.x + (msg->angular.z * wheel_base / 2.0);
+    // double v_left = msg->linear.x - (msg->angular.z * wheel_base / 2.0);
+    // double v_right = msg->linear.x + (msg->angular.z * wheel_base / 2.0);
+    double v_left = msg->linear.x - msg->angular.z;
+    double v_right = msg->linear.x + msg->angular.z;
 
     rpm_left = (int) std::min(max_rpm, (v_left * 60) / wheel_circumference);
     rpm_right = (int) std::min(max_rpm, (v_right * 60) / wheel_circumference);
+    std::cout << rpm_left << " " << rpm_right << "\n";
 
     can::MotorCommands cmd = {
         .left = {
