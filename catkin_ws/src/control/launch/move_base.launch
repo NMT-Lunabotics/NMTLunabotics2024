@@ -8,6 +8,7 @@
     <rosparam file="$(find control)/config/local_costmap_params.yaml" command="load" />
     <rosparam file="$(find control)/config/global_costmap_params.yaml" command="load" /> 
     <rosparam file="$(find control)/config/base_local_planner_params.yaml" command="load" />
+    <!--rosparam file="$(find control)/config/static_layer_params.yaml" command="load" /-->
  </node>
 
 </launch> 
