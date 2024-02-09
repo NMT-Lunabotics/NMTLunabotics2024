@@ -13,7 +13,7 @@ void convertToOccupancyGrid(const grid_map::GridMap& map, const std::string& lay
     float dataMax = map[layer].maxCoeffOfFinites();
 
     // Use the GridMapRosConverter function to convert to an OccupancyGrid
-    grid_map::GridMapRosConverter::toOccupancyGrid(map, layer, dataMin, dataMax, occupancy_grid);
+    grid_map::GridMapRosConverter::toOccupancyGrid(map, layer, dataMax, dataMin, occupancy_grid);
 }
 
 void elevationMapCallback(const grid_map_msgs::GridMap& msg) {
