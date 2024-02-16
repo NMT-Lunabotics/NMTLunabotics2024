@@ -32,7 +32,7 @@
   programs.ros.ubuntuPackages = [
     "libeigen3-dev"
   ];
-  programs.ros.myIP = "192.168.0.235";
+  # programs.ros.myIP = "192.168.0.235";
   services.ros.rosbridge.enable = true;
 
   services.ros.elevationMapping.build = true;
