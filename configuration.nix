@@ -32,7 +32,7 @@
   programs.ros.ubuntuPackages = [
     "libeigen3-dev"
   ];
-  programs.ros.myIP = "192.168.0.235";
+  # programs.ros.myIP = "192.168.0.235";
   services.ros.rosbridge.enable = true;
 
   services.ros.elevationMapping.build = true;
@@ -46,11 +46,11 @@
   # };
   # currently included in motor_ctrl/motor.launch
 
-  # services.ros.launchServices.motor-ctrl = {
-  #   packageName = "motor_ctrl";
-  #   launchFile = "motor.launch";
-  #   workspace = "/home/lunabotics/goliath/catkin_ws";
-  # };
+  services.ros.launchServices.motor-ctrl = {
+    packageName = "motor_ctrl";
+    launchFile = "motor.launch";
+    workspace = "/home/lunabotics/goliath/catkin_ws";
+  };
 
   services.ros.launchServices.test-map = {
     packageName = "mapping";
