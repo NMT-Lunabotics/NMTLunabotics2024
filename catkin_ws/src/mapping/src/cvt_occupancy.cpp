@@ -7,7 +7,7 @@ ros::Publisher occupancy_grid_pub;
 std::string elevation_map_topic, occupancy_grid_topic;
 std::string layer = "traversability";
 
-void convertToOccupancyGrid(const grid_map::GridMap& map, const std::string& layer) {
+nav_msgs::OccupancyGrid convertToOccupancyGrid(const grid_map::GridMap& map, const std::string& layer) {
     // Find the min and max values in the traversability layer
     float dataMin = map[layer].minCoeffOfFinites();
     float dataMax = map[layer].maxCoeffOfFinites();
@@ -20,6 +20,7 @@ void convertToOccupancyGrid(const grid_map::GridMap& map, const std::string& lay
             value = 0;
         }
     }
+    return occupancy_grid;
 }
 
 void elevationMapCallback(const grid_map_msgs::GridMap& msg) {
