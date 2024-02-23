@@ -44,7 +44,7 @@ postprocessor_pipeline: # set by postprocessor_pipeline_name
   #   params:
   #     condition_layer: traversability
   #     output_layer: traversability
-  #     lower_threshold: 0.5
+  #     lower_threshold: 1.0
   #     set_to: 0.0
 
   # Set upper threshold on traversability.

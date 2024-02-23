@@ -7,13 +7,19 @@ ros::Publisher occupancy_grid_pub;
 std::string elevation_map_topic, occupancy_grid_topic;
 std::string layer = "traversability";
 
-void convertToOccupancyGrid(const grid_map::GridMap& map, const std::string& layer, nav_msgs::OccupancyGrid& occupancy_grid) {
+void convertToOccupancyGrid(const grid_map::GridMap& map, const std::string& layer) {
     // Find the min and max values in the traversability layer
     float dataMin = map[layer].minCoeffOfFinites();
     float dataMax = map[layer].maxCoeffOfFinites();
 
     // Use the GridMapRosConverter function to convert to an OccupancyGrid
+    nav_msgs::OccupancyGrid occupancy_grid;
     grid_map::GridMapRosConverter::toOccupancyGrid(map, layer, dataMax, dataMin, occupancy_grid);
+    for (auto& value : occupancy_grid.data) {
+        if (value < 50) {
+            value = 0;
+        }
+    }
 }
 
 void elevationMapCallback(const grid_map_msgs::GridMap& msg) {
@@ -28,8 +34,7 @@ void elevationMapCallback(const grid_map_msgs::GridMap& msg) {
     }
 
     // Convert to OccupancyGrid
-    nav_msgs::OccupancyGrid occupancy_grid;
-    convertToOccupancyGrid(map, layer, occupancy_grid);
+    nav_msgs::OccupancyGrid occupancy_grid = convertToOccupancyGrid(map, layer);
 
     // Publish the occupancy grid
     occupancy_grid_pub.publish(occupancy_grid);

@@ -36,8 +36,8 @@ void loop() {
   index = (index + 1) % numStored;
   float avg = total / numStored;
 
-  pos = map(avg, potMin, potMax, 0, stroke);
-  Serial.println(pos);
+  pos = map(newVal, potMin, potMax, 0, stroke);
+  Serial.println(newVal);
 
   delay(10);
 

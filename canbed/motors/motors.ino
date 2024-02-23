@@ -49,6 +49,7 @@ void loop() {
     
     // Handle can
     if (CAN.available()) {
+        Serial.println("CAN Recieved");
         CanMsg const msg = CAN.read();
 
         switch(msg.id) {
