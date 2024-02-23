@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# CAN bus enable and disable service.
+
+# Usage is in a systemd service:
+# [Unit]
+# Description=CAN bus can0
+# After=network.target
+
+# [Service]
+# ExecStart=/usr/sbin/canbus up
+# ExecStop=/usr/sbin/canbus down
+# RemainAfterExit=true
+
+# [Install]
+# WantedBy=multi-user.target
+
+case "$1" in
+    up)
+        # Use device memory to enable the CAN controller.
+        sudo busybox devmem 0x0c303000 32 0x0000C400
+        sudo busybox devmem 0x0c303008 32 0x0000C458
+        sudo busybox devmem 0x0c303010 32 0x0000C400
+        sudo busybox devmem 0x0c303018 32 0x0000C458
+
+        # Enable the CAN kernel drivers.
+        sudo modprobe can_raw
+        sudo modprobe can
+        sudo modprobe mttcan
+
+        # Start up the CAN bus.
+        sudo ip link set can0 up type can bitrate 500000
+        sudo ip link set up can0
+        ;;
+
+    down)
+        # Disable the CAN bus.
+        ip link set can0 down
+        ;;
+esac
