@@ -46,11 +46,11 @@
   # };
   # currently included in motor_ctrl/motor.launch
 
-  # services.ros.launchServices.motor-ctrl = {
-  #   packageName = "motor_ctrl";
-  #   launchFile = "motor.launch";
-  #   workspace = "/home/lunabotics/goliath/catkin_ws";
-  # };
+  services.ros.launchServices.motor-ctrl = {
+    packageName = "motor_ctrl";
+    launchFile = "motor.launch";
+    workspace = "/home/lunabotics/goliath/catkin_ws";
+  };
 
   services.ros.launchServices.test-map = {
     packageName = "mapping";
