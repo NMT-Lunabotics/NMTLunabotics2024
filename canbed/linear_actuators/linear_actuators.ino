@@ -96,36 +96,37 @@ void setup() {
       delay(50);
     }
   }
+}
 
-  void loop() {}
-  int median(const int *data, size_t nmemb) {
-    int my_data[nmemb];
-    memcpy(my_data, data, nmemb * sizeof(my_data[0]));
+void loop() {}
+int median(const int *data, size_t nmemb) {
+  int my_data[nmemb];
+  memcpy(my_data, data, nmemb * sizeof(my_data[0]));
 
-    // Serial.print('{');
-    // for (int i = 0; i < nmemb; i++) {
-    //   Serial.print(my_data[i]);
-    //   Serial.print(", ");
-    // }
-    // Serial.print("}");
+  // Serial.print('{');
+  // for (int i = 0; i < nmemb; i++) {
+  //   Serial.print(my_data[i]);
+  //   Serial.print(", ");
+  // }
+  // Serial.print("}");
 
-    qsort(my_data, nmemb, sizeof(data[0]), [](const void *a, const void *b) {
-      if (*(int *)a > *(int *)b)
-        return 1;
-      else if (*(int *)a < *(int *)b)
-        return -1;
-      return 0;
-    });
+  qsort(my_data, nmemb, sizeof(data[0]), [](const void *a, const void *b) {
+    if (*(int *)a > *(int *)b)
+      return 1;
+    else if (*(int *)a < *(int *)b)
+      return -1;
+    return 0;
+  });
 
-    // Serial.print(" -> {");
-    // for (int i = 0; i < nmemb; i++) {
-    //   Serial.print(my_data[i]);
-    //   Serial.print(", ");
-    // }
-    // Serial.print("} ");
+  // Serial.print(" -> {");
+  // for (int i = 0; i < nmemb; i++) {
+  //   Serial.print(my_data[i]);
+  //   Serial.print(", ");
+  // }
+  // Serial.print("} ");
 
-    if (nmemb % 2 == 1)
-      return (my_data[nmemb / 2] + my_data[nmemb / 2 + 1]) / 2;
-    else
-      return my_data[nmemb / 2];
-  }
+  if (nmemb % 2 == 1)
+    return (my_data[nmemb / 2] + my_data[nmemb / 2 + 1]) / 2;
+  else
+    return my_data[nmemb / 2];
+}
