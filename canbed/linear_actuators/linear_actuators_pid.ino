@@ -13,13 +13,14 @@ int potMin = 34;    // Calibrated, pot val at min stroke
 int potMax = 945;   // Calibrated, pot val at max stroke
 float weight = 0.2; // How much old readings influence new ones
 
-float kP=.2;
-float kI=.001;
-float kD=.01;
+float kP=.4;
+float kI=.00;
+float kD=.0;
 float derivative;
 float error;
 float prevError=0;
 float integral=0;
+float threshold= 20;
 void setup() {
   Serial.begin(9600);
   pinMode(spd, OUTPUT);
@@ -46,24 +47,32 @@ void setup() {
     Serial.println(pos);
 
     delay(50);
-    
     error=tgt-pos;
-    derivative=error-prevError;
-    prevError=error;
-    integral+=error;
-    int output=kP*error+kI*integral+kD*derivative;
-    //output=constrain(output,0,250);
-    if (output > 0) {
-      digitalWrite(dir, LOW);
-      analogWrite(spd, abs(output));
-    } else if (output<0) {
-      digitalWrite(dir, HIGH);
-      analogWrite(spd, abs(output));
-    } else {
-      analogWrite(spd, 0);
-    }
+    while(error<threshold){
+    	error=tgt-pos;
+    	derivative=error-prevError;
+    	prevError=error;
+    	integral+=error;
+    	int output=kP*error+kI*integral+kD*derivative;
+    	output=constrain(output,35,250);
+    	//if (output < 0) {
+      	//	digitalWrite(dir, LOW);
+      	//	analogWrite(spd, abs(output));
+    	//} else if (output>0) {
+     	//	digitalWrite(dir, HIGH);
+      	//	analogWrite(spd, abs(output));
+    	//} else {
+      	//	analogWrite(spd, 0);
+    	//}
+	digitalWrite(dir,HIGH);
+	analogWrite(spd,abs(output));
+	delay(50);
+        //}
      
   }
+  digitalWrite(dir,HIGH);
+  analogWrite(spd,0);
+}
 }
 
 void loop() {}
