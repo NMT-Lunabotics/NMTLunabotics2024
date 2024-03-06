@@ -26,7 +26,8 @@ void setup() {
 
 void loop() {
     digitalWrite(i, HIGH);
-    analogWrite(f, speed);
+    // analogWrite(f, speed);
+    analogWrite(f, 0);
     speed += dir;
     if (speed >= 255) {
         dir = 0;

@@ -3,7 +3,7 @@ const int spd = 6;
 const int dir = 7;
 const int potPin = A0;
 
-int tgt = 0;      // in mm
+int tgt = 100;      // in mm
 
 int pwm = 200;      // speed, in pwm TODO change this to mm/s
 int stroke = 250;   // stroke length, in mm
@@ -29,6 +29,7 @@ void setup() {
 void loop() {
   // Handle new readings
   int newVal = analogRead(potPin);
+  Serial.println(newVal);
   smooth = smooth * weight + newVal * (1 - weight);
   total -= readings[index];
   readings[index] = newVal;
@@ -37,7 +38,7 @@ void loop() {
   float avg = total / numStored;
 
   pos = map(newVal, potMin, potMax, 0, stroke);
-  Serial.println(newVal);
+  // Serial.println(newVal);
 
   delay(10);
 
