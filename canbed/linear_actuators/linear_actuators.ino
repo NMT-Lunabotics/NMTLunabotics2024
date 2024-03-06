@@ -1,4 +1,4 @@
-#include <Arduino.h>
+ #include <Arduino.h>
 
 // Define pin numbers
 const int spd = 6;
@@ -13,6 +13,15 @@ int potMin = 34;    // Calibrated, pot val at min stroke
 int potMax = 945;   // Calibrated, pot val at max stroke
 float weight = 0.2; // How much old readings influence new ones
 
+float kP=.4;
+float kI=.00;
+float kD=.0;
+float derivative;
+float error;
+float prevError=0;
+float integral=0;
+float threshold= 20;
+float threshold2=1;
 void setup() {
   Serial.begin(9600);
   pinMode(spd, OUTPUT);
@@ -34,21 +43,27 @@ void setup() {
     lastValue = newVal;
 
     int pos = map(newVal, potMin, potMax, 0, stroke);
-    Serial.print(newVal);
-    Serial.print("\t:\t");
-    Serial.println(pos);
+    // Serial.print(newVal);
+    // Serial.print("\t:\t");
+    // Serial.println(pos);
 
     delay(50);
-
-    if (pos > tgt) {
-      digitalWrite(dir, LOW);
-      analogWrite(spd, pwm);
-    } else if (pos < tgt) {
-      digitalWrite(dir, HIGH);
-      analogWrite(spd, pwm);
-    } else {
-      analogWrite(spd, 0);
+    error=tgt-pos;
+    if (error == 0) {
+      digitalWrite(dir,HIGH);
+      analogWrite(spd,0);
+    } else if(error<threshold&&(error>error+threshold2||error>error-threshold2)){
+    	error=tgt-pos;
+    	derivative=error-prevError;
+    	prevError=error;
+    	integral+=error;
+    	int output=kP*error+kI*integral+kD*derivative;
+    	output=constrain(output,-200,200);
+        Serial.println(output);
+    	digitalWrite(dir,output > 0);
+    	analogWrite(spd, map(abs(output), 0, 200, 30, 200));
     }
+    delay(50);
   }
 }
 
