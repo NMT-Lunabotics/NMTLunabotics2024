@@ -66,6 +66,12 @@ public:
 
     analogWrite(num, min(duty_cycle, 1) * 255);
   }
+  void write_pwm_raw(int duty_cycle) {
+    if (!allow_pwm)
+      panic("Attempted PWM on invalid PWM pin");
+
+    analogWrite(num, min(duty_cycle, 255));
+  }
 };
 
 // Input pins.
@@ -79,6 +85,7 @@ public:
   }
   bool read() { return digitalRead(num) == HIGH; }
   float read_analog() { return (analogRead(num) / 1023.0); }
+  int read_analog_raw() { return analogRead(num); }
   bool read_threshold() { return read_analog() >= threshold; }
 };
 
