@@ -21,6 +21,7 @@ float error;
 float prevError=0;
 float integral=0;
 float threshold= 20;
+float threshold2=1;
 void setup() {
   Serial.begin(9600);
   pinMode(spd, OUTPUT);
@@ -48,13 +49,13 @@ void setup() {
 
     delay(50);
     error=tgt-pos;
-    while(error<threshold){
+    while(error<threshold&&(error>error+threshold2||error>error-threshold2)){
     	error=tgt-pos;
     	derivative=error-prevError;
     	prevError=error;
     	integral+=error;
     	int output=kP*error+kI*integral+kD*derivative;
-    	output=constrain(output,35,250);
+    	output=constrain(output,-200,200);
     	//if (output < 0) {
       	//	digitalWrite(dir, LOW);
       	//	analogWrite(spd, abs(output));
