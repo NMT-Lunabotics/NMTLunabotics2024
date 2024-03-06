@@ -5,23 +5,22 @@ const int spd = 6;
 const int dir = 7;
 const int potPin = A0;
 
-int tgt = 100;      // in mm
+int tgt = 50;      // in mm
 
 int pwm = 200;      // speed, in pwm TODO change this to mm/s
-int stroke = 250;   // stroke length, in mm
+int stroke = 300;   // stroke length, in mm
 int potMin = 34;    // Calibrated, pot val at min stroke
 int potMax = 945;   // Calibrated, pot val at max stroke
-float weight = 0.2; // How much old readings influence new ones
 
-float kP=4;
-float kI=.00;
-float kD=.0;
+float kP=3;
+float kI=1;
+float kD=0;
 float derivative;
 float error;
 float prevError=0;
 float integral=0;
-float threshold= 20;
-float threshold2=1;
+float threshold=1;
+float i_threshold = 20;
 void setup() {
   Serial.begin(9600);
   pinMode(spd, OUTPUT);
@@ -45,26 +44,34 @@ void setup() {
     int pos = map(newVal, potMin, potMax, 0, stroke);
     // Serial.print(newVal);
     // Serial.print("\t:\t");
-    Serial.println(pos);
+    // Serial.println(pos);
+
+    int output;
 
     delay(50);
     error=tgt-pos;
-    if(abs(error)>=threshold2){
-    	error=tgt-pos;
-    	derivative=error-prevError;
-    	prevError=error;
-    	integral+=error;
-    	int output=kP*error+kI*integral+kD*derivative;
-    	output=constrain(output,-200,200);
-        Serial.println(output);
+    if(abs(error)>=threshold){
+      error=tgt-pos;
+      derivative=error-prevError;
+      prevError=error;
+      if (abs(error) <= i_threshold && abs(error) != 0) {
+        integral+=error;
+      } else {
+        integral = 0;
+      }
+      output=kP*error+kI*integral+kD*derivative;
+      output=constrain(output,-pwm,pwm);
     }
 
-    // When here, output is between -200 and 200. Output 0 will stop;
+    Serial.print(output);
+    Serial.print(" ");
+    Serial.println(pos);
+    // When here, output is between -pwm and pwm. Output 0 will stop;
   	digitalWrite(dir, output > 0);
-    if (abs(erro)r<=threshold2) {
+    if (abs(error)<=threshold) {
       analogWrite(spd, 0);
     } else {
-      analogWrite(spd, map(abs(output), 0, 200, 30, 200));
+      analogWrite(spd, abs(output));
     }
     delay(50);
   }
