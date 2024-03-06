@@ -52,7 +52,7 @@ void setup() {
     prevError=error;
     integral+=error;
     int output=kP*error+kI*integral+kD*derivative;
-    output=constrain(output,0,250);
+    //output=constrain(output,0,250);
     if (output > 0) {
       digitalWrite(dir, LOW);
       analogWrite(spd, abs(output));
