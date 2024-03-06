@@ -11,17 +11,16 @@ int pwm = 200;      // speed, in pwm TODO change this to mm/s
 int stroke = 300;   // stroke length, in mm
 int potMin = 34;    // Calibrated, pot val at min stroke
 int potMax = 945;   // Calibrated, pot val at max stroke
-float weight = 0.2; // How much old readings influence new ones
 
-float kP = .4;
-float kI = .00;
+float kP = 12;
+float kI = 0;
 float kD = .0;
 float derivative;
 float error;
 float prevError = 0;
 float integral = 0;
-float threshold = 20;
-float threshold2 = 1;
+float threshold = 1;
+float i_threshold = 10;
 
 int median(const int *data, size_t nmemb);
 
@@ -48,52 +47,37 @@ void setup() {
     history[head] = newVal;
     head = (head + 1) % (sizeof(history) / sizeof(history[0]));
 
-    Serial.print(newVal);
-    Serial.print("\t|\t");
+    // Serial.print(newVal);
+    // Serial.print("\t|\t");
     newVal = median(history, sizeof(history) / sizeof(history[0]));
     int pos = map(newVal, potMin, potMax, 0, stroke);
 
-    // Serial.print(newVal);
-    // Serial.print("\t:\t");
-    Serial.println(pos);
+    int output;
 
     delay(50);
-    error = tgt - pos;
-    if (error < threshold &&
-        (error > error + threshold2 || error > error - threshold2)) {
-      error = tgt - pos;
-      derivative = error - prevError;
-      prevError = error;
-      integral += error;
-      int output = kP * error + kI * integral + kD * derivative;
-      output = constrain(output, -200, 200);
-      Serial.println(output);
-
-      // pos = 500;
-      Serial.print(newVal);
-      Serial.print("\t:\t");
-      Serial.println(pos);
-
-      delay(5);
-
-      if (pos > tgt + 2) {
-        digitalWrite(dir, LOW);
-        analogWrite(spd, pwm);
-      } else if (pos < tgt - 2) {
-        digitalWrite(dir, HIGH);
-        analogWrite(spd, pwm);
+    error=tgt-pos;
+    if(abs(error)>=threshold){
+      error=tgt-pos;
+      derivative=error-prevError;
+      prevError=error;
+      if (abs(error) <= i_threshold && abs(error) != 0) {
+        integral+=error;
       } else {
-        analogWrite(spd, 0);
+        integral = 0;
       }
+      output=kP*error+kI*integral+kD*derivative;
+      output=constrain(output,-pwm,pwm);
+    }
 
-      // When here, output is between -200 and 200. Output 0 will stop;
-      digitalWrite(dir, output > 0);
-      if (output == 0) {
-        analogWrite(spd, 0);
-      } else {
-        analogWrite(spd, map(abs(output), 0, 200, 30, 200));
-      }
-      delay(50);
+    Serial.print(output);
+    Serial.print(" ");
+    Serial.println(pos);
+    // When here, output is between -pwm and pwm. Output 0 will stop;
+  	digitalWrite(dir, output > 0);
+    if (abs(error)<=threshold) {
+      analogWrite(spd, 0);
+    } else {
+      analogWrite(spd, abs(output));
     }
   }
 }
