@@ -29,7 +29,7 @@ void setup() {
 void loop() {
   // Handle new readings
   int newVal = analogRead(potPin);
-  Serial.println(newVal);
+  // Serial.println(newVal);
   smooth = smooth * weight + newVal * (1 - weight);
   total -= readings[index];
   readings[index] = newVal;
@@ -38,16 +38,20 @@ void loop() {
   float avg = total / numStored;
 
   pos = map(newVal, potMin, potMax, 0, stroke);
-  // Serial.println(newVal);
+  // Serial.println(pos);
 
   delay(10);
 
+  int a_spd = abs(pos - tgt);
+  a_spd = a_spd > pwm ? pwm : a_spd;
+  Serial.println(a_spd);
+
   if (pos > tgt) {
     digitalWrite(dir, LOW);
-    analogWrite(spd, pwm);
+    analogWrite(spd, a_spd);
   } else if (pos < tgt) {
     digitalWrite(dir, HIGH);
-    analogWrite(spd, pwm);
+    analogWrite(spd, a_spd);
   } else {
     analogWrite(spd, 0);
   }
