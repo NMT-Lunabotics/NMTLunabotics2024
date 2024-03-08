@@ -2,6 +2,7 @@
 
 #include "arduino_lib.hpp"
 #include <Protothreads.h>
+//#include <PT.h>
 // Define pin numbers
 #define PIN_SPEED_LEFT 6
 #define PIN_SPEED_RIGHT 9
@@ -38,7 +39,7 @@ static int median(const int *data, size_t nmemb);
   InPin pot_left(PIN_POTENTIOMETER_LEFT);
   InPin pot_right(PIN_POTENTIOMETER_RIGHT);
 
-void PIDLeft(struct pt *pt){
+int PIDLeft(struct pt *pt){
   PT_BEGIN(pt);
 
   while(1){
@@ -67,7 +68,7 @@ void PIDLeft(struct pt *pt){
   PT_END(pt);
 }
 
-void PIDRight(struct pt *pt){
+int PIDRight(struct pt *pt){
   PT_BEGIN(pt);
 
   while(1){
