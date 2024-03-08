@@ -126,19 +126,21 @@ void setup() {
     int pos_l = map(m_l, potMin, potMax, 0, stroke);
     int pos_r = map(m_r, potMin, potMax, 0, stroke);
 
-    Serial.print(pos_l);
-    Serial.print(" ");
-    Serial.println(pos_r);
+    float error_l = pos_l - target;
+    float error_r = pos_r - target;
 
-    int error_l = pos_l - target;
-    int error_r = pos_r - target;
+    // Serial.print(error_l);
+    // Serial.print(" ");
+    // Serial.println(error_r);
 
     if (abs(error_l) <= threshold) {
       speed_left.write(0);
     } else {
       int s_l = pid_l.update(error_l);
       s_l = constrain(s_l, -pwm, pwm);
+      Serial.println(s_l);
       speed_left.write(s_l);
+      dir_left.write(s_l > 0);
     }
 
     if (abs(error_r) <= threshold) {
@@ -147,6 +149,7 @@ void setup() {
       int s_r = pid_r.update(error_l);
       s_r = constrain(s_r, -pwm, pwm);
       speed_right.write(s_r);
+      dir_right.write(s_r > 0);
     }
   }
 }
