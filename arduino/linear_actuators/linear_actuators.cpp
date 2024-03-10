@@ -22,7 +22,7 @@
 class LinearActuator {
   OutPin speed;
   OutPin dir;
-  SmoothedInput pot;
+  SmoothedInput<15> pot;
 
 public:
   LinearActuator(OutPin speed, OutPin dir, InPin pot)

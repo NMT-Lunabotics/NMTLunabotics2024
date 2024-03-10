@@ -131,7 +131,7 @@ struct Relay {
   }
 };
 
-template<typename T> T median(const T *data, size_t nmemb) {
+template <typename T> T median(const T *data, size_t nmemb) {
   T my_data[nmemb];
   memcpy(my_data, data, nmemb * sizeof(my_data[0]));
 
@@ -149,9 +149,9 @@ template<typename T> T median(const T *data, size_t nmemb) {
     return my_data[nmemb / 2];
 }
 
-class SmoothedInput {
+template <int history_len> class SmoothedInput {
   InPin raw;
-  int history[15];
+  int history[history_len];
   int head = 0;
 
 public:
