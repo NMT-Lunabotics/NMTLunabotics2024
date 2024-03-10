@@ -18,109 +18,82 @@
 #define kP 12
 #define kI 0
 #define kD 0
-float prevErrorL = 0;
-float integralL = 0;
-float prevErrorR = 0;
-float integralR = 0;
-float threshold = 1;
 #define i_threshold 10
-
-float derivative;
-float errorL;
-float errorR;
+#define threshold 1
 
 static int median(const int *data, size_t nmemb);
-// OutPin speed_left(PIN_SPEED_LEFT);
-// OutPin speed_right(PIN_SPEED_RIGHT);
-// OutPin dir_left(PIN_DIRECTION_LEFT);
-// OutPin dir_right(PIN_DIRECTION_RIGHT);
-// InPin pot_left(PIN_POTENTIOMETER_LEFT);
-// InPin pot_right(PIN_POTENTIOMETER_RIGHT);
 
-void PIDLeft() {
-  while (1) {
-    int newVal = analogRead(PIN_POTENTIOMETER_LEFT);
+class SmoothedInput {
+  InPin raw;
+  int history[15];
+  int head = 0;
+
+public:
+  SmoothedInput(InPin raw) : raw(raw) {
+    int v = raw.read_analog_raw();
+    for (int i = 0; i < length(history); i++)
+      history[i] = v;
+  }
+
+  int read_analog_raw() {
+    history[head] = raw.read_analog_raw();
+    head = (head + 1) % length(history);
+    return median(history, length(history));
+  }
+};
+
+class LinearActuator {
+  OutPin speed;
+  OutPin dir;
+  SmoothedInput pot;
+
+  float prevError = 0;
+  float integral = 0;
+  float derivative;
+  float error;
+
+public:
+  LinearActuator(OutPin speed, OutPin dir, InPin pot)
+      : speed(speed), dir(dir), pot(pot) {}
+
+  void update() {
+    int newVal = pot.read_analog_raw();
     int pos = map(newVal, potMin, potMax, 0, stroke);
-    errorL = target - pos;
-    if (abs(errorL) >= threshold) {
-      derivative = errorL - prevErrorL;
-      prevErrorL = errorL;
-      if (abs(errorL) <= i_threshold && abs(errorL) != 0) {
-        integralL += errorL;
+
+    error = target - pos;
+    if (abs(error) >= threshold) {
+      derivative = error - prevError;
+      prevError = error;
+      if (abs(error) <= i_threshold && abs(error) != 0) {
+        integral += error;
       } else {
-        integralL = 0;
+        integral = 0;
       }
-      int output = kP * errorL + kI * integralL + kD * derivative;
+      int output = kP * error + kI * integral + kD * derivative;
       output = constrain(output, -pwm, pwm);
-      dir_left.write(output > 0);
-      if (abs(errorL) <= threshold) {
-        speed_left.write_pwm(0);
+      dir.write(output > 0);
+      if (abs(error) <= threshold) {
+        speed.write_pwm(0);
       } else {
-        speed_left.write_pwm(abs(output));
+        speed.write_pwm(abs(output));
       }
     }
-    // PT_WAIT_UNTIL(pt, millis() % 50 == 0);
-    // delay here
   }
-  // PT_END(pt);
-}
-
-void PIDRight() {
-  while (1) {
-    int newVal = analogRead(PIN_POTENTIOMETER_RIGHT);
-    int pos = map(newVal, potMin, potMax, 0, stroke);
-    errorR = target - pos;
-    if (abs(errorR) >= threshold) {
-      derivative = errorR - prevErrorR;
-      prevErrorR = errorR;
-      if (abs(errorR) <= i_threshold && abs(errorR) != 0) {
-        integralR += errorR;
-      } else {
-        integralR = 0;
-      }
-      int output = kP * errorR + kI * integralR + kD * derivative;
-      output = constrain(output, -pwm, pwm);
-      dir_right.write(output > 0);
-      if (abs(errorR) <= threshold) {
-        speed_right.write_pwm(0);
-      } else {
-        speed_right.write_pwm(abs(output));
-      }
-    }
-    // PT_WAIT_UNTIL(pt, millis() % 50 == 0);
-    // delay here
-  }
-}
+};
 
 void setup() {
   Serial.begin(9600);
 
-  int history[15];
-  int history2[15];
-  memset(history, 0, sizeof(history));
-  memset(history2, 0, sizeof(history2));
-  int v = pot_left.read_analog_raw();
-  int v2 = pot_right.read_analog_raw();
-  for (int i = 0; i < sizeof(history) / sizeof(history[0]); i++)
-    history[i] = v;
-  for (int i = 0; i < sizeof(history2) / sizeof(history2[0]); i++)
-    history2[i] = v2;
-  size_t head = 0;
-  size_t head2 = 0;
+  LinearActuator left(PIN_SPEED_LEFT, PIN_DIRECTION_LEFT,
+                      PIN_POTENTIOMETER_LEFT);
+  LinearActuator right(PIN_SPEED_RIGHT, PIN_DIRECTION_RIGHT,
+                       PIN_POTENTIOMETER_RIGHT);
+
   while (true) {
     // Handle new readings
-
+    left.update();
+    right.update();
     delay(50);
-
-    // Slight problem if you want to have each linear actuator have a pid and a
-    // pid of the error between them to chain them together you want the between
-    // pid to output a multiplier of faster or slower into the other pids which
-    // is multithreading and not possible on arduino
-
-    Serial.print(output);
-    Serial.print(" ");
-    Serial.println(pos);
-    // When here, output is between -pwm and pwm. Output 0 will stop;
   }
 }
 
