@@ -19,8 +19,6 @@
 #define i_threshold 10
 #define threshold 1
 
-static int median(const int *data, size_t nmemb);
-
 class LinearActuator {
   OutPin speed;
   OutPin dir;
