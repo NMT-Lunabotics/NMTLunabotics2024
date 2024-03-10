@@ -1,7 +1,5 @@
-#include <Arduino.h>
-
 #include "arduino_lib.hpp"
-#include <protothreads.h>
+
 // Define pin numbers
 #define PIN_SPEED_LEFT 6
 #define PIN_SPEED_RIGHT 9
@@ -10,37 +8,36 @@
 #define PIN_POTENTIOMETER_LEFT A0
 #define PIN_POTENTIOMETER_RIGHT A1
 
-int target = 100; // in mm
+#define target 100 // in mm
 
-int pwm = 200;    // speed, in pwm TODO change this to mm/s
-int stroke = 300; // stroke length, in mm
-int potMin = 34;  // Calibrated, pot val at min stroke
-int potMax = 945; // Calibrated, pot val at max stroke
+#define pwm 200    // speed, in pwm TODO change this to mm/s
+#define stroke 300 // stroke length, in mm
+#define potMin 34  // Calibrated, pot val at min stroke
+#define potMax 945 // Calibrated, pot val at max stroke
 
-float kP = 12;
-float kI = 0;
-float kD = .0;
-float derivative;
-float errorL;
+#define kP 12
+#define kI 0
+#define kD 0
 float prevErrorL = 0;
 float integralL = 0;
-float errorR;
 float prevErrorR = 0;
 float integralR = 0;
 float threshold = 1;
-float i_threshold = 10;
-struct pt ptL, ptR;
+#define i_threshold 10
+
+float derivative;
+float errorL;
+float errorR;
+
 static int median(const int *data, size_t nmemb);
-OutPin speed_left(PIN_SPEED_LEFT);
-OutPin speed_right(PIN_SPEED_RIGHT);
-OutPin dir_left(PIN_DIRECTION_LEFT);
-OutPin dir_right(PIN_DIRECTION_RIGHT);
-InPin pot_left(PIN_POTENTIOMETER_LEFT);
-InPin pot_right(PIN_POTENTIOMETER_RIGHT);
+// OutPin speed_left(PIN_SPEED_LEFT);
+// OutPin speed_right(PIN_SPEED_RIGHT);
+// OutPin dir_left(PIN_DIRECTION_LEFT);
+// OutPin dir_right(PIN_DIRECTION_RIGHT);
+// InPin pot_left(PIN_POTENTIOMETER_LEFT);
+// InPin pot_right(PIN_POTENTIOMETER_RIGHT);
 
-void PIDLeft(struct pt *pt) {
-  PT_BEGIN(pt);
-
+void PIDLeft() {
   while (1) {
     int newVal = analogRead(PIN_POTENTIOMETER_LEFT);
     int pos = map(newVal, potMin, potMax, 0, stroke);
@@ -62,14 +59,13 @@ void PIDLeft(struct pt *pt) {
         speed_left.write_pwm(abs(output));
       }
     }
-    PT_WAIT_UNTIL(pt, millis() % 50 == 0);
+    // PT_WAIT_UNTIL(pt, millis() % 50 == 0);
+    // delay here
   }
-  PT_END(pt);
+  // PT_END(pt);
 }
 
-void PIDRight(struct pt *pt) {
-  PT_BEGIN(pt);
-
+void PIDRight() {
   while (1) {
     int newVal = analogRead(PIN_POTENTIOMETER_RIGHT);
     int pos = map(newVal, potMin, potMax, 0, stroke);
@@ -91,9 +87,9 @@ void PIDRight(struct pt *pt) {
         speed_right.write_pwm(abs(output));
       }
     }
-    PT_WAIT_UNTIL(pt, millis() % 50 == 0);
+    // PT_WAIT_UNTIL(pt, millis() % 50 == 0);
+    // delay here
   }
-  PT_END(pt);
 }
 
 void setup() {
@@ -111,8 +107,6 @@ void setup() {
     history2[i] = v2;
   size_t head = 0;
   size_t head2 = 0;
-  PT_INIT(&ptL);
-  PT_INIT(&ptR);
   while (true) {
     // Handle new readings
 
@@ -148,7 +142,4 @@ static int median(const int *data, size_t nmemb) {
     return (my_data[nmemb / 2] + my_data[nmemb / 2 + 1]) / 2;
   else
     return my_data[nmemb / 2];
-
-  PIDRight(&ptR);
-  PIDLeft(&ptL);
 }
