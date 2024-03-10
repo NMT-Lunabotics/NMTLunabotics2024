@@ -6,6 +6,8 @@
 
 #define sign(i) (((i) > 0) - ((i) < 0))
 
+#define length(array) (sizeof(array) / sizeof((array)[0]))
+
 // Pinout reference:
 // D4  RX
 // D5* TX
