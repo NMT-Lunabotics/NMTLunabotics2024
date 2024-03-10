@@ -39,11 +39,7 @@ public:
       int output = kP * error;
       output = constrain(output, -pwm, pwm);
       dir.write(output > 0);
-      if (abs(error) <= threshold) {
-        speed.write_pwm(0);
-      } else {
-        speed.write_pwm(abs(output));
-      }
+      speed.write_pwm(abs(output));
     }
   }
 };
