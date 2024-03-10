@@ -49,8 +49,6 @@ class LinearActuator {
 
   float prevError = 0;
   float integral = 0;
-  float derivative;
-  float error;
 
 public:
   LinearActuator(OutPin speed, OutPin dir, InPin pot)
@@ -60,9 +58,9 @@ public:
     int newVal = pot.read_analog_raw();
     int pos = map(newVal, potMin, potMax, 0, stroke);
 
-    error = target - pos;
+    float error = target - pos;
     if (abs(error) >= threshold) {
-      derivative = error - prevError;
+      float derivative = error - prevError;
       prevError = error;
       if (abs(error) <= i_threshold && abs(error) != 0) {
         integral += error;
