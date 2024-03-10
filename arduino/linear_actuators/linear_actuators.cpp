@@ -40,6 +40,8 @@ public:
       output = constrain(output, -pwm, pwm);
       dir.write(output > 0);
       speed.write_pwm(abs(output));
+    } else {
+      speed.write_pwm(0);
     }
   }
 };
