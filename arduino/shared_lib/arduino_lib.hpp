@@ -131,6 +131,43 @@ struct Relay {
   }
 };
 
+template<typename T> T median(const T *data, size_t nmemb) {
+  T my_data[nmemb];
+  memcpy(my_data, data, nmemb * sizeof(my_data[0]));
+
+  qsort(my_data, nmemb, sizeof(data[0]), [](const void *a, const void *b) {
+    if (*(T *)a > *(T *)b)
+      return 1;
+    else if (*(T *)a < *(T *)b)
+      return -1;
+    return 0;
+  });
+
+  if (nmemb % 2 == 1)
+    return (my_data[nmemb / 2] + my_data[nmemb / 2 + 1]) / 2;
+  else
+    return my_data[nmemb / 2];
+}
+
+class SmoothedInput {
+  InPin raw;
+  int history[15];
+  int head = 0;
+
+public:
+  SmoothedInput(InPin raw) : raw(raw) {
+    int v = raw.read_analog_raw();
+    for (int i = 0; i < length(history); i++)
+      history[i] = v;
+  }
+
+  int read_analog_raw() {
+    history[head] = raw.read_analog_raw();
+    head = (head + 1) % length(history);
+    return median(history, length(history));
+  }
+};
+
 // // Captured data to be sent to interrupt handlers.
 // static void *interrupt_data[EXTERNAL_NUM_INTERRUPTS];
 
