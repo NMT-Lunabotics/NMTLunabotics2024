@@ -16,8 +16,6 @@
 #define potMax 945 // Calibrated, pot val at max stroke
 
 #define kP 12
-#define kI 0
-#define kD 0
 #define i_threshold 10
 #define threshold 1
 
@@ -47,9 +45,6 @@ class LinearActuator {
   OutPin dir;
   SmoothedInput pot;
 
-  float prevError = 0;
-  float integral = 0;
-
 public:
   LinearActuator(OutPin speed, OutPin dir, InPin pot)
       : speed(speed), dir(dir), pot(pot) {}
@@ -60,14 +55,7 @@ public:
 
     float error = target - pos;
     if (abs(error) >= threshold) {
-      float derivative = error - prevError;
-      prevError = error;
-      if (abs(error) <= i_threshold && abs(error) != 0) {
-        integral += error;
-      } else {
-        integral = 0;
-      }
-      int output = kP * error + kI * integral + kD * derivative;
+      int output = kP * error;
       output = constrain(output, -pwm, pwm);
       dir.write(output > 0);
       if (abs(error) <= threshold) {
