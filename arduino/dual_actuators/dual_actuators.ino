@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#include "arduino_lib.hpp"
+#include "helpers.hpp"
 
 #define PIN_SPEED_LEFT 6
 #define PIN_SPEED_RIGHT 9
@@ -11,84 +11,13 @@
 
 int target = 100; // in mm
 
-int pwm = 200;    // speed, in pwm TODO change this to mm/s
+int tgt_speed = 200;    // speed, in pwm TODO change this to mm/s
+float threshold = 1;  // in mm
+
 int stroke = 300; // stroke length, in mm
 int potMin = 34;  // Calibrated, pot val at min stroke
 int potMax = 945; // Calibrated, pot val at max stroke
-float threshold = 1;
-
-float p = 12;
-float i = 0;
-float d = .0;
-
-class PID {
-private:
-  float error;
-  float prev_error;
-  float derivative;
-  float integral;
-
-  float p, i, d;
-
-public:
-  PID(float p, float i, float d) : p(p), i(i), d(d) {
-    error = 0;
-    prev_error = 0;
-    derivative = 0;
-    integral = 0;
-  }
-
-  float update(float error) {
-    derivative = error - prev_error;
-    integral += error;
-    prev_error = error;
-    return p * error + i * integral + d * derivative;
-  }
-
-  void resetIntegral() {
-    integral = 0;
-  }
-};
-
-class Median {
-private:
-  int history_size;
-  int* history;
-  int current_idx;
-
-public:
-  Median(int history_size) : history_size(history_size) {
-    history = new int[history_size];
-    current_idx = 0;
-    memset(history, 0, sizeof(history));
-  }
-
-  ~Median() {
-    delete[] history;
-  }
-
-  int update(int new_val) {
-    history[current_idx] = new_val;
-    current_idx++;
-    current_idx %= history_size;
-
-    int sorted[history_size];
-    memcpy(sorted, history, history_size * sizeof(history[0]));
-
-    qsort(sorted, history_size, sizeof(sorted[0]), [](const void *a, const void *b) {
-      if (*(int *)a > *(int *)b)
-        return 1;
-      else if (*(int *)a < *(int *)b)
-        return -1;
-      return 0;
-    });
-
-    if (history_size % 2 == 1)
-      return (sorted[history_size / 2] + sorted[history_size / 2 + 1]) / 2;
-    else
-      return sorted[history_size / 2];
-  }
-};
+int update_rate = 50; //hz
 
 void setup() {
   Serial.begin(9600);
@@ -111,11 +40,21 @@ void setup() {
     median_r.update(vr);
   }
 
-  PID pid_l(p, i, d);
-  PID pid_r(p, i, d);
+  unsigned long current_time = millis();
+  unsigned long last_time = current_time;
+
+  int speed_l = 0;
+  int speed_r = 0;
 
   while (true) {
-    delay(50);
+    current_time = millis();
+
+    int dt = 1000 / update_rate;
+
+    if (current_time - last_time < dt) {
+      continue;
+    }
+    last_time = current_time;
 
     int val_l = pot_left.read_analog_raw();
     int val_r = pot_right.read_analog_raw();
@@ -128,29 +67,37 @@ void setup() {
 
     float error_l = pos_l - target;
     float error_r = pos_r - target;
+    float error_lr = pos_l - pos_r;
 
-    // Serial.print(error_l);
-    // Serial.print(" ");
-    // Serial.println(error_r);
-
-    if (abs(error_l) <= threshold) {
-      speed_left.write(0);
+    if (error_l > threshold) {
+      speed_l = -tgt_speed;
+    } else if (error_l < -threshold) {
+      speed_l = tgt_speed;
     } else {
-      int s_l = pid_l.update(error_l);
-      s_l = constrain(s_l, -pwm, pwm);
-      Serial.println(s_l);
-      speed_left.write(s_l);
-      dir_left.write(s_l > 0);
+      speed_l = 0;
     }
 
-    if (abs(error_r) <= threshold) {
-      speed_right.write(0);
+    if (error_r > threshold) {
+      speed_r = -tgt_speed;
+    } else if (error_r < -threshold) {
+      speed_r = tgt_speed;
     } else {
-      int s_r = pid_r.update(error_l);
-      s_r = constrain(s_r, -pwm, pwm);
-      speed_right.write(s_r);
-      dir_right.write(s_r > 0);
+      speed_r = 0;
     }
+
+    Serial.print(error_l);
+    Serial.print(" : ");
+    Serial.print(speed_l);
+    Serial.print(", ");
+    Serial.print(error_r);
+    Serial.print(" : ");
+    Serial.print(speed_r);
+    Serial.println();
+
+    speed_left.write_pwm(abs(speed_l));
+    dir_left.write(speed_l > 0);
+    speed_right.write_pwm(abs(speed_r));
+    dir_right.write(speed_r > 0);
   }
 }
 
