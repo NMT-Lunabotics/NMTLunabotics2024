@@ -1,6 +1,5 @@
 #include <Arduino.h>
-
-#include "helpers.hpp"
+ #include "helpers.hpp"
 
 #define PIN_SPEED_LEFT 6
 #define PIN_SPEED_RIGHT 9
@@ -9,15 +8,15 @@
 #define PIN_POTENTIOMETER_LEFT A0
 #define PIN_POTENTIOMETER_RIGHT A1
 
-int target = 100; // in mm
+int target = 200; // in mm
 
-int tgt_speed = 200;    // speed, in pwm TODO change this to mm/s
-float threshold = 1;  // in mm
+int tgt_speed = 200; // speed, in pwm TODO change this to mm/s
+float threshold = 1; // in mm
 
-int stroke = 300; // stroke length, in mm
-int potMin = 34;  // Calibrated, pot val at min stroke
-int potMax = 945; // Calibrated, pot val at max stroke
-int update_rate = 50; //hz
+int stroke = 250;     // stroke length, in mm:
+int potMin = 34;      // Calibrated, pot val at min stroke
+int potMax = 945;     // Calibrated, pot val at max stroke
+int update_rate = 50; // hz
 
 void setup() {
   Serial.begin(9600);
@@ -28,7 +27,6 @@ void setup() {
   OutPin dir_right(PIN_DIRECTION_RIGHT);
   InPin pot_left(PIN_POTENTIOMETER_LEFT);
   InPin pot_right(PIN_POTENTIOMETER_RIGHT);
-
 
   int vl = pot_left.read_analog_raw();
   int vr = pot_right.read_analog_raw();
@@ -62,8 +60,8 @@ void setup() {
     int m_l = median_l.update(val_l);
     int m_r = median_r.update(val_r);
 
-    int pos_l = map(m_l, potMin, potMax, 0, stroke);
-    int pos_r = map(m_r, potMin, potMax, 0, stroke);
+    float pos_l = map(m_l, potMin, potMax, 0, stroke);
+    float pos_r = map(m_r, potMin, potMax, 0, stroke);
 
     float error_l = pos_l - target;
     float error_r = pos_r - target;
@@ -85,6 +83,10 @@ void setup() {
       speed_r = 0;
     }
 
+    int factor = 12 * error_lr;
+    speed_l -= factor;
+    speed_r += factor;
+
     Serial.print(error_l);
     Serial.print(" : ");
     Serial.print(speed_l);
@@ -92,13 +94,18 @@ void setup() {
     Serial.print(error_r);
     Serial.print(" : ");
     Serial.print(speed_r);
+    Serial.print(", ");
+    Serial.print(error_lr);
     Serial.println();
 
-    speed_left.write_pwm(abs(speed_l));
-    dir_left.write(speed_l > 0);
-    speed_right.write_pwm(abs(speed_r));
+    speed_l = constrain(speed_l, -255, 255);
+    speed_r = constrain(speed_r, -255, 255);
+
+    speed_left.write_pwm_raw(abs(speed_l));
+    dir_left.write(speed_l < 0);
+    speed_right.write_pwm_raw(abs(speed_r));
     dir_right.write(speed_r > 0);
   }
 }
 
-void loop () {}
+void loop() {}
