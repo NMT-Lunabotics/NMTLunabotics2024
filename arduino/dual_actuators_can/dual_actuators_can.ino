@@ -27,9 +27,7 @@ void setup() {
   while (!Serial) {
   }
   if (!CAN.begin(CanBitRate::BR_250k)) {
-    Serial.println("CAN.begin(...) failed.");
-    for (;;) {
-    }
+    panic("Can is not available");
   }
 
   OutPin speed_left(PIN_SPEED_LEFT);
@@ -74,8 +72,7 @@ void setup() {
       }
       }
     } else {
-      Serial.println("CAN Not available");
-      // TODO go into error mode
+      panic("Can is not available");
     }
 
     current_time = millis();
@@ -103,6 +100,7 @@ void setup() {
     bool doomsday = false;
     if (error_lr > max_error) {
       doomsday = true;
+      Serial.println("Doomsday");
     }
 
     if (CAN.available()) {
@@ -123,13 +121,11 @@ void setup() {
           sizeof(buffer), buffer);
 
       if (int const rc = CAN.write(msg); rc < 0) {
-        Serial.print("CAN.write(...) failed with error code ");
-        Serial.println(rc);
-        for (;;) {
-        }
+        String error = "CAN.write(...) failed with error code " + String(rc);
+        panic(error.c_str());
       }
     } else {
-      // TODO handle can failiure
+      panic("Can is not available");
     }
 
     if (target_pos == -1) {
