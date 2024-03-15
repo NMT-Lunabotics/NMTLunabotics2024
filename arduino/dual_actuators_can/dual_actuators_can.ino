@@ -21,6 +21,7 @@ int potMax = 945;      // Calibrated, pot val at max stroke
 #define UPDATE_RATE 50 // hz
 
 int max_error = 5;
+int error_factor = 50;
 
 #define MEDIAN_SIZE 15
 
@@ -139,8 +140,7 @@ void setup() {
     CanMsg const msg((int)can::FrameID::ActuatorArmPos, sizeof(buffer), buffer);
 
     if (int const rc = CAN.write(msg); rc < 0) {
-      String error = "CAN.write(...) failed with error code " + String(rc);
-      panic(error.c_str());
+      Serial.println("CAN.write(...) failed with error code " + String(rc));
     }
 
     if (target_pos == -1) {
@@ -167,7 +167,7 @@ void setup() {
       }
     }
 
-    int factor = 12 * error_lr;
+    int factor = error_factor * error_lr;
     speed_l -= factor;
     speed_r += factor;
 
