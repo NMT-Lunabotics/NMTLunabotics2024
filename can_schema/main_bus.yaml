@@ -26,11 +26,7 @@ messages:
     - right: SingleMotorCommand
 
   ActuatorCommands:
-    - left_pos:
-        range: [0, 250]
-        unit: mm
-        size: 8
-    - right_pos:
+    - lifter_pos:
         range: [0, 250]
         unit: mm
         size: 8

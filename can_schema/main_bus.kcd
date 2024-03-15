@@ -20,15 +20,11 @@
         </Signal>
       </Message>
       <Message id="2" name="ActuatorCommands">
-        <Signal name="left_pos" offset="0" length="8">
+        <Signal name="lifter_pos" offset="0" length="8">
           <Value type="unsigned" unit="mm" slope="0.9803921568627451" intercept="0" min="0" max="250">
           </Value>
         </Signal>
-        <Signal name="right_pos" offset="8" length="8">
-          <Value type="unsigned" unit="mm" slope="0.9803921568627451" intercept="0" min="0" max="250">
-          </Value>
-        </Signal>
-        <Signal name="bucket_pos" offset="16" length="8">
+        <Signal name="bucket_pos" offset="8" length="8">
           <Value type="unsigned" unit="mm" slope="1.1764705882352942" intercept="0" min="0" max="300">
           </Value>
         </Signal>

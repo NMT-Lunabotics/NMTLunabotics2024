@@ -126,15 +126,13 @@ inline std::ostream &operator<<(std::ostream &os, const MotorCommands &self) {
 }
 
 struct ActuatorCommands {
-  double left_pos;
-  double right_pos;
+  double lifter_pos;
   double bucket_pos;
 };
 
 inline ActuatorCommands ActuatorCommands_deserialize(uint64_t buffer) {
   ActuatorCommands self;
-  self.left_pos = (double)read(buffer, 8) * 0.9803921568627451 + 0;
-  self.right_pos = (double)read(buffer, 8) * 0.9803921568627451 + 0;
+  self.lifter_pos = (double)read(buffer, 8) * 0.9803921568627451 + 0;
   self.bucket_pos = (double)read(buffer, 8) * 1.1764705882352942 + 0;
   return self;
 }
@@ -142,15 +140,13 @@ inline ActuatorCommands ActuatorCommands_deserialize(uint64_t buffer) {
 inline uint64_t serialize(ActuatorCommands data) {
   uint64_t ser = 0;
   write(ser, 8, (data.bucket_pos - 0) / 1.1764705882352942);
-  write(ser, 8, (data.right_pos - 0) / 0.9803921568627451);
-  write(ser, 8, (data.left_pos - 0) / 0.9803921568627451);
+  write(ser, 8, (data.lifter_pos - 0) / 0.9803921568627451);
   return ser;
 }
 
 inline std::ostream &operator<<(std::ostream &os, const ActuatorCommands &self) {
   return os << "{ "
-            << "left_pos = " << self.left_pos << ", "
-            << "right_pos = " << self.right_pos << ", "
+            << "lifter_pos = " << self.lifter_pos << ", "
             << "bucket_pos = " << self.bucket_pos << ", "
             << "}";
 }
