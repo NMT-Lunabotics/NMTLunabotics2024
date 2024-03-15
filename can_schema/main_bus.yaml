@@ -12,6 +12,7 @@ structs:
     enum:
       # list all possible errors here
       - ActuatorOutOfRange
+      - ActuatorOutOfAlignment
 
 messages:
   # Please only add new messages at the end, and avoid deleting

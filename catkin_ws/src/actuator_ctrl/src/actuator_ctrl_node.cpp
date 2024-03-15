@@ -19,7 +19,7 @@ void callback(const sensor_msgs::Joy::ConstPtr& msg) {
     can::to_buffer(buffer, can::serialize(cmd));
 
     can_raw::CanFrame can_frame;
-    can_frame.id = (short int) can::FrameID::MotorCommands;
+    can_frame.id = (short int) can::FrameID::ActuatorVelCommands;
     memcpy(&can_frame.data, buffer, sizeof(buffer));
 
     can_pub.publish(can_frame);

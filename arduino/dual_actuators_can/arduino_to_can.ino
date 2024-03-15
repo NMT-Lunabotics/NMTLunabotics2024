@@ -1,6 +1,6 @@
-#include <Arduino.h>
 #include "helpers.hpp"
 #include "main_bus.hpp"
+#include <Arduino.h>
 #define PIN_SPEED_LEFT 6
 #define PIN_SPEED_RIGHT 9
 #define PIN_DIRECTION_LEFT 7
@@ -8,29 +8,30 @@
 #define PIN_POTENTIOMETER_LEFT A0
 #define PIN_POTENTIOMETER_RIGHT A1
 
-//int target = 200; // in mm
+int target_pos = 0; // in mm
+int target_vel = 0; // in mm/s
 
-int tgt_speed = 200; // speed, in pwm TODO change this to mm/s
+int max_speed = 200; // 5 mm/s
 float threshold = 1; // in mm
 
 int stroke = 250;     // stroke length, in mm:
 int potMin = 34;      // Calibrated, pot val at min stroke
 int potMax = 945;     // Calibrated, pot val at max stroke
 int update_rate = 50; // hz
-void handleMessage(can_message_t msg){
-  switch(msg.frame_id){
-    case can::FrameID::ActuatorCommands:{
-    can::ActuatorCommands actuatorCmd = can::ActuatorCommands_deserialize(can::from_buffer(msg.data));
-    int target=actuatorCmd.left_pos;
-    break;
-    }
-  //actuatorCmd.right_pos
-  }
-}
+
+int max_error = 5;
+
+void handleMessage(can_message_t msg) {}
+
 void setup() {
   Serial.begin(9600);
-  CAN_library.begin();
-  CAN_library.attachCANMessageInterrupt(handleMessage);
+  while (!Serial) {}
+  if (!CAN.begin(CanBitRate::BR_250k)) {
+    Serial.println("CAN.begin(...) failed.");
+    for (;;) {
+    }
+  }
+
   OutPin speed_left(PIN_SPEED_LEFT);
   OutPin speed_right(PIN_SPEED_RIGHT);
   OutPin dir_left(PIN_DIRECTION_LEFT);
@@ -55,6 +56,26 @@ void setup() {
   int speed_r = 0;
 
   while (true) {
+    if (CAN.available()) {
+      CanMsg const msg = CAN.read();
+      switch (msg.id) {
+      case (long unsigned int)can::FrameID::ActuatorPosCommands:
+        can::ActuatorCommands actuatorCmd =
+            can::ActuatorCommands_deserialize(can::from_buffer(msg.data));
+        target_pos = actuatorCmd.arm_pos;
+        break;
+      case (long unsigned int)can::FrameID::ActuatorVelCommands:
+        can::ActuatorCommands actuatorCmd =
+            can::ActuatorCommands_deserialize(can::from_buffer(msg.data));
+        target_vel = actuatorCmd.arm_vel;
+        target_pos = -1;
+        break;
+      }
+    } else {
+      Serial.println("CAN Not available");
+      // TODO go into error mode
+    }
+
     current_time = millis();
 
     int dt = 1000 / update_rate;
@@ -73,24 +94,60 @@ void setup() {
     float pos_l = map(m_l, potMin, potMax, 0, stroke);
     float pos_r = map(m_r, potMin, potMax, 0, stroke);
 
-    float error_l = pos_l - target;
-    float error_r = pos_r - target;
     float error_lr = pos_l - pos_r;
-
-    if (error_l > threshold) {
-      speed_l = -tgt_speed;
-    } else if (error_l < -threshold) {
-      speed_l = tgt_speed;
-    } else {
-      speed_l = 0;
+    bool doomsday = false;
+    if (error_lr > max_error) {
+      doomsday = true;
     }
 
-    if (error_r > threshold) {
-      speed_r = -tgt_speed;
-    } else if (error_r < -threshold) {
-      speed_r = tgt_speed;
+    if (CAN.available()) {
+      if (doomsday) {
+        can::Error e = {.error_code = can::ErrorCode::ActuatorOutOfAlignment}
+        uint8_t e_buff[8];
+        can::to_buffer(e_buff, can::serialize(e));
+        CanMsg const msg(CanStandardId(can::FrameID::ErrorCode),
+                         sizeof(e_buff), e_buff);
+      }
+
+      can::ActuatorArmPos cmd = {.left_pos = m_l, .right_pos = m_r};
+      uint8_t buffer[8];
+      can::to_buffer(buffer, can::serialize(cmd));
+
+      CanMsg const msg(CanStandardId(can::FrameID::ActuatorArmPos),
+                       sizeof(buffer), buffer);
+
+      if (int const rc = CAN.write(msg); rc < 0) {
+        Serial.print("CAN.write(...) failed with error code ");
+        Serial.println(rc);
+        for (;;) {
+        }
+      }
     } else {
-      speed_r = 0;
+      // TODO handle can failiure
+    }
+
+    if (pos == -1) {
+      speed_l = target_vel;
+      speed_r = target_vel;
+    } else {
+      float error_l = pos_l - target_pos;
+      float error_r = pos_r - target_pos;
+
+      if (error_l > threshold) {
+        speed_l = -max_speed;
+      } else if (error_l < -threshold) {
+        speed_l = max_speed;
+      } else {
+        speed_l = 0;
+      }
+
+      if (error_r > threshold) {
+        speed_r = -max_speed;
+      } else if (error_r < -threshold) {
+        speed_r = max_speed;
+      } else {
+        speed_r = 0;
+      }
     }
 
     int factor = 12 * error_lr;
@@ -111,12 +168,16 @@ void setup() {
     speed_l = constrain(speed_l, -255, 255);
     speed_r = constrain(speed_r, -255, 255);
 
-    speed_left.write_pwm_raw(abs(speed_l));
-    dir_left.write(speed_l < 0);
-    speed_right.write_pwm_raw(abs(speed_r));
-    dir_right.write(speed_r > 0);
+    if (doomsday) {
+      speed_left.write_pwm_raw(0);
+      speed_right.write_pwm_raw(0);
+    } else {
+      speed_left.write_pwm_raw(abs(speed_l));
+      dir_left.write(speed_l < 0);
+      speed_right.write_pwm_raw(abs(speed_r));
+      dir_right.write(speed_r > 0);
+    }
   }
 }
 
 void loop() {}
-
