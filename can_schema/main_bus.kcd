@@ -19,8 +19,8 @@
           </Value>
         </Signal>
       </Message>
-      <Message id="2" name="ActuatorCommands">
-        <Signal name="lifter_pos" offset="0" length="8">
+      <Message id="2" name="ActuatorPosCommands">
+        <Signal name="arm_pos" offset="0" length="8">
           <Value type="unsigned" unit="mm" slope="0.9803921568627451" intercept="0" min="0" max="250">
           </Value>
         </Signal>
@@ -29,7 +29,17 @@
           </Value>
         </Signal>
       </Message>
-      <Message id="3" name="Error">
+      <Message id="3" name="ActuatorVelCommands">
+        <Signal name="arm_vel" offset="0" length="8">
+          <Value type="unsigned" unit="mm/s" slope="0.0392156862745098" intercept="-5" min="-5" max="5">
+          </Value>
+        </Signal>
+        <Signal name="bucket_vel" offset="8" length="8">
+          <Value type="unsigned" unit="mm/s" slope="0.0392156862745098" intercept="-5" min="-5" max="5">
+          </Value>
+        </Signal>
+      </Message>
+      <Message id="4" name="Error">
         <Signal name="error_code" offset="0" length="0">
           <LabelSet>
             <Label name="ActuatorOutOfRange" value="0">

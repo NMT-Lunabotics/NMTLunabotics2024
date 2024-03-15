@@ -26,8 +26,9 @@ inline uint64_t from_buffer(const uint8_t *buffer) {
 enum class FrameID {
   EStop = 0,
   MotorCommands = 1,
-  ActuatorCommands = 2,
-  Error = 3,
+  ActuatorPosCommands = 2,
+  ActuatorVelCommands = 3,
+  Error = 4,
 };
 
 inline bool bool_deserialize(uint64_t buffer) { return buffer; }
@@ -125,29 +126,55 @@ inline std::ostream &operator<<(std::ostream &os, const MotorCommands &self) {
             << "}";
 }
 
-struct ActuatorCommands {
-  double lifter_pos;
+struct ActuatorPosCommands {
+  double arm_pos;
   double bucket_pos;
 };
 
-inline ActuatorCommands ActuatorCommands_deserialize(uint64_t buffer) {
-  ActuatorCommands self;
-  self.lifter_pos = (double)read(buffer, 8) * 0.9803921568627451 + 0;
+inline ActuatorPosCommands ActuatorPosCommands_deserialize(uint64_t buffer) {
+  ActuatorPosCommands self;
+  self.arm_pos = (double)read(buffer, 8) * 0.9803921568627451 + 0;
   self.bucket_pos = (double)read(buffer, 8) * 1.1764705882352942 + 0;
   return self;
 }
 
-inline uint64_t serialize(ActuatorCommands data) {
+inline uint64_t serialize(ActuatorPosCommands data) {
   uint64_t ser = 0;
   write(ser, 8, (data.bucket_pos - 0) / 1.1764705882352942);
-  write(ser, 8, (data.lifter_pos - 0) / 0.9803921568627451);
+  write(ser, 8, (data.arm_pos - 0) / 0.9803921568627451);
   return ser;
 }
 
-inline std::ostream &operator<<(std::ostream &os, const ActuatorCommands &self) {
+inline std::ostream &operator<<(std::ostream &os, const ActuatorPosCommands &self) {
   return os << "{ "
-            << "lifter_pos = " << self.lifter_pos << ", "
+            << "arm_pos = " << self.arm_pos << ", "
             << "bucket_pos = " << self.bucket_pos << ", "
+            << "}";
+}
+
+struct ActuatorVelCommands {
+  double arm_vel;
+  double bucket_vel;
+};
+
+inline ActuatorVelCommands ActuatorVelCommands_deserialize(uint64_t buffer) {
+  ActuatorVelCommands self;
+  self.arm_vel = (double)read(buffer, 8) * 0.0392156862745098 + -5;
+  self.bucket_vel = (double)read(buffer, 8) * 0.0392156862745098 + -5;
+  return self;
+}
+
+inline uint64_t serialize(ActuatorVelCommands data) {
+  uint64_t ser = 0;
+  write(ser, 8, (data.bucket_vel - -5) / 0.0392156862745098);
+  write(ser, 8, (data.arm_vel - -5) / 0.0392156862745098);
+  return ser;
+}
+
+inline std::ostream &operator<<(std::ostream &os, const ActuatorVelCommands &self) {
+  return os << "{ "
+            << "arm_vel = " << self.arm_vel << ", "
+            << "bucket_vel = " << self.bucket_vel << ", "
             << "}";
 }
 
