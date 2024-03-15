@@ -26,6 +26,8 @@ inline uint64_t from_buffer(const uint8_t *buffer) {
 enum class FrameID {
   EStop = 0,
   MotorCommands = 1,
+  ActuatorCommands = 2,
+  Error = 3,
 };
 
 inline bool bool_deserialize(uint64_t buffer) { return buffer; }
@@ -52,6 +54,27 @@ inline std::ostream &operator<<(std::ostream &os, const SingleMotorCommand &self
   return os << "{ "
             << "speed = " << self.speed << ", "
             << "}";
+}
+
+enum class ErrorCode {
+  ActuatorOutOfRange = 0,
+};
+
+inline ErrorCode ErrorCode_deserialize(uint64_t buffer) {
+  return (ErrorCode)buffer;
+}
+
+inline uint64_t serialize(ErrorCode data) {
+  return (uint64_t)data;
+}
+
+inline std::ostream &operator<<(std::ostream &os, const ErrorCode &self) {
+  switch (self) {
+  case ErrorCode::ActuatorOutOfRange:
+    os << "ErrorCode::ActuatorOutOfRange";
+    break;
+  }
+  return os;
 }
 
 struct EStop {
@@ -99,6 +122,58 @@ inline std::ostream &operator<<(std::ostream &os, const MotorCommands &self) {
   return os << "{ "
             << "left = " << self.left << ", "
             << "right = " << self.right << ", "
+            << "}";
+}
+
+struct ActuatorCommands {
+  double left_pos;
+  double right_pos;
+  double bucket_pos;
+};
+
+inline ActuatorCommands ActuatorCommands_deserialize(uint64_t buffer) {
+  ActuatorCommands self;
+  self.left_pos = (double)read(buffer, 8) * 0.9803921568627451 + 0;
+  self.right_pos = (double)read(buffer, 8) * 0.9803921568627451 + 0;
+  self.bucket_pos = (double)read(buffer, 8) * 1.1764705882352942 + 0;
+  return self;
+}
+
+inline uint64_t serialize(ActuatorCommands data) {
+  uint64_t ser = 0;
+  write(ser, 8, (data.bucket_pos - 0) / 1.1764705882352942);
+  write(ser, 8, (data.right_pos - 0) / 0.9803921568627451);
+  write(ser, 8, (data.left_pos - 0) / 0.9803921568627451);
+  return ser;
+}
+
+inline std::ostream &operator<<(std::ostream &os, const ActuatorCommands &self) {
+  return os << "{ "
+            << "left_pos = " << self.left_pos << ", "
+            << "right_pos = " << self.right_pos << ", "
+            << "bucket_pos = " << self.bucket_pos << ", "
+            << "}";
+}
+
+struct Error {
+  ErrorCode error_code;
+};
+
+inline Error Error_deserialize(uint64_t buffer) {
+  Error self;
+  self.error_code = ErrorCode_deserialize(read(buffer, 0));
+  return self;
+}
+
+inline uint64_t serialize(Error data) {
+  uint64_t ser = 0;
+  write(ser, 0, serialize(data.error_code));
+  return ser;
+}
+
+inline std::ostream &operator<<(std::ostream &os, const Error &self) {
+  return os << "{ "
+            << "error_code = " << self.error_code << ", "
             << "}";
 }
 } // namespace can_BOWIE

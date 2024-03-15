@@ -8,6 +8,11 @@ structs:
         unit: rpm
         size: 16
 
+  ErrorCode:
+    enum:
+      # list all possible errors here
+      - ActuatorOutOfRange
+
 messages:
   # Please only add new messages at the end, and avoid deleting
   # messages! This avoids the CAN ID's of every message from shifting
@@ -15,6 +20,24 @@ messages:
   # update this file.
   EStop:
     - stop: bool
+
   MotorCommands:
     - left: SingleMotorCommand
     - right: SingleMotorCommand
+
+  ActuatorCommands:
+    - left_pos:
+        range: [0, 250]
+        unit: mm
+        size: 8
+    - right_pos:
+        range: [0, 250]
+        unit: mm
+        size: 8
+    - bucket_pos:
+        range: [0, 300]
+        unit: mm
+        size: 8
+
+  Error:
+    - error_code: ErrorCode
