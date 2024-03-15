@@ -18,9 +18,12 @@ int potMin = 34;      // Calibrated, pot val at min stroke
 int potMax = 945;     // Calibrated, pot val at max stroke
 int update_rate = 50; // hz
 void handleMessage(can_message_t msg){
-  can::FrameID::ActuatorCommands:{
-  can::ActuatorCommands actuatorCmd = can::ActuatorCommands_deserialize(can::from_buffer(msg.data));
-  int target=actuatorCmd.left_pos;
+  switch(msg.frame_id){
+    case can::FrameID::ActuatorCommands:{
+    can::ActuatorCommands actuatorCmd = can::ActuatorCommands_deserialize(can::from_buffer(msg.data));
+    int target=actuatorCmd.left_pos;
+    break;
+    }
   //actuatorCmd.right_pos
   }
 }
