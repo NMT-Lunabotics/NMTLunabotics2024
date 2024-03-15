@@ -59,19 +59,19 @@ void setup() {
     if (CAN.available()) {
       CanMsg const msg = CAN.read();
       switch (msg.id) {
-        case (long unsigned int)can::FrameID::ActuatorPosCommands: {
-          can::ActuatorPosCommands actuatorCmd =
-              can::ActuatorPosCommands_deserialize(can::from_buffer(msg.data));
-          target_pos = actuatorCmd.arm_pos;
-          break;
-        }
-        case (long unsigned int)can::FrameID::ActuatorVelCommands: {
-          can::ActuatorVelCommands actuatorCmd =
-              can::ActuatorVelCommands_deserialize(can::from_buffer(msg.data));
-          target_vel = actuatorCmd.arm_vel;
-          target_pos = -1;
-          break;
-        }
+      case (long unsigned int)can::FrameID::ActuatorPosCommands: {
+        can::ActuatorPosCommands actuatorCmd =
+            can::ActuatorPosCommands_deserialize(can::from_buffer(msg.data));
+        target_pos = actuatorCmd.arm_pos;
+        break;
+      }
+      case (long unsigned int)can::FrameID::ActuatorVelCommands: {
+        can::ActuatorVelCommands actuatorCmd =
+            can::ActuatorVelCommands_deserialize(can::from_buffer(msg.data));
+        target_vel = actuatorCmd.arm_vel;
+        target_pos = -1;
+        break;
+      }
       }
     } else {
       Serial.println("CAN Not available");
@@ -98,7 +98,7 @@ void setup() {
 
     float error_lr = pos_l - pos_r;
     float error_l = 0;
-    float error_r = 0; 
+    float error_r = 0;
 
     bool doomsday = false;
     if (error_lr > max_error) {
@@ -107,21 +107,20 @@ void setup() {
 
     if (CAN.available()) {
       if (doomsday) {
-        can::Error e = {
-            .error_code =
-                can::ErrorCode::ActuatorOutOfAlignment};
+        can::Error e = {.error_code = can::ErrorCode::ActuatorOutOfAlignment};
         uint8_t e_buff[8];
         can::to_buffer(e_buff, can::serialize(e));
-        CanMsg const msg(CanStandardId((long unsigned int)can::FrameID::Error), sizeof(e_buff),
-                         e_buff);
+        CanMsg const msg(CanStandardId((long unsigned int)can::FrameID::Error),
+                         sizeof(e_buff), e_buff);
       }
 
       can::ActuatorArmPos cmd = {.left_pos = m_l, .right_pos = m_r};
       uint8_t buffer[8];
       can::to_buffer(buffer, can::serialize(cmd));
 
-      CanMsg const msg(CanStandardId((long unsigned int)can::FrameID::ActuatorArmPos),
-                       sizeof(buffer), buffer);
+      CanMsg const msg(
+          CanStandardId((long unsigned int)can::FrameID::ActuatorArmPos),
+          sizeof(buffer), buffer);
 
       if (int const rc = CAN.write(msg); rc < 0) {
         Serial.print("CAN.write(...) failed with error code ");
