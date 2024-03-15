@@ -15,37 +15,50 @@ int target_vel = 0; // in mm/s
 int max_speed = 200; // 5 mm/s
 float threshold = 1; // in mm
 
-int stroke = 250;     // stroke length, in mm:
-int potMin = 34;      // Calibrated, pot val at min stroke
-int potMax = 945;     // Calibrated, pot val at max stroke
-int update_rate = 50; // hz
+int stroke = 250;      // stroke length, in mm:
+int potMin = 34;       // Calibrated, pot val at min stroke
+int potMax = 945;      // Calibrated, pot val at max stroke
+#define UPDATE_RATE 50 // hz
 
 int max_error = 5;
 
+#define MEDIAN_SIZE 15
+
+class Actuator {
+  OutPin speed;
+  OutPin dir;
+  SmoothedInput<MEDIAN_SIZE> pot;
+
+  bool invert_direction;
+
+public:
+  Actuator(OutPin speed, OutPin dir, InPin pot, bool invert_direction)
+      : speed(speed), dir(dir), pot(pot) {}
+
+  float pos_mm() {
+    return map(pot.read_analog_raw(), potMin, potMax, 0, stroke);
+  }
+
+  void set_speed(int signed_speed) {
+    if (invert_direction)
+      dir.write(signed_speed > 0);
+    else
+      dir.write(signed_speed < 0);
+    speed.write_pwm_raw(abs(signed_speed));
+  }
+};
+
 void setup() {
   Serial.begin(9600);
-  while (!Serial) {
-  }
-  if (!CAN.begin(CanBitRate::BR_250k)) {
+  while (!Serial)
+    ;
+  if (!CAN.begin(CanBitRate::BR_250k))
     panic("Can is not available");
-  }
 
-  OutPin speed_left(PIN_SPEED_LEFT);
-  OutPin speed_right(PIN_SPEED_RIGHT);
-  OutPin dir_left(PIN_DIRECTION_LEFT);
-  OutPin dir_right(PIN_DIRECTION_RIGHT);
-  InPin pot_left(PIN_POTENTIOMETER_LEFT);
-  InPin pot_right(PIN_POTENTIOMETER_RIGHT);
-
-  int vl = pot_left.read_analog_raw();
-  int vr = pot_right.read_analog_raw();
-  int median_size = 15;
-  Median median_l(median_size);
-  Median median_r(median_size);
-  for (int i = 0; i < median_size; i++) {
-    median_l.update(vl);
-    median_r.update(vr);
-  }
+  Actuator left(PIN_SPEED_LEFT, PIN_DIRECTION_LEFT, PIN_POTENTIOMETER_LEFT,
+                false);
+  Actuator right(PIN_SPEED_RIGHT, PIN_DIRECTION_RIGHT, PIN_POTENTIOMETER_RIGHT,
+                 true);
 
   unsigned long current_time = millis();
   unsigned long last_time = current_time;
@@ -57,27 +70,28 @@ void setup() {
   while (true) {
     if (CAN.available()) {
       CanMsg const msg = CAN.read();
-      switch (msg.id) {
-      case (long unsigned int)can::FrameID::EStop: {
+      switch ((can::FrameID)msg.id) {
+      case can::FrameID::EStop: {
         estop = true;
         break;
       }
-      case (long unsigned int)can::FrameID::ActuatorPosCommands: {
+      case can::FrameID::ActuatorPosCommands: {
         can::ActuatorPosCommands actuatorCmd =
             can::ActuatorPosCommands_deserialize(can::from_buffer(msg.data));
         target_pos = actuatorCmd.arm_pos;
         break;
       }
-      case (long unsigned int)can::FrameID::ActuatorVelCommands: {
+      case can::FrameID::ActuatorVelCommands: {
         can::ActuatorVelCommands actuatorCmd =
             can::ActuatorVelCommands_deserialize(can::from_buffer(msg.data));
         target_vel = actuatorCmd.arm_vel;
         target_pos = -1;
         break;
       }
+      default: {
+        break;
       }
-    } else {
-      panic("Can is not available");
+      }
     }
 
     if (estop) {
@@ -86,21 +100,15 @@ void setup() {
 
     current_time = millis();
 
-    int dt = 1000 / update_rate;
+    int dt = 1000 / UPDATE_RATE;
 
     if (current_time - last_time < dt) {
       continue;
     }
     last_time = current_time;
 
-    int val_l = pot_left.read_analog_raw();
-    int val_r = pot_right.read_analog_raw();
-
-    int m_l = median_l.update(val_l);
-    int m_r = median_r.update(val_r);
-
-    float pos_l = map(m_l, potMin, potMax, 0, stroke);
-    float pos_r = map(m_r, potMin, potMax, 0, stroke);
+    float pos_l = left.pos_mm();
+    float pos_r = right.pos_mm();
 
     float error_lr = pos_l - pos_r;
     float error_l = 0;
@@ -112,29 +120,27 @@ void setup() {
       Serial.println("Doomsday");
     }
 
-    if (CAN.available()) {
-      if (doomsday) {
-        can::Error e = {.error_code = can::ErrorCode::ActuatorOutOfAlignment};
-        uint8_t e_buff[8];
-        can::to_buffer(e_buff, can::serialize(e));
-        CanMsg const msg(CanStandardId((long unsigned int)can::FrameID::Error),
-                         sizeof(e_buff), e_buff);
-      }
-
-      can::ActuatorArmPos cmd = {.left_pos = m_l, .right_pos = m_r};
-      uint8_t buffer[8];
-      can::to_buffer(buffer, can::serialize(cmd));
-
-      CanMsg const msg(
-          CanStandardId((long unsigned int)can::FrameID::ActuatorArmPos),
-          sizeof(buffer), buffer);
-
+    if (doomsday) {
+      can::Error e = {.error_code = can::ErrorCode::ActuatorOutOfAlignment};
+      uint8_t e_buff[8];
+      can::to_buffer(e_buff, can::serialize(e));
+      CanMsg const msg((long unsigned int)can::FrameID::Error, sizeof(e_buff),
+                       e_buff);
       if (int const rc = CAN.write(msg); rc < 0) {
         String error = "CAN.write(...) failed with error code " + String(rc);
         panic(error.c_str());
       }
-    } else {
-      panic("Can is not available");
+    }
+
+    can::ActuatorArmPos cmd = {.left_pos = pos_l, .right_pos = pos_r};
+    uint8_t buffer[8];
+    can::to_buffer(buffer, can::serialize(cmd));
+
+    CanMsg const msg((int)can::FrameID::ActuatorArmPos, sizeof(buffer), buffer);
+
+    if (int const rc = CAN.write(msg); rc < 0) {
+      String error = "CAN.write(...) failed with error code " + String(rc);
+      panic(error.c_str());
     }
 
     if (target_pos == -1) {
@@ -180,13 +186,11 @@ void setup() {
     speed_r = constrain(speed_r, -255, 255);
 
     if (doomsday || estop) {
-      speed_left.write_pwm_raw(0);
-      speed_right.write_pwm_raw(0);
+      left.set_speed(0);
+      right.set_speed(0);
     } else {
-      speed_left.write_pwm_raw(abs(speed_l));
-      dir_left.write(speed_l < 0);
-      speed_right.write_pwm_raw(abs(speed_r));
-      dir_right.write(speed_r > 0);
+      left.set_speed(speed_l);
+      right.set_speed(speed_r);
     }
   }
 }

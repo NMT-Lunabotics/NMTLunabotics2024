@@ -6,7 +6,7 @@
 
 #define sign(i) (((i) > 0) - ((i) < 0))
 
-#define length(array) (sizeof(array) / sizeof((array)[0]))
+#define arr_length(array) (sizeof(array) / sizeof((array)[0]))
 
 // Pinout reference:
 // D4  RX
@@ -157,14 +157,14 @@ template <int history_len> class SmoothedInput {
 public:
   SmoothedInput(InPin raw) : raw(raw) {
     int v = raw.read_analog_raw();
-    for (int i = 0; i < length(history); i++)
+    for (int i = 0; i < arr_length(history); i++)
       history[i] = v;
   }
 
   int read_analog_raw() {
     history[head] = raw.read_analog_raw();
-    head = (head + 1) % length(history);
-    return median(history, length(history));
+    head = (head + 1) % arr_length(history);
+    return median(history, arr_length(history));
   }
 };
 
