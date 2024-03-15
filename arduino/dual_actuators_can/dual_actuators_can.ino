@@ -112,7 +112,7 @@ void setup() {
                 can::ErrorCode::ActuatorOutOfAlignment};
         uint8_t e_buff[8];
         can::to_buffer(e_buff, can::serialize(e));
-        CanMsg const msg(CanStandardId(can::FrameID::Error), sizeof(e_buff),
+        CanMsg const msg(CanStandardId((long unsigned int)can::FrameID::Error), sizeof(e_buff),
                          e_buff);
       }
 
@@ -120,7 +120,7 @@ void setup() {
       uint8_t buffer[8];
       can::to_buffer(buffer, can::serialize(cmd));
 
-      CanMsg const msg(CanStandardId(can::FrameID::ActuatorArmPos),
+      CanMsg const msg(CanStandardId((long unsigned int)can::FrameID::ActuatorArmPos),
                        sizeof(buffer), buffer);
 
       if (int const rc = CAN.write(msg); rc < 0) {
