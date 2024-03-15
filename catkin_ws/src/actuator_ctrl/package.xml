@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>actautor_ctrl</name>
+  <name>actuator_ctrl</name>
   <version>0.0.1</version>
-  <description>The actautor_ctrl package</description>
+  <description>The actuator_ctrl package</description>
 
   <maintainer email="niallcdevlin@gmail.com">Niall Devlin</maintainer>
   <license>GPLv3</license>
