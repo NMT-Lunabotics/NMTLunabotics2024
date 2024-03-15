@@ -45,5 +45,21 @@ messages:
         unit: mm/s
         size: 8
 
+  ActuatorArmPos:
+    - left_pos:
+        range: [0, 250]
+        unit: mm/s
+        size: 8
+    - right_pos:
+        range: [0, 250]
+        unit: mm/s
+        size: 8
+      
+  ActuatorBucketPos:
+    - pos:
+        range: [0, 300]
+        unit: mm/s
+        size: 8
+
   Error:
     - error_code: ErrorCode
