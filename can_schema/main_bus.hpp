@@ -28,7 +28,9 @@ enum class FrameID {
   MotorCommands = 1,
   ActuatorPosCommands = 2,
   ActuatorVelCommands = 3,
-  Error = 4,
+  ActuatorArmPos = 4,
+  ActuatorBucketPos = 5,
+  Error = 6,
 };
 
 inline bool bool_deserialize(uint64_t buffer) { return buffer; }
@@ -59,6 +61,7 @@ inline std::ostream &operator<<(std::ostream &os, const SingleMotorCommand &self
 
 enum class ErrorCode {
   ActuatorOutOfRange = 0,
+  ActuatorOutOfAlignment = 1,
 };
 
 inline ErrorCode ErrorCode_deserialize(uint64_t buffer) {
@@ -73,6 +76,9 @@ inline std::ostream &operator<<(std::ostream &os, const ErrorCode &self) {
   switch (self) {
   case ErrorCode::ActuatorOutOfRange:
     os << "ErrorCode::ActuatorOutOfRange";
+    break;
+  case ErrorCode::ActuatorOutOfAlignment:
+    os << "ErrorCode::ActuatorOutOfAlignment";
     break;
   }
   return os;
@@ -178,19 +184,67 @@ inline std::ostream &operator<<(std::ostream &os, const ActuatorVelCommands &sel
             << "}";
 }
 
+struct ActuatorArmPos {
+  double left_pos;
+  double right_pos;
+};
+
+inline ActuatorArmPos ActuatorArmPos_deserialize(uint64_t buffer) {
+  ActuatorArmPos self;
+  self.left_pos = (double)read(buffer, 8) * 0.9803921568627451 + 0;
+  self.right_pos = (double)read(buffer, 8) * 0.9803921568627451 + 0;
+  return self;
+}
+
+inline uint64_t serialize(ActuatorArmPos data) {
+  uint64_t ser = 0;
+  write(ser, 8, (data.right_pos - 0) / 0.9803921568627451);
+  write(ser, 8, (data.left_pos - 0) / 0.9803921568627451);
+  return ser;
+}
+
+inline std::ostream &operator<<(std::ostream &os, const ActuatorArmPos &self) {
+  return os << "{ "
+            << "left_pos = " << self.left_pos << ", "
+            << "right_pos = " << self.right_pos << ", "
+            << "}";
+}
+
+struct ActuatorBucketPos {
+  double pos;
+};
+
+inline ActuatorBucketPos ActuatorBucketPos_deserialize(uint64_t buffer) {
+  ActuatorBucketPos self;
+  self.pos = (double)read(buffer, 8) * 1.1764705882352942 + 0;
+  return self;
+}
+
+inline uint64_t serialize(ActuatorBucketPos data) {
+  uint64_t ser = 0;
+  write(ser, 8, (data.pos - 0) / 1.1764705882352942);
+  return ser;
+}
+
+inline std::ostream &operator<<(std::ostream &os, const ActuatorBucketPos &self) {
+  return os << "{ "
+            << "pos = " << self.pos << ", "
+            << "}";
+}
+
 struct Error {
   ErrorCode error_code;
 };
 
 inline Error Error_deserialize(uint64_t buffer) {
   Error self;
-  self.error_code = ErrorCode_deserialize(read(buffer, 0));
+  self.error_code = ErrorCode_deserialize(read(buffer, 1));
   return self;
 }
 
 inline uint64_t serialize(Error data) {
   uint64_t ser = 0;
-  write(ser, 0, serialize(data.error_code));
+  write(ser, 1, serialize(data.error_code));
   return ser;
 }
 

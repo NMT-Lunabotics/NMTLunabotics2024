@@ -15,10 +15,6 @@ structs:
       - ActuatorOutOfAlignment
 
 messages:
-  # Please only add new messages at the end, and avoid deleting
-  # messages! This avoids the CAN ID's of every message from shifting
-  # over, so we don't have to re-flash every Arduino every time we
-  # update this file.
   EStop:
     - stop: bool
 
@@ -64,3 +60,8 @@ messages:
 
   Error:
     - error_code: ErrorCode
+
+  # Please only add new messages at the end, and avoid deleting
+  # messages! This avoids the CAN ID's of every message from shifting
+  # over, so we don't have to re-flash every Arduino every time we
+  # update this file.
