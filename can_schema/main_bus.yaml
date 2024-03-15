@@ -25,18 +25,24 @@ messages:
     - left: SingleMotorCommand
     - right: SingleMotorCommand
 
-  ActuatorCommands:
-    - left_pos:
-        range: [0, 250]
-        unit: mm
-        size: 8
-    - right_pos:
+  ActuatorPosCommands:
+    - arm_pos:
         range: [0, 250]
         unit: mm
         size: 8
     - bucket_pos:
         range: [0, 300]
         unit: mm
+        size: 8
+
+  ActuatorVelCommands:
+    - arm_vel:
+        range: [-5, 5]
+        unit: mm/s
+        size: 8
+    - bucket_vel:
+        range: [-5, 5]
+        unit: mm/s
         size: 8
 
   Error:
