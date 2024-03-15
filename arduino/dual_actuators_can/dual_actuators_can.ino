@@ -53,10 +53,15 @@ void setup() {
   int speed_l = 0;
   int speed_r = 0;
 
+  bool estop = false;
   while (true) {
     if (CAN.available()) {
       CanMsg const msg = CAN.read();
       switch (msg.id) {
+      case (long unsigned int)can::FrameID::EStop: {
+        estop = true;
+        break;
+      }
       case (long unsigned int)can::FrameID::ActuatorPosCommands: {
         can::ActuatorPosCommands actuatorCmd =
             can::ActuatorPosCommands_deserialize(can::from_buffer(msg.data));
@@ -73,6 +78,10 @@ void setup() {
       }
     } else {
       panic("Can is not available");
+    }
+
+    if (estop) {
+      Serial.println("Estopped");
     }
 
     current_time = millis();
@@ -170,7 +179,7 @@ void setup() {
     speed_l = constrain(speed_l, -255, 255);
     speed_r = constrain(speed_r, -255, 255);
 
-    if (doomsday) {
+    if (doomsday || estop) {
       speed_left.write_pwm_raw(0);
       speed_right.write_pwm_raw(0);
     } else {
