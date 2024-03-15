@@ -12,8 +12,8 @@ int arm_axis, bucket_axis;
 
 void callback(const sensor_msgs::Joy::ConstPtr& msg) {
     can::ActuatorVelCommands cmd = {
-        .arm_vel = msg.axis[arm_axis] * 5,
-        .bucket_vel = msg.axis[bucket_axis] * 5,
+        .arm_vel = msg->axes[arm_axis] * 5,
+        .bucket_vel = msg->axes[bucket_axis] * 5,
     };
     uint8_t buffer[8];
     can::to_buffer(buffer, can::serialize(cmd));
