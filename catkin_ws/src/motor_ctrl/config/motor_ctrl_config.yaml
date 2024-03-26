@@ -1,6 +1,6 @@
-wheel_diameter: 0.025 # In meters
-wheel_base: 0.159     # In meters - distance between left and right wheel (measure from center)
-max_rpm: 512
+wheel_diameter: 0.305 # In meters
+wheel_base: 0.610     # In meters - distance between left and right wheel (measure from center)
+max_rpm: 30
 topics:
   - "cmd_vel"
   - "joy_teleop/cmd_vel"
