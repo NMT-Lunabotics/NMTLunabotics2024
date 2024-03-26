@@ -21,7 +21,7 @@ int potMax = 945;      // Calibrated, pot val at max stroke
 #define UPDATE_RATE 50 // hz
 
 int max_error = 50;
-int error_factor = 50;
+int error_factor = 12;
 
 #define MEDIAN_SIZE 15
 
@@ -36,9 +36,7 @@ public:
   Actuator(OutPin speed, OutPin dir, InPin pot, bool invert_direction)
       : speed(speed), dir(dir), pot(pot) {}
 
-  float pos_mm() {
-    return map(pot.read_analog_raw(), potMin, potMax, 0, stroke);
-  }
+  int pos_mm() { return map(pot.read_analog_raw(), potMin, potMax, 0, stroke); }
 
   void set_speed(int signed_speed) {
     if (invert_direction)
@@ -53,13 +51,13 @@ void setup() {
   Serial.begin(9600);
   while (!Serial)
     ;
-  if (!CAN.begin(CanBitRate::BR_250k))
+  if (!CAN.begin(CanBitRate::BR_500k))
     panic("Can is not available");
 
   Actuator left(PIN_SPEED_LEFT, PIN_DIRECTION_LEFT, PIN_POTENTIOMETER_LEFT,
                 false);
   Actuator right(PIN_SPEED_RIGHT, PIN_DIRECTION_RIGHT, PIN_POTENTIOMETER_RIGHT,
-                 true);
+                 false);
 
   unsigned long current_time = millis();
   unsigned long last_time = current_time;
@@ -87,6 +85,9 @@ void setup() {
             can::ActuatorVelCommands_deserialize(can::from_buffer(msg.data));
         target_vel = actuatorCmd.arm_vel;
         target_pos = -1;
+        // Serial.print("Got vel command: ");
+        // Serial.print(actuatorCmd.arm_vel);
+        // Serial.println();
         break;
       }
       default: {
@@ -108,21 +109,24 @@ void setup() {
     }
     last_time = current_time;
 
-    float pos_l = left.pos_mm();
-    float pos_r = right.pos_mm();
+    int pos_l = left.pos_mm();
+    int pos_r = right.pos_mm();
 
-    Serial.print(pos_l);
-    Serial.print(" ");
-    Serial.print(pos_r);
-    Serial.println();
+    // Serial.print(target_pos);
+    // Serial.print(" :: ");
 
-    float error_lr = pos_l - pos_r;
-    float error_l = 0;
-    float error_r = 0;
+    // Serial.print(pos_l);
+    // Serial.print(" ");
+    // Serial.print(pos_r);
+    // Serial.println();
+
+    int error_lr = pos_l - pos_r;
+    int error_l = 0;
+    int error_r = 0;
 
     bool doomsday = false;
     if (error_lr > max_error) {
-      doomsday = true;
+      // doomsday = true;
       Serial.println("Doomsday");
     }
 
@@ -130,7 +134,8 @@ void setup() {
     //   can::Error e = {.error_code = can::ErrorCode::ActuatorOutOfAlignment};
     //   uint8_t e_buff[8];
     //   can::to_buffer(e_buff, can::serialize(e));
-    //   CanMsg const msg((long unsigned int)can::FrameID::Error, sizeof(e_buff),
+    //   CanMsg const msg((long unsigned int)can::FrameID::Error,
+    //   sizeof(e_buff),
     //                    e_buff);
     //   if (int const rc = CAN.write(msg); rc < 0) {
     //     String error = "CAN.write(...) failed with error code " + String(rc);
@@ -144,13 +149,13 @@ void setup() {
 
     CanMsg const msg((int)can::FrameID::ActuatorArmPos, sizeof(buffer), buffer);
 
-    if (int const rc = CAN.write(msg); rc < 0) {
-      Serial.println("CAN.write(...) failed with error code " + String(rc));
-    }
+    // if (int const rc = CAN.write(msg); rc < 0) {
+    //   Serial.println("CAN.write(...) failed with error code " + String(rc));
+    // }
 
     if (target_pos == -1) {
-      speed_l = target_vel;
-      speed_r = target_vel;
+      speed_l = target_vel * 51;
+      speed_r = target_vel * 51;
     } else {
       error_l = pos_l - target_pos;
       error_r = pos_r - target_pos;
@@ -190,13 +195,19 @@ void setup() {
     speed_l = constrain(speed_l, -255, 255);
     speed_r = constrain(speed_r, -255, 255);
 
-    if (doomsday || estop) {
-      left.set_speed(0);
-      right.set_speed(0);
-    } else {
-      left.set_speed(speed_l);
-      right.set_speed(speed_r);
-    }
+    Serial.print(speed_l); Serial.print('\t');
+    Serial.print(speed_r); Serial.print('\t');
+    Serial.print(pos_l); Serial.print('\t');
+    Serial.print(pos_r); Serial.print('\t');
+    Serial.print(factor); Serial.print('\n');
+
+    // if (doomsday || estop) {
+    //   left.set_speed(0);
+    //   right.set_speed(0);
+    // } else {
+      left.set_speed(-speed_l);
+      right.set_speed(-speed_r);
+    // }
   }
 }
 
