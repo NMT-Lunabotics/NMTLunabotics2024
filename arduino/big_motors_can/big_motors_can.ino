@@ -12,10 +12,11 @@
 #define RIHB 3
 
 // Min and max speeds
-int minPWM = 0;
-int maxPWM = 255;
-float minSpd= 0;
-float maxSpd = 0.25;
+//TODO tune values
+float minPWM = 0;
+float maxPWM = 255;
+float minSpd = 0;
+float maxSpd = 30;
 // float multiplier = 0.5; // Convert rpm to pwm
 
 // Dont move if message not received in timeout millisecconds
@@ -92,12 +93,15 @@ void loop() {
 
 void controlMotor(int ihbPin, int dirPin, int pwmPin, float speed) {
   digitalWrite(ihbPin, HIGH);
-  int pwm = abs(map(speed, -maxSpd, maxSpd, -minPWM, minPWM));
+  int pwm = map(abs(speed), 0, maxSpd, 0, maxPWM);
   bool dir = speed > 0;
-  // Serial.print(speed);
-  // Serial.print(" : ");
-  // Serial.print(pwm);
-  // Serial.println();
+  if (dirPin == LDIR) {
+    dir = !dir;
+  }
+  Serial.print(speed);
+  Serial.print(" : ");
+  Serial.print(pwm);
+  Serial.println();
   if (pwm > maxPWM) {
     pwm = maxPWM;
   }
