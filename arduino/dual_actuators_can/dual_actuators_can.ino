@@ -2,10 +2,10 @@
 #include "main_bus.hpp"
 #include <Arduino_CAN.h>
 
-#define PIN_SPEED_LEFT 6
-#define PIN_SPEED_RIGHT 9
-#define PIN_DIRECTION_LEFT 7
-#define PIN_DIRECTION_RIGHT 10
+#define PIN_SPEED_LEFT 3
+#define PIN_SPEED_RIGHT 5
+#define PIN_DIRECTION_LEFT 4
+#define PIN_DIRECTION_RIGHT 6
 #define PIN_POTENTIOMETER_LEFT A0
 #define PIN_POTENTIOMETER_RIGHT A1
 
@@ -20,7 +20,7 @@ int potMin = 34;       // Calibrated, pot val at min stroke
 int potMax = 945;      // Calibrated, pot val at max stroke
 #define UPDATE_RATE 50 // hz
 
-int max_error = 5;
+int max_error = 50;
 int error_factor = 50;
 
 #define MEDIAN_SIZE 15
@@ -111,6 +111,11 @@ void setup() {
     float pos_l = left.pos_mm();
     float pos_r = right.pos_mm();
 
+    Serial.print(pos_l);
+    Serial.print(" ");
+    Serial.print(pos_r);
+    Serial.println();
+
     float error_lr = pos_l - pos_r;
     float error_l = 0;
     float error_r = 0;
@@ -121,17 +126,17 @@ void setup() {
       Serial.println("Doomsday");
     }
 
-    if (doomsday) {
-      can::Error e = {.error_code = can::ErrorCode::ActuatorOutOfAlignment};
-      uint8_t e_buff[8];
-      can::to_buffer(e_buff, can::serialize(e));
-      CanMsg const msg((long unsigned int)can::FrameID::Error, sizeof(e_buff),
-                       e_buff);
-      if (int const rc = CAN.write(msg); rc < 0) {
-        String error = "CAN.write(...) failed with error code " + String(rc);
-        panic(error.c_str());
-      }
-    }
+    // if (doomsday) {
+    //   can::Error e = {.error_code = can::ErrorCode::ActuatorOutOfAlignment};
+    //   uint8_t e_buff[8];
+    //   can::to_buffer(e_buff, can::serialize(e));
+    //   CanMsg const msg((long unsigned int)can::FrameID::Error, sizeof(e_buff),
+    //                    e_buff);
+    //   if (int const rc = CAN.write(msg); rc < 0) {
+    //     String error = "CAN.write(...) failed with error code " + String(rc);
+    //     panic(error.c_str());
+    //   }
+    // }
 
     can::ActuatorArmPos cmd = {.left_pos = pos_l, .right_pos = pos_r};
     uint8_t buffer[8];
@@ -171,16 +176,16 @@ void setup() {
     speed_l -= factor;
     speed_r += factor;
 
-    Serial.print(error_l);
-    Serial.print(" : ");
-    Serial.print(speed_l);
-    Serial.print(", ");
-    Serial.print(error_r);
-    Serial.print(" : ");
-    Serial.print(speed_r);
-    Serial.print(", ");
-    Serial.print(error_lr);
-    Serial.println();
+    // Serial.print(error_l);
+    // Serial.print(" : ");
+    // Serial.print(speed_l);
+    // Serial.print(", ");
+    // Serial.print(error_r);
+    // Serial.print(" : ");
+    // Serial.print(speed_r);
+    // Serial.print(", ");
+    // Serial.print(error_lr);
+    // Serial.println();
 
     speed_l = constrain(speed_l, -255, 255);
     speed_r = constrain(speed_r, -255, 255);

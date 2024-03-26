@@ -1,14 +1,14 @@
 #include <Arduino.h>
  #include "helpers.hpp"
 
-#define PIN_SPEED_LEFT 6
-#define PIN_SPEED_RIGHT 9
-#define PIN_DIRECTION_LEFT 7
-#define PIN_DIRECTION_RIGHT 10
+#define PIN_SPEED_LEFT 3
+#define PIN_SPEED_RIGHT 5
+#define PIN_DIRECTION_LEFT 4
+#define PIN_DIRECTION_RIGHT 6
 #define PIN_POTENTIOMETER_LEFT A0
 #define PIN_POTENTIOMETER_RIGHT A1
 
-int target = 200; // in mm
+int target = 50; // in mm
 
 int tgt_speed = 200; // speed, in pwm TODO change this to mm/s
 float threshold = 1; // in mm

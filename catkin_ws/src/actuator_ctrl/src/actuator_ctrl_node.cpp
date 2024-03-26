@@ -11,6 +11,8 @@ float actuator_max_vel;
 int arm_axis, bucket_axis;
 
 void callback(const sensor_msgs::Joy::ConstPtr& msg) {
+    std::cout << msg->axes[arm_axis] * 5 << " "
+              << msg->axes[bucket_axis] * 5 << "\n";
     can::ActuatorVelCommands cmd = {
         .arm_vel = msg->axes[arm_axis] * 5,
         .bucket_vel = msg->axes[bucket_axis] * 5,
