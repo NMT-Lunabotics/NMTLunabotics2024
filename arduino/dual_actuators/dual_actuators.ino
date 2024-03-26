@@ -1,12 +1,5 @@
+#include "helpers.hpp"
 #include <Arduino.h>
- #include "helpers.hpp"
-
-#define PIN_SPEED_LEFT 3
-#define PIN_SPEED_RIGHT 5
-#define PIN_DIRECTION_LEFT 4
-#define PIN_DIRECTION_RIGHT 6
-#define PIN_POTENTIOMETER_LEFT A0
-#define PIN_POTENTIOMETER_RIGHT A1
 
 int target = 50; // in mm
 
@@ -21,12 +14,12 @@ int update_rate = 50; // hz
 void setup() {
   Serial.begin(9600);
 
-  OutPin speed_left(PIN_SPEED_LEFT);
-  OutPin speed_right(PIN_SPEED_RIGHT);
-  OutPin dir_left(PIN_DIRECTION_LEFT);
-  OutPin dir_right(PIN_DIRECTION_RIGHT);
-  InPin pot_left(PIN_POTENTIOMETER_LEFT);
-  InPin pot_right(PIN_POTENTIOMETER_RIGHT);
+  OutPin speed_left(5);
+  OutPin speed_right(3);
+  OutPin dir_left(6);
+  OutPin dir_right(4);
+  InPin pot_left(A0);
+  InPin pot_right(A1);
 
   int vl = pot_left.read_analog_raw();
   int vr = pot_right.read_analog_raw();
@@ -87,24 +80,28 @@ void setup() {
     speed_l -= factor;
     speed_r += factor;
 
-    Serial.print(error_l);
-    Serial.print(" : ");
-    Serial.print(speed_l);
-    Serial.print(", ");
-    Serial.print(error_r);
-    Serial.print(" : ");
-    Serial.print(speed_r);
-    Serial.print(", ");
-    Serial.print(error_lr);
-    Serial.println();
+    // Serial.print(error_l);
+    // Serial.print(" : ");
+    // Serial.print(speed_l);
+    // Serial.print(", ");
+    // Serial.print(error_r);
+    // Serial.print(" : ");
+    // Serial.print(speed_r);
+    // Serial.print(", ");
+    // Serial.print(error_lr);
+    // Serial.println();
 
     speed_l = constrain(speed_l, -255, 255);
     speed_r = constrain(speed_r, -255, 255);
 
+    Serial.println();
+    Serial.println(speed_l);
+    Serial.println(speed_r);
+
     speed_left.write_pwm_raw(abs(speed_l));
-    dir_left.write(speed_l < 0);
+    dir_left.write(speed_l > 0);
     speed_right.write_pwm_raw(abs(speed_r));
-    dir_right.write(speed_r > 0);
+    dir_right.write(speed_r < 0);
   }
 }
 
