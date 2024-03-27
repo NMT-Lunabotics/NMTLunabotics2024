@@ -52,6 +52,12 @@
     workspace = "/home/lunabotics/goliath/catkin_ws";
   };
 
+  services.ros.launchServices.actuator-ctrl = {
+    packageName = "actuator_ctrl";
+    launchFile = "actuator.launch";
+    workspace = "/home/lunabotics/goliath/catkin_ws";
+  };
+
   services.ros.launchServices.test-map = {
     packageName = "mapping";
     launchFile = "test_map.launch";

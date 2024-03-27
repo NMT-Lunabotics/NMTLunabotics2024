@@ -20,7 +20,7 @@ int potMin = 34;       // Calibrated, pot val at min stroke
 int potMax = 945;      // Calibrated, pot val at max stroke
 #define UPDATE_RATE 50 // hz
 
-int max_error = 50;
+int max_error = 5;
 int error_factor = 12;
 
 #define MEDIAN_SIZE 15
@@ -126,7 +126,7 @@ void setup() {
 
     bool doomsday = false;
     if (error_lr > max_error) {
-      // doomsday = true;
+      doomsday = true;
       Serial.println("Doomsday");
     }
 
