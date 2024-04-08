@@ -117,7 +117,7 @@ void setup() {
       } else if (error < -threshold) {
         speed = max_speed;
       } else {
-        speed = 0;
+        speed = 1;
       }
     }
 

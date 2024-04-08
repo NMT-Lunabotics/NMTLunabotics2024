@@ -27,15 +27,13 @@ public:
     return p * error + i * integral + d * derivative;
   }
 
-  void resetIntegral() {
-    integral = 0;
-  }
+  void resetIntegral() { integral = 0; }
 };
 
 class Median {
 private:
   int history_size;
-  int* history;
+  int *history;
   int current_idx;
 
 public:
@@ -45,9 +43,7 @@ public:
     memset(history, 0, sizeof(history));
   }
 
-  ~Median() {
-    delete[] history;
-  }
+  ~Median() { delete[] history; }
 
   int update(int new_val) {
     history[current_idx] = new_val;
@@ -57,13 +53,14 @@ public:
     int sorted[history_size];
     memcpy(sorted, history, history_size * sizeof(history[0]));
 
-    qsort(sorted, history_size, sizeof(sorted[0]), [](const void *a, const void *b) {
-      if (*(int *)a > *(int *)b)
-        return 1;
-      else if (*(int *)a < *(int *)b)
-        return -1;
-      return 0;
-    });
+    qsort(sorted, history_size, sizeof(sorted[0]),
+          [](const void *a, const void *b) {
+            if (*(int *)a > *(int *)b)
+              return 1;
+            else if (*(int *)a < *(int *)b)
+              return -1;
+            return 0;
+          });
 
     if (history_size % 2 == 1)
       return (sorted[history_size / 2] + sorted[history_size / 2 + 1]) / 2;

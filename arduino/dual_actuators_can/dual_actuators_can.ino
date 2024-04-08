@@ -143,7 +143,8 @@ void setup() {
     //   }
     // }
 
-    can::ActuatorArmPos cmd = {.left_pos = pos_l, .right_pos = pos_r};
+    can::ActuatorArmPos cmd = {.left_pos = (double)pos_l,
+                               .right_pos = (double)pos_r};
     uint8_t buffer[8];
     can::to_buffer(buffer, can::serialize(cmd));
 
@@ -195,18 +196,23 @@ void setup() {
     speed_l = constrain(speed_l, -255, 255);
     speed_r = constrain(speed_r, -255, 255);
 
-    Serial.print(speed_l); Serial.print('\t');
-    Serial.print(speed_r); Serial.print('\t');
-    Serial.print(pos_l); Serial.print('\t');
-    Serial.print(pos_r); Serial.print('\t');
-    Serial.print(factor); Serial.print('\n');
+    Serial.print(speed_l);
+    Serial.print('\t');
+    Serial.print(speed_r);
+    Serial.print('\t');
+    Serial.print(pos_l);
+    Serial.print('\t');
+    Serial.print(pos_r);
+    Serial.print('\t');
+    Serial.print(factor);
+    Serial.print('\n');
 
     // if (doomsday || estop) {
     //   left.set_speed(0);
     //   right.set_speed(0);
     // } else {
-      left.set_speed(-speed_l);
-      right.set_speed(-speed_r);
+    left.set_speed(-speed_l);
+    right.set_speed(-speed_r);
     // }
   }
 }

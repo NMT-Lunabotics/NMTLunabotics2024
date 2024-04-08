@@ -12,7 +12,7 @@
 #define RIHB 3
 
 // Min and max speeds
-//TODO tune values
+// TODO tune values
 float minPWM = 0;
 float maxPWM = 255;
 float minSpd = 0;
