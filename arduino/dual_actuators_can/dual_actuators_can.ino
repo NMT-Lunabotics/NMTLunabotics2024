@@ -9,7 +9,7 @@
 #define PIN_POTENTIOMETER_LEFT A0
 #define PIN_POTENTIOMETER_RIGHT A1
 
-int target_pos = 0; // in mm
+int target_pos = -1; // in mm
 int target_vel = 0; // in mm/s
 
 int max_speed = 200; // 5 mm/s
