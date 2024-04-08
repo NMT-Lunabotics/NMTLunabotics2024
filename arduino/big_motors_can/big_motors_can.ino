@@ -29,6 +29,9 @@ int timeout = 3000;
 float left_speed;
 float right_speed;
 
+void controlMotor(int ihbPin, int dirPin, int pwmPin, float speed);
+void stopMotor(int ihbPin, int pwmPin);
+
 void setup() {
   Serial.begin(115200);
 
