@@ -41,11 +41,11 @@
       </Message>
       <Message id="4" name="ActuatorArmPos">
         <Signal name="left_pos" offset="0" length="8">
-          <Value type="unsigned" unit="mm/s" slope="0.9803921568627451" intercept="0" min="0" max="250">
+          <Value type="unsigned" unit="mm" slope="0.9803921568627451" intercept="0" min="0" max="250">
           </Value>
         </Signal>
         <Signal name="right_pos" offset="8" length="8">
-          <Value type="unsigned" unit="mm/s" slope="0.9803921568627451" intercept="0" min="0" max="250">
+          <Value type="unsigned" unit="mm" slope="0.9803921568627451" intercept="0" min="0" max="250">
           </Value>
         </Signal>
       </Message>
