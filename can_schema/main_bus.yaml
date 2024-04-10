@@ -55,7 +55,7 @@ messages:
   ActuatorBucketPos:
     - pos:
         range: [0, 300]
-        unit: mm/s
+        unit: mm
         size: 8
 
   Error:

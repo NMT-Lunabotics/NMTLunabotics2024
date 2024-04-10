@@ -51,7 +51,7 @@
       </Message>
       <Message id="5" name="ActuatorBucketPos">
         <Signal name="pos" offset="0" length="8">
-          <Value type="unsigned" unit="mm/s" slope="1.1764705882352942" intercept="0" min="0" max="300">
+          <Value type="unsigned" unit="mm" slope="1.1764705882352942" intercept="0" min="0" max="300">
           </Value>
         </Signal>
       </Message>
