@@ -17,13 +17,12 @@ void setup() {
       Serial.println(msg);
     }
 
-    // can::ActuatorArmPos cmd = {.left_pos = (double)pos_l,
-    //                            .right_pos = (double)pos_r};
-    // uint8_t buffer[8];
-    // can::to_buffer(buffer, can::serialize(cmd));
+    can::ActuatorArmPos cmd = {.left_pos = (double)55,
+                               .right_pos = (double)42};
+    uint8_t buffer[8];
+    can::to_buffer(buffer, can::serialize(cmd));
 
-    // CanMsg const msg((int)can::FrameID::ActuatorArmPos, sizeof(buffer),
-    // buffer);
+    CanMsg const msg(CanStandardId((int)can::FrameID::ActuatorArmPos), sizeof(buffer), buffer);
 
     // if (int const rc = CAN.write(msg); rc < 0) {
     //   Serial.println("CAN.write(...) failed with error code " + String(rc));
@@ -31,10 +30,10 @@ void setup() {
     /* Assemble a CAN message with the format of
      * 0xCA 0xFE 0x00 0x00 [4 byte message counter]
      */
-    uint8_t const msg_data[] = {0xCA, 0xFE, 0, 0, 0, 0, 0, 0};
-    memcpy((void *)(msg_data + 4), &msg_cnt, sizeof(msg_cnt));
-    static uint32_t const CAN_ID = 0x20;
-    CanMsg const msg(CanStandardId(CAN_ID), sizeof(msg_data), msg_data);
+    // uint8_t const msg_data[] = {0xCA, 0xFE, 0, 0, 0, 0, 0, 0};
+    // memcpy((void *)(msg_data + 4), &msg_cnt, sizeof(msg_cnt));
+    // static uint32_t const CAN_ID = 0x20;
+    // CanMsg const msg(CanStandardId(CAN_ID), sizeof(msg_data), msg_data);
 
     /* Transmit the CAN message, capture and display an
      * error core in case of failure.
