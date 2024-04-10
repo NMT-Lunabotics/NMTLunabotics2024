@@ -104,8 +104,16 @@ void setup() {
     }
     last_time = current_time;
 
-    int pos = act.pos_mm();
-    // Serial.println(pos);
+    int p = act.pos_mm();
+    can::ActuatorBucketPos cmd = {pos = (double)p)
+    uint8_t buffer[8];
+    can::to_buffer(buffer, can::serialize(cmd));
+
+    CanMsg const msg(CanStandardId((int)can::FrameID::ActuatorBucketPos), sizeof(buffer), buffer);
+
+    if (int const rc = CAN.write(msg); rc < 0) {
+      Serial.println("CAN.write(...) failed with error code " + String(rc));
+    }
 
     if (target_pos == -1) {
       speed = target_vel * 51;

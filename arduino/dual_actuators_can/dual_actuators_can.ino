@@ -148,11 +148,11 @@ void setup() {
     uint8_t buffer[8];
     can::to_buffer(buffer, can::serialize(cmd));
 
-    CanMsg const msg((int)can::FrameID::ActuatorArmPos, sizeof(buffer), buffer);
+    CanMsg const msg(CanStandardId((int)can::FrameID::ActuatorArmPos), sizeof(buffer), buffer);
 
-    // if (int const rc = CAN.write(msg); rc < 0) {
-    //   Serial.println("CAN.write(...) failed with error code " + String(rc));
-    // }
+    if (int const rc = CAN.write(msg); rc < 0) {
+      Serial.println("CAN.write(...) failed with error code " + String(rc));
+    }
 
     if (target_pos == -1) {
       speed_l = target_vel * 51;
