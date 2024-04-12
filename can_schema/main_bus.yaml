@@ -45,17 +45,17 @@ messages:
   ActuatorArmPos:
     - left_pos:
         range: [0, 250]
-        unit: mm/s
+        unit: mm
         size: 8
     - right_pos:
         range: [0, 250]
-        unit: mm/s
+        unit: mm
         size: 8
       
   ActuatorBucketPos:
     - pos:
         range: [0, 300]
-        unit: mm/s
+        unit: mm
         size: 8
 
   Error:
