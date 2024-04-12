@@ -16,4 +16,6 @@
     <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_twist_kb" />
   </group>
 
+  <node pkg="heartbeat" type="heartbeat_server_node" name="heartbeat_server_node" />
+
 </launch>
