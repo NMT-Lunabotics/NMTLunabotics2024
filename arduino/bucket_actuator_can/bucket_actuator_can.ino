@@ -104,8 +104,8 @@ void setup() {
     }
     last_time = current_time;
 
-    int p = act.pos_mm();
-    can::ActuatorBucketPos cmd = {pos = (double)p)
+    int pos = act.pos_mm();
+    can::ActuatorBucketPos cmd = {.pos = (double)pos};
     uint8_t buffer[8];
     can::to_buffer(buffer, can::serialize(cmd));
 

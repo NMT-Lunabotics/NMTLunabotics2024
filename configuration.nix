@@ -27,6 +27,10 @@
     "teb-local-planner"
     "navigation"
     "tf2-tools"
+    "usb-cam"
+    "image-transport"
+    "theora-image-transport"
+    "compressed-image-transport"
   ];
 
   programs.ros.ubuntuPackages = [
