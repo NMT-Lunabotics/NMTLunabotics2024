@@ -10,12 +10,21 @@ ros::Subscriber joy_sub;
 float actuator_max_vel;
 int arm_axis, bucket_axis;
 
+double velocity_deadzone(double axis_value) {
+  if (axis_value < -0.5)
+    return -5;
+  else if (axis_value > 0.5)
+    return 5;
+  else
+    return 0;
+}
+
 void callback(const sensor_msgs::Joy::ConstPtr& msg) {
     std::cout << msg->axes[arm_axis] * 5 << " "
               << msg->axes[bucket_axis] * 5 << "\n";
     can::ActuatorVelCommands cmd = {
-        .arm_vel = msg->axes[arm_axis] * 5,
-        .bucket_vel = msg->axes[bucket_axis] * 5,
+      .arm_vel = velocity_deadzone(msg->axes[arm_axis]),
+      .bucket_vel = velocity_deadzone(msg->axes[bucket_axis]),
     };
     uint8_t buffer[8];
     can::to_buffer(buffer, can::serialize(cmd));
