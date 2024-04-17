@@ -6,7 +6,7 @@
 #define PIN_DIRECTION 4
 #define PIN_POTENTIOMETER A0
 
-int target_pos = 0; // in mm
+int target_pos = -1; // in mm
 int target_vel = 0; // in mm/s
 
 int max_speed = 240; // 5 mm/s
