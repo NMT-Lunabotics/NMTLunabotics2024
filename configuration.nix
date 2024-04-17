@@ -49,6 +49,11 @@
   #   workspace = "/home/lunabotics/goliath/catkin_ws";
   # };
   # currently included in motor_ctrl/motor.launch
+  
+  services.ros.runServices.usb-cam = {
+    packageName = "usb_cam";
+    executable = "usb_cam_node";
+  };
 
   services.ros.launchServices.motor-ctrl = {
     packageName = "motor_ctrl";
