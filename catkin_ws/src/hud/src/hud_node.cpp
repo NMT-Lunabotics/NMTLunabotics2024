@@ -4,21 +4,19 @@
 #include <sensor_msgs/image_encodings.h>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
-#include <std_msgs/String.h>
+#include <can_convert/ArmStatus.h>
 #include <theora_image_transport/Packet.h>  // Required for Theora decoding
 
-class CameraStreamNode {
+class HudNode {
 public:
-    CameraStreamNode()
+    HudNode()
     : it_(nh_) {
         // Initialize subscribers and publishers
         image_sub_ = it_.subscribe("/usb_cam/image_raw", 1,
-            &CameraStreamNode::imageCb, this, image_transport::TransportHints("theora"));
+            &HudNode::imageCb, this, image_transport::TransportHints("theora"));
         image_pub_ = it_.advertise("/camera_hud", 1);
 
-        text_sub_ = nh_.subscribe<std_msgs::String>("/text_topic", 1, &CameraStreamNode::textCb, this);
-
-        overlay_text_ = "Default Text";
+        text_sub_ = nh_.subscribe<can_convert::ArmStatus>("/arm_status", 1, &HudNode::textCb, this);
     }
 
     void imageCb(const sensor_msgs::ImageConstPtr& msg) {
@@ -32,15 +30,19 @@ public:
         }
 
         // Draw text on the video stream
-        cv::putText(cv_ptr->image, overlay_text_, cv::Point(30, 30),
+        cv::putText(cv_ptr->image, overlay_text, cv::Point(30, 30),
                     cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 255), 2);
 
         // Output modified video stream
         image_pub_.publish(cv_ptr->toImageMsg());
     }
 
-    void textCb(const std_msgs::String::ConstPtr& msg) {
-        overlay_text_ = msg->data;
+    void textCb(const can_convert::ArmStatus::ConstPtr& msg) {
+        arm_angle = msg->arm_angle;
+        bucket_angle = msg->bucket_angle;
+        std::stringstream ss;
+        ss << "Bucket Angle: " << bucket_angle << ", Arm Angle: " << arm_angle;
+        overlay_text = ss.str();
     }
 
 private:
@@ -49,12 +51,14 @@ private:
     image_transport::Subscriber image_sub_;
     image_transport::Publisher image_pub_;
     ros::Subscriber text_sub_;
-    std::string overlay_text_;
+    std::string overlay_text;
+    float arm_angle = 0;
+    float bucket_angle = 0;
 };
 
 int main(int argc, char** argv) {
-    ros::init(argc, argv, "camera_stream_node");
-    CameraStreamNode csNode;
+    ros::init(argc, argv, "hud_node");
+    HudNode csNode;
     ros::spin();
     return 0;
 }

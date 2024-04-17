@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(camera_stream)
+project(hud)
 
 find_package(catkin REQUIRED COMPONENTS
   cv_bridge
@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   std_msgs
   theora_image_transport
+  can_convert
 )
 
 catkin_package(CATKIN_DEPENDS
@@ -21,16 +22,16 @@ catkin_package(CATKIN_DEPENDS
 
 include_directories(${catkin_INCLUDE_DIRS})
 
-add_executable(camera_stream_node
-  src/camera_stream_node.cpp
+add_executable(hud_node
+  src/hud_node.cpp
 )
 add_dependencies(
-  camera_stream_node
+  hud_node
   ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS}
 )
-target_link_libraries(camera_stream_node ${catkin_LIBRARIES})
+target_link_libraries(hud_node ${catkin_LIBRARIES})
 
 install(
-  TARGETS camera_stream_node
+  TARGETS hud_node
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
