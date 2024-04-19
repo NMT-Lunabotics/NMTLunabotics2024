@@ -11,7 +11,7 @@ class Node {
   std::vector<ros::Subscriber> subscribers;
   ros::Publisher can_publisher;
 
-  can::Lights lights_status;
+  can::Lights lights_status = {0};
 
 public:
   Node() {
