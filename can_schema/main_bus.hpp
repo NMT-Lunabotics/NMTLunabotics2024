@@ -31,6 +31,7 @@ enum class FrameID {
   ActuatorArmPos = 4,
   ActuatorBucketPos = 5,
   Error = 6,
+  Lights = 7,
 };
 
 inline bool bool_deserialize(uint64_t buffer) { return buffer; }
@@ -251,6 +252,40 @@ inline uint64_t serialize(Error data) {
 inline std::ostream &operator<<(std::ostream &os, const Error &self) {
   return os << "{ "
             << "error_code = " << self.error_code << ", "
+            << "}";
+}
+
+struct Lights {
+  bool error;
+  bool autonomy;
+  bool motion;
+  bool power;
+};
+
+inline Lights Lights_deserialize(uint64_t buffer) {
+  Lights self;
+  self.error = bool_deserialize(read(buffer, 1));
+  self.autonomy = bool_deserialize(read(buffer, 1));
+  self.motion = bool_deserialize(read(buffer, 1));
+  self.power = bool_deserialize(read(buffer, 1));
+  return self;
+}
+
+inline uint64_t serialize(Lights data) {
+  uint64_t ser = 0;
+  write(ser, 1, serialize(data.power));
+  write(ser, 1, serialize(data.motion));
+  write(ser, 1, serialize(data.autonomy));
+  write(ser, 1, serialize(data.error));
+  return ser;
+}
+
+inline std::ostream &operator<<(std::ostream &os, const Lights &self) {
+  return os << "{ "
+            << "error = " << self.error << ", "
+            << "autonomy = " << self.autonomy << ", "
+            << "motion = " << self.motion << ", "
+            << "power = " << self.power << ", "
             << "}";
 }
 } // namespace can_BOWIE

@@ -61,6 +61,13 @@ messages:
   Error:
     - error_code: ErrorCode
 
+  Lights:
+    - error: bool               # red
+    - autonomy: bool            # blue
+    - motion: bool              # green
+    - power: bool               # yellow
+      # `power` may or may not actually have any effect
+
   # Please only add new messages at the end, and avoid deleting
   # messages! This avoids the CAN ID's of every message from shifting
   # over, so we don't have to re-flash every Arduino every time we

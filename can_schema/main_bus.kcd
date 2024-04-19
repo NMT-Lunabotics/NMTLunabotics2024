@@ -65,5 +65,23 @@
           </LabelSet>
         </Signal>
       </Message>
+      <Message id="7" name="Lights">
+        <Signal name="error" offset="0" length="1">
+          <Value type="unsigned">
+          </Value>
+        </Signal>
+        <Signal name="autonomy" offset="1" length="1">
+          <Value type="unsigned">
+          </Value>
+        </Signal>
+        <Signal name="motion" offset="2" length="1">
+          <Value type="unsigned">
+          </Value>
+        </Signal>
+        <Signal name="power" offset="3" length="1">
+          <Value type="unsigned">
+          </Value>
+        </Signal>
+      </Message>
     </Bus>
   </NetworkDefinition>
