@@ -16,8 +16,8 @@ public:
     HeartbeatClient()
     {
         sub = nh.subscribe("/heartbeat", 1000, &HeartbeatClient::heartbeat_callback, this);
-        pub = nh.advertise<std_msgs::Bool>("/autonomy", 1000);
-        led_pub = nh.advertise<std_msgs::Bool>("/leds/motion", 16);
+        pub = nh.advertise<std_msgs::Bool>("/stop", 1000);
+        led_pub = nh.advertise<std_msgs::Bool>("/leds/autonomy", 16);
         timer = nh.createTimer(ros::Duration(1.0), &HeartbeatClient::check_heartbeat, this);
         heartbeat_received = false;
     }
