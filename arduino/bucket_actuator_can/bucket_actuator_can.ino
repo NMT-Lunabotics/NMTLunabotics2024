@@ -21,6 +21,24 @@ int potMax = 945;      // Calibrated, pot val at max stroke
 
 int max_error = 50;
 int error_factor = 12;
+int bucketAngleStart(){
+  double phi=0;
+  double theta=0;
+  double gamma=0;
+  double angle=0;
+  double s1=17.852;
+  double s0=12.6875;
+  double s2=15.164;
+  double s3=25.080;
+  double s4=16.164;
+  phi=acos(s0/s1);
+  gamma=acos((s3*s3+s1*s1-s2*s2)/(2*s3*s1));
+  theta=gamma-atan(12.6875/16.164);
+  angle=theta+gamma+phi;
+  return angle;
+
+
+}
 
 #define MEDIAN_SIZE 15
 
@@ -37,7 +55,7 @@ public:
 
   int pos_mm() { return map(pot.read_analog_raw(), potMin, potMax, 0, stroke); }
 
-  void set_speed(int signed_speed) {
+  void set_speed(int signed_sipeed) {
     if (invert_direction)
       dir.write(signed_speed > 0);
     else
@@ -57,7 +75,7 @@ void setup() {
 
   unsigned long current_time = millis();
   unsigned long last_time = current_time;
-
+  double base_bucket_angle=buckleAngleStart();
   int speed = 0;
 
   bool estop = false;
