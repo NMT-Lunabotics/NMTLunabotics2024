@@ -1,7 +1,7 @@
 SRCDIR = ../../../arduino
 
-mirrors: big_motors_can bucket_actuator_can dual_actuators_can can_test
-commit: big_motors_can_commit bucket_actuator_can_commit dual_actuators_can_commit can_test_commit
+mirrors: big_motors_can bucket_actuator_can dual_actuators_can can_test leds
+commit: big_motors_can_commit bucket_actuator_can_commit dual_actuators_can_commit can_test_commit leds_commit
 
 big_motors_can: $(SRCDIR)/big_motors_can
 	mkdir -p $@
@@ -28,6 +28,17 @@ can_test: $(SRCDIR)/can_test
 can_test_commit:
 	cp can_test/can_test.cpp $(SRCDIR)/can_test/can_test.ino
 	cp can_test/helpers.hpp $(SRCDIR)/can_test/helpers.hpp
+
+leds: $(SRCDIR)/leds
+	mkdir -p $@
+	cp $</leds.cpp $@/leds.cpp
+	cp -L $</main_bus.hpp $@/
+	cp -L $</arduino_lib.hpp $@/
+	sed -e 's:some_source.cpp:leds.cpp main_bus.hpp arduino_lib.hpp:' \
+	    ./arduino_makefile.mk > $@/Makefile
+
+leds_commit:
+	cp leds/leds.cpp $(SRCDIR)/can_test/leds.cpp
 
 bucket_actuator_can: $(SRCDIR)/bucket_actuator_can
 	mkdir -p $@

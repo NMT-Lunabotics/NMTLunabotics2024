@@ -2,3 +2,4 @@ big_motors_can
 bucket_actuator_can
 dual_actuators_can
 can_test
+leds
