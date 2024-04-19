@@ -1,0 +1,27 @@
+Right is the robot's right.
+base_link is on the top of the X bar.
+
+Z position: 14.337 inches.
+Y position (right): 10.273 inches.
+X position: 10.53 inches.
+delta from base_link to t265. This does not rotate!
+
+Each of the d455s is on a rotating mount, and the mount causes the
+camera to swivel about a point that is not the center of the camera.
+
+  From base_link to the center of left-right rotation:
+  Z = 18.034 inches.
+  Y = 10.841 inches.
+  X = 10.579 inches.
+
+  From center of left-right rotation to the center of up-down rotation:
+  Z = 1.569 inches.
+  Y = 0.715 inches.
+  X = 0.000 inches.
+
+  From the center of up-down rotation to the center of the camera:
+  Z = 1.550 inches.
+  Y = 0.586 inches.
+  X = 0.893 inches.
+
+These are mirrored on the other side of the robot: mirror y.
