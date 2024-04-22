@@ -50,6 +50,16 @@
   # };
   # currently included in motor_ctrl/motor.launch
 
+  # Turn on the `motion` LED as soon as Linux boots and gets to this
+  # point.
+  systemd.services.ros-motion-led = {
+    wantedBy = [ "multi-user.target" ];
+    after = [ "rosMaster.service" ];
+    script = ''
+      /var/ros/nixWrappers/rostopic pub /leds/motion std_msgs/Bool true
+    '';
+  };
+
   services.ros.runServices.usb-cam = {
     packageName = "usb_cam";
     executable = "usb_cam_node";
