@@ -10,5 +10,7 @@
 
     <!-- Three guesses what this one does... -->
     <node name="can_raw_input_node" pkg="can_raw_input" type="can_raw_input_node" output="screen" />
+
+    <node name="can_convert_node" pkg="can_convert" type="can_convert_node" output="screen" />
 </launch>
 
