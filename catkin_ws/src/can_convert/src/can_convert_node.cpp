@@ -20,7 +20,7 @@ double bucketAngle(double dist) {
 
   double c2 = c + dist_in;
   double angle = acos((a * a + b * b - c2 * c2) / (2 * a * b));
-  return angle - gamma - 22.8; //dont ask where i got this
+  return angle - gamma;
 }
 
 double armAngle(double dist) {
@@ -51,6 +51,7 @@ void callback(const can_raw::CanFrame::ConstPtr &msg) {
     bucket_angle = bucketAngle(bucket_pos.pos);
     bucket_angle *= 180;
     bucket_angle /= 3.14;
+    bucket_angle -= 22.8;
     // std::cout << bucket_pos.pos << " " << bucket_angle << "\n";
   }
   can_convert::ArmStatus status;
