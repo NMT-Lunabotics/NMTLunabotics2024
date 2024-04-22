@@ -41,7 +41,8 @@ public:
         arm_angle = msg->arm_angle;
         bucket_angle = msg->bucket_angle;
         std::stringstream ss;
-        ss << "Bucket Angle: " << int(-bucket_angle) << " deg, Arm Angle: " << int(arm_angle) << " deg";
+        ss << "Bucket Angle: " << int(arm_angle - bucket_angle)
+            << " deg, Arm Angle: " << int(arm_angle) << " deg";
         overlay_text = ss.str();
     }
 
