@@ -45,7 +45,7 @@ void callback(const can_raw::CanFrame::ConstPtr &msg) {
     bucket_angle = bucketAngle(bucket_pos.pos);
     bucket_angle *= 180;
     bucket_angle /= 3.14;
-    std::cout << bucket_pos.pos << " " << bucket_angle << "\n";
+    // std::cout << bucket_pos.pos << " " << bucket_angle << "\n";
   }
   can_convert::ArmStatus status;
   status.arm_angle = arm_angle;
