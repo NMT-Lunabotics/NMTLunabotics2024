@@ -20,7 +20,7 @@ double bucketAngle(double dist) {
 
   double c2 = c + dist_in;
   double angle = acos((a * a + b * b - c2 * c2) / (2 * a * b));
-  return angle - gamma;
+  return angle - gamma - 22.8; //dont ask where i got this
 }
 
 double armAngle(double dist) {
