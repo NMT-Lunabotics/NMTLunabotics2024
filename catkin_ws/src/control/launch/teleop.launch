@@ -18,4 +18,11 @@
 
   <node pkg="heartbeat" type="heartbeat_server_node" name="heartbeat_server_node" />
 
+  <node pkg="hud" type="hud_node" name="hud_node" />
+
+  <node pkg= "image_view" type="image_view" name="image_view" output="screen">
+    <param name="image" value="/camera_hud" />
+    <param name="_image_transport" value="theora" />
+  </node>
+
 </launch>

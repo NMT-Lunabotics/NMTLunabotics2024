@@ -21,24 +21,6 @@ int potMax = 945;      // Calibrated, pot val at max stroke
 
 int max_error = 50;
 int error_factor = 12;
-int bucketAngle(double linearDistance){
-  double phi=0;
-  double theta=0;
-  double gamma=0;
-  double angle=0;
-  double s1=17.852;
-  double s0=12.6875;
-  double s2S=15.164;
-  double s2=linearDistance;
-  double s3=25.080;
-  double s4=16.164;
-  gamma=acos((s3*s3+s1*s1-s2S*s2S)/(2*s3*s1));
-  phi=acos((s3*s3+s1*s1-s2*s2)/(2*s3*s1));
-  angle=phi-gamma;
-  return angle;
-
-
-}
 
 #define MEDIAN_SIZE 15
 
@@ -76,7 +58,6 @@ void setup() {
   unsigned long current_time = millis();
   double linearDistance=15.164;
   unsigned long last_time = current_time;
-  double bucket_angle=0;
   int speed = 0;
 
   bool estop = false;
@@ -93,7 +74,6 @@ void setup() {
             can::ActuatorPosCommands_deserialize(can::from_buffer(msg.data));
         target_pos = actuatorCmd.bucket_pos;
         linearDistance=15.164+target_pos;
-        bucket_angle=bucketAngle(linearDistance);
         break;
       }
       case can::FrameID::ActuatorVelCommands: {
