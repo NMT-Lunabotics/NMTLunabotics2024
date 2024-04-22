@@ -41,6 +41,8 @@ void callback(const can_raw::CanFrame::ConstPtr &msg) {
         can::ActuatorArmPos_deserialize(can::from_buffer(msg->data.data()));
     // TODO maybe check if left and right are different?
     arm_angle = armAngle(arm_pos.left_pos);
+    arm_angle *= 180;
+    arm_angle /= 3.14;
   }
   if (msg->id == (int)can::FrameID::ActuatorBucketPos) {
     can::ActuatorBucketPos bucket_pos =
