@@ -100,6 +100,8 @@
       inch = inches: inches * (25.4 / 1000);
     in
     [
+      { parent = "map"; child = "t265_odom_frame"; }
+
       {
         parent = "t265_link";
         child = "base_link";
