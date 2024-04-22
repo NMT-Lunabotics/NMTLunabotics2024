@@ -16,7 +16,7 @@
   # ---- Begin ROS configuration ----
 
   services.ros.enable = true;
-  
+
   programs.ros.packages = [
     "xacro"
     "realsense2-camera"
@@ -49,7 +49,7 @@
   #   workspace = "/home/lunabotics/goliath/catkin_ws";
   # };
   # currently included in motor_ctrl/motor.launch
-  
+
   services.ros.runServices.usb-cam = {
     packageName = "usb_cam";
     executable = "usb_cam_node";
@@ -73,23 +73,68 @@
     workspace = "/home/lunabotics/goliath/catkin_ws";
   };
 
-  services.ros.moveBase = {
-    enable = false;
-    robotSize = { width = 0.25; length = 0.4; };
-    odomFrame = "base_link";
-    limits = { forwardMin = 1.0; forward = 3.0; };
-  };
+  services.ros.staticTransforms =
+    let
+      inch = inches: inches * (25.4 / 1000);
+    in
+    [
+      {
+        parent = "t265_link";
+        child = "base_link";
+        x = inch (-10.53);
+        y = inch (-10.273);
+        z = inch (-14.337);
+      }
 
-  # services.ros.staticTransforms = [
-  #   { parent = "sensor_frame"; child = "t265_link"; z = 0.095; }
-  #   { parent = "sensor_frame"; child = "d455_link";
-  #     x = -0.045; z = 0.185; pitch = 15.0; yaw = 180.0;
-  #   }
-  #   { parent = "base_link"; child = "sensor_frame";
-  #     z = 0.1209;
-  #   }
+      {
+        parent = "base_link";
+        child = "d455_left_lr";
+        x = inch (10.579);
+        y = inch (10.841);
+        z = inch (18.034);
+        yaw = 0;
+      }
 
-  #   { parent = "t265_odom"; child = "map"; }
-  # ];
+      {
+        parent = "d455_left_lr";
+        child = "d455_left_ud";
+        y = inch (0.715);
+        z = inch (1.569);
+        pitch = 0;
+      }
+
+      {
+        parent = "d455_left_ud";
+        child = "d455_left";
+        x = inch (0.893);
+        y = inch (0.586);
+        z = inch (1.550);
+      }
+
+      {
+        parent = "base_link";
+        child = "d455_right_lr";
+        x = inch (10.579);
+        y = inch (-10.841);
+        z = inch (18.034);
+        yaw = 0;
+      }
+
+      {
+        parent = "d455_right_lr";
+        child = "d455_right_ud";
+        y = inch (-0.715);
+        z = inch (1.569);
+        pitch = 0;
+      }
+
+      {
+        parent = "d455_right_ud";
+        child = "d455_right";
+        x = inch (0.893);
+        y = inch (-0.586);
+        z = inch (1.550);
+      }
+    ];
 }
 
