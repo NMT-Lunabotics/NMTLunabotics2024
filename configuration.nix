@@ -102,7 +102,7 @@
     [
       {
         parent = "map"; child = "t265_odom_frame";
-        yaw = 90;
+        pitch = 90;
       }
 
       {
