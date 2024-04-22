@@ -56,9 +56,9 @@
     <node pkg="mapping" name="pose_pub" type="pose_pub" />
 
 
-    <node pkg="tf2_ros" type="static_transform_publisher"
+    <!-- node pkg="tf2_ros" type="static_transform_publisher"
         name="static_transform_publisher"
-        args="0 0 0 0 0 0 map t265_odom_frame" respawn="true" />
+        args="0 0 0 0 0 0 map t265_odom_frame" /-->
 
 
     <!-- Transform publisher -->

@@ -55,6 +55,12 @@
     executable = "usb_cam_node";
   };
 
+  services.ros.runServices.heartbeat_client = {
+    workspace = "/home/lunabotics/goliath/catkin_ws";
+    packageName = "heartbeat";
+    executable = "heartbeat_client_node";
+  };
+
   services.ros.launchServices.motor-ctrl = {
     packageName = "motor_ctrl";
     launchFile = "motor.launch";
