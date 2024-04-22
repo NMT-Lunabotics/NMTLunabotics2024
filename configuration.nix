@@ -102,14 +102,14 @@
     [
       {
         parent = "map"; child = "t265_odom_frame";
-        pitch = -90;
+        # pitch = -90;
       }
 
       {
         parent = "t265_link";
         child = "base_link";
         x = inch (-10.53);
-        y = inch (-10.273);
+        y = inch (10.273);
         z = inch (-14.337);
       }
 
