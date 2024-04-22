@@ -7,5 +7,8 @@
 
     <!-- Run the can_raw_node -->
     <node name="can_raw_node" pkg="can_raw" type="can_raw_node" output="screen"/>
+
+    <!-- Three guesses what this one does... -->
+    <node name="can_raw_input_node" pkg="can_raw_input" type="can_raw_input_node" output="screen" />
 </launch>
 
