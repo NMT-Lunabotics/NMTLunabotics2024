@@ -4,7 +4,7 @@
         value="$(find mapping)/config/rosconsole.conf"/>
 
     <include file="$(find realsense2_camera)/launch/rs_camera.launch">
-        <arg name="camera" value="d455" />
+        <arg name="camera" value="d455_right" />
         <arg name="device_type" value="d455" />
         <!--arg name="serial_no" value="213522250920 " /-->
         <arg name="filters" value="pointcloud" />

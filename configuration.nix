@@ -127,7 +127,7 @@
 
       {
         parent = "d455_left_ud";
-        child = "d455_left";
+        child = "d455_left_link";
         x = inch (0.893);
         y = inch (0.586);
         z = inch (1.550);
@@ -152,7 +152,7 @@
 
       {
         parent = "d455_right_ud";
-        child = "d455_right";
+        child = "d455_right_link";
         x = inch (0.893);
         y = inch (-0.586);
         z = inch (1.550);
