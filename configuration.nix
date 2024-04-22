@@ -102,7 +102,7 @@
     [
       {
         parent = "map"; child = "t265_odom_frame";
-        roll = 90;
+        # roll = 90;
       }
 
       {
