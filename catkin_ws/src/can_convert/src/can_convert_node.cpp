@@ -13,23 +13,27 @@ float bucket_angle;
 
 double bucketAngle(double dist) {
   double dist_in = 0.03937008 * dist;
-  double phi = 0;
-  double theta = 0;
-  double gamma = 0;
-  double angle = 0;
-  double s1 = 17.852;
-  double s0 = 12.6875;
-  double s2S = 15.164;
-  double s2 = dist_in + s2S;
-  double s3 = 25.080;
-  double s4 = 16.164;
-  gamma = acos((s3 * s3 + s1 * s1 - s2S * s2S) / (2 * s3 * s1));
-  phi = acos((s3 * s3 + s1 * s1 - s2 * s2) / (2 * s3 * s1));
-  angle = phi - gamma;
-  return angle;
+  double a = 21.5;
+  double b = 8;
+  double c = 17.72; //actuator
+  double gamma = acos((a * a + b * b - c * c) / (2 * a * b));
+
+  double c2 = c + dist_in;
+  double angle = acos((a * a + b * b - c2 * c2) / (2 * a * b));
+  return angle - gamma;
 }
 
-int armAngle(double dist) { return 0; }
+double armAngle(double dist) {
+  double dist_in = 0.03937008 * dist;
+  double a = 25.1875;
+  double b = 17.1875;
+  double c = 15.71; //actuator
+  double gamma = acos((a * a + b * b - c * c) / (2 * a * b));
+
+  double c2 = c + dist_in;
+  double angle = acos((a * a + b * b - c2 * c2) / (2 * a * b));
+  return angle - gamma;
+}
 
 void callback(const can_raw::CanFrame::ConstPtr &msg) {
   if (msg->id == (int)can::FrameID::ActuatorArmPos) {
