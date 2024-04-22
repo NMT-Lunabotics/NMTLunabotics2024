@@ -43,11 +43,13 @@ void callback(const can_raw::CanFrame::ConstPtr &msg) {
         can::ActuatorBucketPos_deserialize(can::from_buffer(msg->data.data()));
     // TODO maybe check if left and right are different?
     bucket_angle = bucketAngle(bucket_pos.pos);
+    bucket_angle *= 180;
+    bucket_angle /= 3.14;
+    std::cout << bucket_pos.pos << " " << bucket_angle << "\n";
   }
   can_convert::ArmStatus status;
   status.arm_angle = arm_angle;
   status.bucket_angle = bucket_angle;
-  std::cout << bucket_angle << "\n";
   status_pub.publish(status);
 }
 
