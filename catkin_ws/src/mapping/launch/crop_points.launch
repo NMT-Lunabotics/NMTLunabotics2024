@@ -15,8 +15,8 @@
         negative: true
         min_x: -0.5
         max_x: 0.5
-        min_y: -0.6
-        max_y: 1.5
+        min_y: -1.6
+        max_y: 0.5
         min_z: -4
         max_z: 4
       </rosparam>
