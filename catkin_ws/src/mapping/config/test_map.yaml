@@ -8,7 +8,6 @@ input_sources:
       type: structured_light
       ignore_points_above: 1
       ignore_points_below: -2
-    sensor_cutoff_min_depth: 0.5
 
 map_frame_id: "map"
 robot_base_frame_id: "base_link"
