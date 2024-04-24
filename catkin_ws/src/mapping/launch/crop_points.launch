@@ -15,7 +15,7 @@
         negative: true
         min_x: 0
         max_x: 0.7
-        min_y: -0.1
+        min_y: -0.2
         max_y: 1
         min_z: -2
         max_z: 2
