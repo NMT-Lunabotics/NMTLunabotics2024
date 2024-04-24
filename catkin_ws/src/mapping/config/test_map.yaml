@@ -1,5 +1,5 @@
 input_sources:
-  l515_1:
+  d455_r:
     type: pointcloud
     topic: /d455_right/depth/color/points_cropped
     queue_size: 5
