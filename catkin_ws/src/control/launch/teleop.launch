@@ -22,9 +22,9 @@
     <param name="image_transport" value="theora" />
   </node>
 
-  <!-- param name="image" value="camera_hud" />
-  <param name="image_transport" value="theora" />
   <node pkg="image_view" type="image_view" name="image_view" output="screen">
-  </node -->
+    <param name="image_transport" value="theora" />
+    <remap from="image" to="/camera_hud"/>
+  </node>
 
 </launch>
