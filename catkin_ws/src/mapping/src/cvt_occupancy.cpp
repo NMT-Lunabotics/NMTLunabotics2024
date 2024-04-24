@@ -18,10 +18,11 @@ nav_msgs::OccupancyGrid convertToOccupancyGrid(const grid_map::GridMap& map, con
     grid_map::GridMapRosConverter::toOccupancyGrid(map, layer, dataMax, dataMin, occupancy_grid);
     // TODO make this a parameter
     for (auto& value : occupancy_grid.data) {
-        if (value < 20) {
+	std::cout << traversability_cutoff << "\n";
+        if (value < traversability_cutoff) {
             value = 0;
         } else {
-	    value = 1;
+	    value = 100;
 	}
     }
     return occupancy_grid;
