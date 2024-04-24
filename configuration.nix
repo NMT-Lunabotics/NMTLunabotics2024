@@ -101,7 +101,8 @@
     in
     [
       {
-        parent = "map"; child = "t265_odom_frame";
+        parent = "map";
+        child = "t265_odom_frame";
         # pitch = -90;
       }
 
