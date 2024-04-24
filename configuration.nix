@@ -60,43 +60,39 @@
     '';
   };
 
-  services.ros.runServices = {
-    usb-cam = {
-      packageName = "usb_cam";
-      executable = "usb_cam_node";
-    };
-
-    heartbeat_client = {
-      workspace = "/home/lunabotics/goliath/catkin_ws";
-      packageName = "heartbeat";
-      executable = "heartbeat_client_node";
-    };
-
-    leds = {
-      workspace = "/home/lunabotics/goliath/catkin_ws";
-      packageName = "leds";
-      executable = "leds_node";
-    };
-
-    motor-ctrl = {
-      packageName = "motor_ctrl";
-      launchFile = "motor.launch";
-      workspace = "/home/lunabotics/goliath/catkin_ws";
-    };
+  services.ros.runServices.usb-cam = {
+    packageName = "usb_cam";
+    executable = "usb_cam_node";
   };
 
-  services.ros.launchServices = {
-    actuator-ctrl = {
-      packageName = "actuator_ctrl";
-      launchFile = "actuator.launch";
-      workspace = "/home/lunabotics/goliath/catkin_ws";
-    };
+  services.ros.runServices.heartbeat_client = {
+    workspace = "/home/lunabotics/goliath/catkin_ws";
+    packageName = "heartbeat";
+    executable = "heartbeat_client_node";
+  };
 
-    test-map = {
-      packageName = "mapping";
-      launchFile = "test_map.launch";
-      workspace = "/home/lunabotics/goliath/catkin_ws";
-    };
+  services.ros.runServices.leds = {
+    workspace = "/home/lunabotics/goliath/catkin_ws";
+    packageName = "leds";
+    executable = "leds_node";
+  };
+
+  services.ros.launchServices.motor-ctrl = {
+    packageName = "motor_ctrl";
+    launchFile = "motor.launch";
+    workspace = "/home/lunabotics/goliath/catkin_ws";
+  };
+
+  services.ros.launchServices.actuator-ctrl = {
+    packageName = "actuator_ctrl";
+    launchFile = "actuator.launch";
+    workspace = "/home/lunabotics/goliath/catkin_ws";
+  };
+
+  services.ros.launchServices.test-map = {
+    packageName = "mapping";
+    launchFile = "test_map.launch";
+    workspace = "/home/lunabotics/goliath/catkin_ws";
   };
 
   services.ros.staticTransforms =
@@ -116,6 +112,7 @@
         x = inch (-10.53);
         y = inch (10.273);
         z = inch (-14.337);
+        yaw = 90;
       }
 
       {
@@ -157,7 +154,7 @@
         child = "d455_right_ud";
         y = inch (-0.715);
         z = inch (1.569);
-        pitch = 0;
+        pitch = -20;
       }
 
       {
