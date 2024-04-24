@@ -154,7 +154,7 @@
         child = "d455_right_ud";
         y = inch (-0.715);
         z = inch (1.569);
-        pitch = -20;
+        pitch = 40;
       }
 
       {
