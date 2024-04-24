@@ -78,6 +78,6 @@
 
     <!-- Occupancy grid node -->
     <node pkg="mapping" type="cvt_occupancy" name="cvt_occupancy" output="screen">
-        <param name="traversability_cutoff" value="50" />
+        <param name="traversability_cutoff" value="99" />
     </node>
 </launch>
