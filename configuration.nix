@@ -36,7 +36,7 @@
   programs.ros.ubuntuPackages = [
     "libeigen3-dev"
   ];
-  programs.ros.myIP = "192.168.0.207";
+  programs.ros.myIP = "192.168.0.103";
   services.ros.rosbridge.enable = true;
 
   services.ros.elevationMapping.build = true;
@@ -94,75 +94,5 @@
     launchFile = "test_map.launch";
     workspace = "/home/lunabotics/goliath/catkin_ws";
   };
-
-  services.ros.staticTransforms =
-    let
-      inch = inches: inches * (25.4 / 1000);
-    in
-    [
-      {
-        parent = "map";
-        child = "t265_odom_frame";
-        # pitch = -90;
-      }
-
-      {
-        parent = "t265_link";
-        child = "base_link";
-        x = inch (-10.53);
-        y = inch (10.273);
-        z = inch (-14.337);
-      }
-
-      {
-        parent = "base_link";
-        child = "d455_left_lr";
-        x = inch (10.579);
-        y = inch (10.841);
-        z = inch (18.034);
-        yaw = 0;
-      }
-
-      {
-        parent = "d455_left_lr";
-        child = "d455_left_ud";
-        y = inch (0.715);
-        z = inch (1.569);
-        pitch = 0;
-      }
-
-      {
-        parent = "d455_left_ud";
-        child = "d455_left_link";
-        x = inch (0.893);
-        y = inch (0.586);
-        z = inch (1.550);
-      }
-
-      {
-        parent = "base_link";
-        child = "d455_right_lr";
-        x = inch (10.579);
-        y = inch (-10.841);
-        z = inch (18.034);
-        yaw = 0;
-      }
-
-      {
-        parent = "d455_right_lr";
-        child = "d455_right_ud";
-        y = inch (-0.715);
-        z = inch (1.569);
-        pitch = 0;
-      }
-
-      {
-        parent = "d455_right_ud";
-        child = "d455_right_link";
-        x = inch (0.893);
-        y = inch (-0.586);
-        z = inch (1.550);
-      }
-    ];
 }
 

@@ -64,11 +64,11 @@
 
 
     <!-- Transform publisher -->
-    <!-- <param name="robot_description" -->
-    <!--     textfile="$(find mapping)/urdf/goliath.urdf" /> -->
-    <!-- <node pkg="robot_state_publisher"  name="state_publisher" -->
-    <!--     type="robot_state_publisher" output="screen"> -->
-    <!-- </node> -->
+    <param name="robot_description"
+        textfile="$(find mapping)/urdf/goliath.urdf" />
+    <node pkg="robot_state_publisher"  name="state_publisher"
+        type="robot_state_publisher" output="screen">
+    </node>
 
     <!-- Elevation mapping node -->
     <node pkg="elevation_mapping" type="elevation_mapping" name="elevation_mapping" output="screen">
