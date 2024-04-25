@@ -17,6 +17,17 @@
 
   services.ros.enable = true;
 
+  # Have the ROS master force all the motors to stop when its service
+  # is stopped.
+  systemd.services.rosMaster.serviceConfig.ExecStopPost =
+    pkgs.writeScript "stop-robot"
+      ''
+        #!/bin/sh
+        cansend can0 001#8000800000000000 || true
+        cansend can0 003#8080000000000000 || true
+        cansend can0 007#ffffffffffffffff || true # Turn on all lights
+      '';
+
   programs.ros.packages = [
     "xacro"
     "realsense2-camera"
@@ -60,39 +71,43 @@
     '';
   };
 
-  services.ros.runServices.usb-cam = {
-    packageName = "usb_cam";
-    executable = "usb_cam_node";
+  services.ros.runServices = {
+    usb-cam = {
+      packageName = "usb_cam";
+      executable = "usb_cam_node";
+    };
+
+    heartbeat_client = {
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+      packageName = "heartbeat";
+      executable = "heartbeat_client_node";
+    };
+
+    leds = {
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+      packageName = "leds";
+      executable = "leds_node";
+    };
   };
 
-  services.ros.runServices.heartbeat_client = {
-    workspace = "/home/lunabotics/goliath/catkin_ws";
-    packageName = "heartbeat";
-    executable = "heartbeat_client_node";
-  };
+  services.ros.launchServices = {
+    motor-ctrl = {
+      packageName = "motor_ctrl";
+      launchFile = "motor.launch";
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+    };
 
-  services.ros.runServices.leds = {
-    workspace = "/home/lunabotics/goliath/catkin_ws";
-    packageName = "leds";
-    executable = "leds_node";
-  };
+    actuator-ctrl = {
+      packageName = "actuator_ctrl";
+      launchFile = "actuator.launch";
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+    };
 
-  services.ros.launchServices.motor-ctrl = {
-    packageName = "motor_ctrl";
-    launchFile = "motor.launch";
-    workspace = "/home/lunabotics/goliath/catkin_ws";
-  };
-
-  services.ros.launchServices.actuator-ctrl = {
-    packageName = "actuator_ctrl";
-    launchFile = "actuator.launch";
-    workspace = "/home/lunabotics/goliath/catkin_ws";
-  };
-
-  services.ros.launchServices.test-map = {
-    packageName = "mapping";
-    launchFile = "test_map.launch";
-    workspace = "/home/lunabotics/goliath/catkin_ws";
+    test-map = {
+      packageName = "mapping";
+      launchFile = "test_map.launch";
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+    };
   };
 }
 
