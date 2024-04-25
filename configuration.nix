@@ -77,15 +77,15 @@
       packageName = "leds";
       executable = "leds_node";
     };
+  };
 
+  services.ros.launchServices = {
     motor-ctrl = {
       packageName = "motor_ctrl";
       launchFile = "motor.launch";
       workspace = "/home/lunabotics/goliath/catkin_ws";
     };
-  };
 
-  services.ros.launchServices = {
     actuator-ctrl = {
       packageName = "actuator_ctrl";
       launchFile = "actuator.launch";
