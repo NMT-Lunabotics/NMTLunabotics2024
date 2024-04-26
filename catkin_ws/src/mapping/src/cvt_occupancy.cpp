@@ -17,7 +17,7 @@ nav_msgs::OccupancyGrid convertToOccupancyGrid(const grid_map::GridMap& map, con
     grid_map::GridMapRosConverter::toOccupancyGrid(map, layer, dataMax, dataMin, occupancy_grid);
     // TODO make this a parameter
     for (auto& value : occupancy_grid.data) {
-        if (value < 50) {
+        if (value < 70) {
             value = 0;
         }
     }
