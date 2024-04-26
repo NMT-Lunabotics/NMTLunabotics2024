@@ -9,13 +9,13 @@
       <remap from="~input" to="/d455_right/depth/color/points" />
       <remap from="~output" to="/d455_right/depth/color/points_cropped" />
       <rosparam>
-        input_frame: d455_right_link
-        output_frame: d455_right_link
+        input_frame: base_link
+        output_frame: base_link
         # true: no points in the box, false: no points outside the box
         negative: true
-        min_x: 0
-        max_x: 0.7
-        min_y: -0.2
+        min_x: -0.4
+        max_x: 0.4
+        min_y: -0.6
         max_y: 1
         min_z: -2
         max_z: 2
