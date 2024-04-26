@@ -128,7 +128,7 @@
 
       {
         parent = "t265_link";
-        child = "base_link";
+        child = "base_link_real";
         x = inch (-10.53);
         y = inch (10.273);
         z = inch (10.0);
@@ -136,7 +136,13 @@
       }
 
       {
-        parent = "base_link";
+        parent = "base_link_real";
+        child = "base_link";
+        z = inch (-12);
+      }
+
+      {
+        parent = "base_link_real";
         child = "d455_left_lr";
         x = inch (10.579);
         y = inch (10.841);
@@ -161,7 +167,7 @@
       }
 
       {
-        parent = "base_link";
+        parent = "base_link_real";
         child = "d455_right_lr";
         x = inch (10.579);
         y = inch (-10.841);
