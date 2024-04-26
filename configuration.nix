@@ -17,16 +17,16 @@
 
   services.ros.enable = true;
 
-  # Have the ROS master force all the motors to stop when its service
-  # is stopped.
-  systemd.services.rosMaster.serviceConfig.ExecStopPost =
-    pkgs.writeScript "stop-robot"
-      ''
-        #!/bin/sh
-        cansend can0 001#8000800000000000 || true
-        cansend can0 003#8080000000000000 || true
-        cansend can0 007#ffffffffffffffff || true # Turn on all lights
-      '';
+  # # Have the ROS master force all the motors to stop when its service
+  # # is stopped.
+  # systemd.services.rosMaster.serviceConfig.ExecStopPost =
+  #   pkgs.writeScript "stop-robot"
+  #     ''
+  #       #!/bin/sh
+  #       cansend can0 001#8000800000000000 || true
+  #       cansend can0 003#8080000000000000 || true
+  #       cansend can0 007#ffffffffffffffff || true # Turn on all lights
+  #     '';
 
   programs.ros.packages = [
     "xacro"
