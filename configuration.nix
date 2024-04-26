@@ -131,7 +131,7 @@
         child = "base_link";
         x = inch (-10.53);
         y = inch (10.273);
-        z = inch (-14.337);
+        z = inch (-2.337);
         yaw = 90;
       }
 
