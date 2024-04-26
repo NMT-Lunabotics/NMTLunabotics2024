@@ -47,6 +47,8 @@
   programs.ros.ubuntuPackages = [
     "libeigen3-dev"
   ];
+
+  programs.ros.defaultWorkspace = "/home/lunabotics/goliath/catkin_ws";
   programs.ros.myIP = "192.168.0.207";
   services.ros.rosbridge.enable = true;
 
