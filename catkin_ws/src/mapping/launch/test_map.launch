@@ -11,7 +11,7 @@
         <arg name="depth_fps" value="30" />
         <arg name="depth_width" value="640" />
         <arg name="depth_height" value="480" />
-        <arg name="enable_color" value="true" />
+        <arg name="enable_color" value="false" />
         <arg name="pointcloud_texture_stream" value="RS2_STREAM_ANY" />
     </include>
 
