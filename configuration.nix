@@ -120,6 +120,9 @@
       {
         parent = "map";
         child = "t265_odom_frame";
+        x = inch (10.53);
+        y = inch (-10.273);
+        z = inch (14.337);
         # pitch = -90;
       }
 
