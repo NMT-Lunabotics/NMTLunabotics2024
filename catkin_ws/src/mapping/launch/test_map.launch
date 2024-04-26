@@ -11,7 +11,7 @@
         <arg name="depth_fps" value="30" />
         <arg name="depth_width" value="640" />
         <arg name="depth_height" value="480" />
-        <arg name="enable_color" value="false" />
+        <arg name="enable_color" value="true" />
         <arg name="pointcloud_texture_stream" value="RS2_STREAM_ANY" />
     </include>
 
@@ -77,5 +77,7 @@
     </node>
 
     <!-- Occupancy grid node -->
-    <node pkg="mapping" type="cvt_occupancy" name="cvt_occupancy" />
+    <node pkg="mapping" type="cvt_occupancy" name="cvt_occupancy" output="screen">
+        <param name="traversability_cutoff" value="50" />
+    </node>
 </launch>

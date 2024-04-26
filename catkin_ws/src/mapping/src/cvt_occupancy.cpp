@@ -6,6 +6,7 @@
 ros::Publisher occupancy_grid_pub;
 std::string elevation_map_topic, occupancy_grid_topic;
 std::string layer = "traversability";
+int traversability_cutoff;
 
 nav_msgs::OccupancyGrid convertToOccupancyGrid(const grid_map::GridMap& map, const std::string& layer) {
     // Find the min and max values in the traversability layer
@@ -17,9 +18,12 @@ nav_msgs::OccupancyGrid convertToOccupancyGrid(const grid_map::GridMap& map, con
     grid_map::GridMapRosConverter::toOccupancyGrid(map, layer, dataMax, dataMin, occupancy_grid);
     // TODO make this a parameter
     for (auto& value : occupancy_grid.data) {
-        if (value < 50) {
+	std::cout << traversability_cutoff << "\n";
+        if (value < traversability_cutoff) {
             value = 0;
-        }
+        } else {
+	    value = 100;
+	}
     }
     return occupancy_grid;
 }
@@ -50,6 +54,7 @@ int main(int argc, char** argv) {
     nh.param<std::string>("elevation_map_topic", elevation_map_topic, "elevation_mapping/elevation_map_raw");
 
     nh.param<std::string>("occupancy_grid_topic", occupancy_grid_topic, "/map");
+    nh.param<int>("traversability_cutoff", traversability_cutoff, 50);
 
     // Subscribe to the elevation_map topic
     ros::Subscriber elevation_map_sub = nh.subscribe(elevation_map_topic, 1, elevationMapCallback);

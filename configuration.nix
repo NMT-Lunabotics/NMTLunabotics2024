@@ -17,16 +17,16 @@
 
   services.ros.enable = true;
 
-  # Have the ROS master force all the motors to stop when its service
-  # is stopped.
-  systemd.services.rosMaster.serviceConfig.ExecStopPost =
-    pkgs.writeScript "stop-robot"
-      ''
-        #!/bin/sh
-        cansend can0 001#8000800000000000 || true
-        cansend can0 003#8080000000000000 || true
-        cansend can0 007#ffffffffffffffff || true # Turn on all lights
-      '';
+  # # Have the ROS master force all the motors to stop when its service
+  # # is stopped.
+  # systemd.services.rosMaster.serviceConfig.ExecStopPost =
+  #   pkgs.writeScript "stop-robot"
+  #     ''
+  #       #!/bin/sh
+  #       cansend can0 001#8000800000000000 || true
+  #       cansend can0 003#8080000000000000 || true
+  #       cansend can0 007#ffffffffffffffff || true # Turn on all lights
+  #     '';
 
   programs.ros.packages = [
     "xacro"
@@ -47,6 +47,8 @@
   programs.ros.ubuntuPackages = [
     "libeigen3-dev"
   ];
+
+  programs.ros.defaultWorkspace = "/home/lunabotics/goliath/catkin_ws";
   programs.ros.myIP = "192.168.0.207";
   services.ros.rosbridge.enable = true;
 
@@ -118,6 +120,9 @@
       {
         parent = "map";
         child = "t265_odom_frame";
+        x = inch (10.53);
+        y = inch (-10.273);
+        z = inch (14.337);
         # pitch = -90;
       }
 
@@ -136,7 +141,7 @@
         x = inch (10.579);
         y = inch (10.841);
         z = inch (18.034);
-        yaw = 0;
+        yaw = -40;
       }
 
       {
@@ -161,7 +166,7 @@
         x = inch (10.579);
         y = inch (-10.841);
         z = inch (18.034);
-        yaw = 0;
+        yaw = 40;
       }
 
       {
@@ -169,7 +174,7 @@
         child = "d455_right_ud";
         y = inch (-0.715);
         z = inch (1.569);
-        pitch = 40;
+        pitch = 20;
       }
 
       {

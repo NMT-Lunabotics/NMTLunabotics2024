@@ -18,12 +18,12 @@
 
   <node pkg="heartbeat" type="heartbeat_server_node" name="heartbeat_server_node" />
 
-  <node pkg="hud" type="hud_node" name="hud_node">
-    <param name="image_transport" value="theora" />
+  <node pkg="hud" type="hud_node" name="hud_node" output="screen">
+    <param name="image_transport" value="compressed" />
   </node>
 
   <node pkg="image_view" type="image_view" name="image_view" output="screen">
-    <param name="image_transport" value="theora" />
+    <param name="image_transport" value="compressed" />
     <remap from="image" to="/camera_hud"/>
   </node>
 
