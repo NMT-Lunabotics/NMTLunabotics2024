@@ -8,4 +8,4 @@ IFS=$'\n\t'
 cd ~/ros4nix
 git pull || true                # allow failure in case of no internet
 cp ~/goliath/*.nix .
-./ros4nix switch
+./ros4nix switch configuration.nix
