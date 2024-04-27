@@ -1,13 +1,12 @@
 input_sources:
-  l515_1:
+  d455_r:
     type: pointcloud
     topic: /d455_right/depth/color/points_cropped
     queue_size: 5
     publish_on_update: true
     sensor_processor:
       type: structured_light
-      ignore_points_above: 1
-      ignore_points_below: -2
+      ignore_points_above: 0.5
 
 map_frame_id: "map"
 robot_base_frame_id: "base_link"
@@ -18,7 +17,7 @@ postprocessor_num_threads: 10
 enable_visibility_cleanup: false
 
 robot_pose_with_covariance_topic: "/pose_with_covariance"
-track_point_frame_id:                       "t265_link"
+track_point_frame_id:                       "base_link"
 track_point_x:                              0.0
 track_point_y:                              0.0
 track_point_z:                              0.0
