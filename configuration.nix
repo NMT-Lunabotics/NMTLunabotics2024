@@ -192,6 +192,16 @@
         y = inch (-0.586);
         z = inch (1.550);
       }
+
+      {
+        parent = "base_link";
+        child = "d435_link";
+        # measurements from Niall's phone
+        x = inch (-23);
+        y = inch (8);
+        z = inch (17.5);
+        yaw = 180;
+      }
     ];
 }
 
