@@ -77,6 +77,8 @@
     usb-cam = {
       packageName = "usb_cam";
       executable = "usb_cam_node";
+      remap._video_device =
+        "/dev/v4l/by-id/usb-Arducam_Technology_Co.__Ltd._Arducam_USB_Camera_UC684-video-index0";
     };
 
     heartbeat_client = {
