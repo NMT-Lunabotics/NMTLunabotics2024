@@ -17,7 +17,7 @@
 
     <include file="$(find mapping)/launch/crop_points.launch" />
 
-    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+    <!-- include file="$(find realsense2_camera)/launch/rs_camera.launch">
         <arg name="camera" value="d455_left" />
         <arg name="serial_no" value="213522253528" />
         <arg name="filters" value="pointcloud" />
@@ -26,7 +26,7 @@
         <arg name="depth_height" value="480" />
         <arg name="enable_color" value="true" />
         <arg name="pointcloud_texture_stream" value="RS2_STREAM_ANY" />
-    </include>
+    </include -->
 
     <!-- include file="$(find realsense2_camera)/launch/rs_camera.launch">
         <arg name="camera" value="l515_1" />
