@@ -108,9 +108,9 @@
       workspace = "/home/lunabotics/goliath/catkin_ws";
     };
 
-    test-map = {
+    mapping = {
       packageName = "mapping";
-      launchFile = "test_map.launch";
+      launchFile = "mapping.launch";
       workspace = "/home/lunabotics/goliath/catkin_ws";
     };
   };
