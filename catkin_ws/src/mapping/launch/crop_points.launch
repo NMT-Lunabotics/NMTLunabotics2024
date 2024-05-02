@@ -5,7 +5,7 @@
     <node pkg="nodelet" type="nodelet" name="cropbox_filter_pcl_manager" args="manager" output="screen"/>
 
     <!-- A CropBox filter to avoid self-detection -->
-    <node pkg="nodelet" type="nodelet" name="self_removal" args="load pcl/CropBox cropbox_filter_pcl_manager" output="screen">
+    <node pkg="nodelet" type="nodelet" name="self_removal_d455_right" args="load pcl/CropBox cropbox_filter_pcl_manager" output="screen">
       <remap from="~input" to="/d455_right/depth/color/points" />
       <remap from="~output" to="/d455_right/depth/color/points_cropped" />
       <rosparam>
@@ -22,5 +22,21 @@
       </rosparam>
     </node>
 
+    <node pkg="nodelet" type="nodelet" name="self_removal_d455_left" args="load pcl/CropBox cropbox_filter_pcl_manager" output="screen">
+      <remap from="~input" to="/d455_left/depth/color/points" />
+      <remap from="~output" to="/d455_left/depth/color/points_cropped" />
+      <rosparam>
+        input_frame: base_link
+        output_frame: base_link
+        # true: no points in the box, false: no points outside the box
+        negative: true
+        min_x: -0.6
+        max_x: 1.2
+        min_y: -0.5
+        max_y: 0.5
+        min_z: -4
+        max_z: 4
+      </rosparam>
+    </node>
   </group>
 </launch>
