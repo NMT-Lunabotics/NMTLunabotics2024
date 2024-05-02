@@ -42,7 +42,7 @@
     "image-transport"
     "theora-image-transport"
     "compressed-image-transport"
-    "apriltag_ros"
+    "apriltag-ros"
   ];
 
   programs.ros.ubuntuPackages = [
