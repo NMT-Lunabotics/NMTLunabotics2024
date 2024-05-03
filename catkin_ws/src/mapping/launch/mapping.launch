@@ -11,44 +11,23 @@
         <arg name="depth_fps" value="30" />
         <arg name="depth_width" value="640" />
         <arg name="depth_height" value="480" />
-        <arg name="enable_color" value="true" />
+        <arg name="enable_color" value="false" />
         <arg name="pointcloud_texture_stream" value="RS2_STREAM_ANY" />
     </include>
 
-    <include file="$(find mapping)/launch/crop_points.launch" />
-
-    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+    <!--include file="$(find realsense2_camera)/launch/rs_camera.launch">
         <arg name="camera" value="d455_left" />
+        <arg name="device_type" value="d455" />
         <arg name="serial_no" value="213522253528" />
         <arg name="filters" value="pointcloud" />
         <arg name="depth_fps" value="30" />
         <arg name="depth_width" value="640" />
         <arg name="depth_height" value="480" />
-        <arg name="enable_color" value="true" />
-        <arg name="pointcloud_texture_stream" value="RS2_STREAM_ANY" />
-    </include>
-
-    <!-- include file="$(find realsense2_camera)/launch/rs_camera.launch">
-        <arg name="camera" value="l515_1" />
-        <arg name="serial_no" value="f1381818 " />
-        <arg name="filters" value="pointcloud" />
-        <arg name="depth_fps" value="30" />
-        <arg name="depth_width" value="640" />
-        <arg name="depth_height" value="480" />
         <arg name="enable_color" value="false" />
         <arg name="pointcloud_texture_stream" value="RS2_STREAM_ANY" />
-    </include -->
+    </include-->
 
-    <!-- include file="$(find realsense2_camera)/launch/rs_camera.launch">
-        <arg name="camera" value="l515_2 " />
-        <arg name="serial_no" value="f0461308 " />
-        <arg name="filters" value="pointcloud" />
-        <arg name="depth_fps" value="30" />
-        <arg name="depth_width" value="640" />
-        <arg name="depth_height" value="480" />
-        <arg name="enable_color" value="false" />
-        <arg name="pointcloud_texture_stream" value="RS2_STREAM_ANY" />
-    </include -->
+    <include file="$(find mapping)/launch/crop_points.launch" />
 
     <include file="$(find realsense2_camera)/launch/rs_t265.launch">
         <arg name="camera" value="t265" />
@@ -72,8 +51,8 @@
 
     <!-- Elevation mapping node -->
     <node pkg="elevation_mapping" type="elevation_mapping" name="elevation_mapping" output="screen">
-	<rosparam command="load" file="$(find mapping)/config/mapping.yaml" />
-        <rosparam command="load" file="$(find mapping)/config/postprocessor_pipeline.yaml" />
+        <rosparam command="load" file="$(find mapping)/config/mapping.yaml" />
+        <!--rosparam command="load" file="$(find mapping)/config/postprocessor_pipeline.yaml" /-->
     </node>
 
     <!-- Occupancy grid node -->
