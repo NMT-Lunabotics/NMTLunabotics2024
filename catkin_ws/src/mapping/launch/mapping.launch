@@ -4,14 +4,13 @@
         value="$(find mapping)/config/rosconsole.conf"/>
 
     <include file="$(find mapping)/launch/crop_points.launch" />
-
     <!-- Pose publisher -->
     <node pkg="mapping" name="pose_pub" type="pose_pub" />
 
     <!-- Elevation mapping node -->
     <node pkg="elevation_mapping" type="elevation_mapping" name="elevation_mapping" output="screen">
-	<rosparam command="load" file="$(find mapping)/config/mapping.yaml" />
-        <rosparam command="load" file="$(find mapping)/config/postprocessor_pipeline.yaml" />
+        <rosparam command="load" file="$(find mapping)/config/mapping.yaml" />
+        <!--rosparam command="load" file="$(find mapping)/config/postprocessor_pipeline.yaml" /-->
     </node>
 
     <!-- Occupancy grid node -->
