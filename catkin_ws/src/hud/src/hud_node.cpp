@@ -44,6 +44,8 @@ public:
     cv::Point armEnd(arm_end_x, arm_end_y);
     cv::Point bucket1(bucket_1_x, bucket_1_y);
     cv::Point bucket2(bucket_2_x, bucket_2_y);
+    cv::Point groundStart(start_x, start_y + 2);
+    cv::Point groundEnd(start_x + arm_len + bucket_1_len, start_y + 2);
 
     // Draw text on the video stream
     // cv::putText(cv_ptr->image, overlay_text, cv::Point(30, 30),
@@ -54,6 +56,8 @@ public:
              cv::Scalar(0, 0, 0), 2, cv::LINE_8);
     cv::line(cv_ptr->image, armEnd, bucket2,
              cv::Scalar(0, 0, 0), 2, cv::LINE_8);
+    cv::line(cv_ptr->image, groundStart, groundEnd,
+             cv::Scalar(0, 255, 0), 2, cv::LINE_8);
 
     // Output modified video stream
     image_pub_.publish(cv_ptr->toImageMsg());
