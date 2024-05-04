@@ -233,7 +233,7 @@
       }
 
       {
-        parent = "base_link";
+        parent = "base_link_real";
         child = "d435_link";
         # measurements from Niall's phone
         x = inch (-23);
