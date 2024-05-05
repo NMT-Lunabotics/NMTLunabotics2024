@@ -108,42 +108,10 @@
       workspace = "/home/lunabotics/goliath/catkin_ws";
     };
 
-    camera-right = {
-      packageName = "realsense2_camera";
-      launchFile = "rs_camera.launch";
-      args = {
-        camera = "d455_right";
-        device_type = "d455";
-        serial_no = "213522250920";
-        filters = "pointcloud";
-        depth_fps = "30";
-        depth_width = "640";
-        depth_height = "480";
-        enable_color = "true";
-        pointcloud_texture_stream = "RS2_STREAM_ANY";
-      };
-    };
-
-    camera-left = {
-      packageName = "realsense2_camera";
-      launchFile = "rs_camera.launch";
-      args = {
-        camera = "d455_left";
-        device_type = "d455";
-        serial_no = "213522253528";
-        filters = "pointcloud";
-        depth_fps = "30";
-        depth_width = "640";
-        depth_height = "480";
-        enable_color = "true";
-        pointcloud_texture_stream = "RS2_STREAM_ANY";
-      };
-    };
-
-    t265 = {
-      packageName = "realsense2_camera";
-      launchFile = "rs_t265.launch";
-      args.camera = "t265";
+    cameras = {
+      packageName = "mapping";
+      launchFile = "cameras.launch";
+      workspace = "/home/lunabotics/goliath/catkin_ws";
     };
 
     mapping = {
