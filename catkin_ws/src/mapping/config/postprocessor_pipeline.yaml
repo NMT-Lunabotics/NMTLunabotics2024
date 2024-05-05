@@ -19,7 +19,7 @@ postprocessor_pipeline: # set by postprocessor_pipeline_name
   - name: surface_normals
     type: gridMapFilters/NormalVectorsFilter
     params:
-      input_layer: elevation_smooth
+      input_layer: elevation
       output_layers_prefix: normal_vectors_
       radius: 0.2
       normal_vector_positive_axis: z

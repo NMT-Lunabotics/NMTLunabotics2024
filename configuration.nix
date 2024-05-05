@@ -171,15 +171,15 @@
         parent = "t265_link";
         child = "base_link_real";
         x = inch (-10.53);
-        y = inch (10.273);
-        z = inch (10.0);
+        y = inch (-10.273);
+        z = inch (-10.0);
         yaw = 90;
       }
 
       {
         parent = "base_link_real";
         child = "base_link";
-        z = inch (-12);
+        z = inch (-36);
       }
 
       {
