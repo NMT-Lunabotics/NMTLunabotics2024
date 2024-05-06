@@ -56,6 +56,7 @@ struct callback_data
 
     void aprilTagCallback(const apriltag_ros::AprilTagDetectionArray &a)
     {
+        broadTF(a, listener, broadcaster);
     }
 };
 
