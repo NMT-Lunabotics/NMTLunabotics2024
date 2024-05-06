@@ -67,6 +67,14 @@
       cmake --build build -t install
     '';
 
+  programs.ros.buildPackages.orb-slam-3 = pkgs.fetchFromGitHub {
+    owner = "christoskokas";
+    repo = "ORB_SLAM3_noetic";
+    rev = "v1.0-release";
+    sha256 = "15c0fffae526cec2363bcd66d5aae9970c5ec7a12e77333ca92b54072b8e3288";
+  };
+
+
   programs.ros.ubuntuPackages = [
     "libeigen3-dev"
   ];
