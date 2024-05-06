@@ -43,7 +43,70 @@
     "theora-image-transport"
     "compressed-image-transport"
     "apriltag-ros"
+    "cv-bridge"
   ];
+
+  programs.ros.buildPackages =
+    let
+      viso_src = pkgs.fetchFromGitHub {
+        # https://github.com/srv/viso2.git
+        owner = "srv";
+        repo = "viso2";
+        sha256 = "sha256-GAyENkEh58G6hffw07Cx4jW9g5kU1r1MhCwpOnNXWDQ=";
+        rev = "0c507e8";
+      };
+      patched_viso = pkgs.runCommand "patched" {} ''
+        cp -R ${viso_src} $out
+        chmod -R u+w $out
+
+        sed -i 's/-msse3//g' $out/viso2_ros/CMakeLists.txt
+        sed -i 's/-msse3//g' $out/libviso2/CMakeLists.txt
+      '';
+    in
+      {
+        libviso2 = "${patched_viso}/libviso2";
+        viso2 = "${patched_viso}/viso2";
+        viso2_ros = "${patched_viso}/vios2_ros";
+      };
+
+  # programs.ros.extraInstallCommands =
+  #   let
+  #     src = pkgs.fetchFromGitHub {
+  #       owner = "stevenlovegrove";
+  #       repo = "Pangolin";
+  #       rev = "v0.9.1";
+  #       sha256 = "sha256-B5YuNcJZHjR3dlVs66rySi68j29O3iMtlQvCjTUZBeY=";
+  #     };
+
+  #     orb-slam-3 = pkgs.fetchFromGitHub {
+  #       owner = "christoskokas";
+  #       repo = "ORB_SLAM3_noetic";
+  #       rev = "v1.0-release";
+  #       sha256 = "sha256-51ZPLrE5f5Zdqp6DJpg7OVzITBu+YJ4UTfwaycadIkw=";
+  #     };
+  #   in
+  #   ''
+  #     if [ ! -e /Pangolin ]; then
+  #       cp -r ${src} /Pangolin
+  #       cd /Pangolin
+
+  #       # Configure and build
+  #       cmake -B build
+  #       cmake --build build
+
+  #       # Install
+  #       cmake --build build -t install
+  #     fi
+
+  #     if [ ! -e /ORB_SLAM3_noetic ]; then
+  #       cp -r ${orb-slam-3} /ORB_SLAM3_noetic
+  #       cd /ORB_SLAM3_noetic
+
+  #       chmod +x build_ros.sh
+  #       ./build_ros.sh
+  #     fi
+  #   '';
+
 
   programs.ros.ubuntuPackages = [
     "libeigen3-dev"
@@ -211,4 +274,3 @@
       }
     ];
 }
-
