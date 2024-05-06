@@ -59,15 +59,12 @@
       cp -r ${src} /Pangolin
       cd /Pangolin
 
-      # # Install dependencies (as described above, or your preferred method)
-      # ./scripts/install_prerequisites.sh recommended
-
       # Configure and build
       cmake -B build
       cmake --build build
 
-      # GIVEME THE PYTHON STUFF!!!! (Check the output to verify selected python version)
-      cmake --build build -t pypangolin_pip_install
+      # Install
+      cmake --build build -t install
     '';
 
   programs.ros.ubuntuPackages = [
