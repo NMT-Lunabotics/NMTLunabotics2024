@@ -52,6 +52,23 @@
     sha256 = "";
   };
 
+  programs.ros.extraInstallCommands = ''
+    mkdir -p /fuckshit
+    cd /fuckshit
+    git clone --recursive https://github.com/stevenlovegrove/Pangolin.git
+    cd Pangolin
+
+    # Install dependencies (as described above, or your preferred method)
+    ./scripts/install_prerequisites.sh recommended
+
+    # Configure and build
+    cmake -B build
+    cmake --build build
+
+    # GIVEME THE PYTHON STUFF!!!! (Check the output to verify selected python version)
+    cmake --build build -t pypangolin_pip_install
+  '';
+
   programs.ros.ubuntuPackages = [
     "libeigen3-dev"
   ];
