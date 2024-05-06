@@ -53,10 +53,16 @@
         rev = "v0.9.1";
         sha256 = "sha256-B5YuNcJZHjR3dlVs66rySi68j29O3iMtlQvCjTUZBeY=";
       };
+
+      orb-slam-3 = pkgs.fetchFromGitHub {
+        owner = "christoskokas";
+        repo = "ORB_SLAM3_noetic";
+        rev = "v1.0-release";
+        sha256 = "15c0fffae526cec2363bcd66d5aae9970c5ec7a12e77333ca92b54072b8e3288";
+      };
     in
     ''
       if [ ! -e /Pangolin ]; then
-        rm -rf /Pangolin
         cp -r ${src} /Pangolin
         cd /Pangolin
 
@@ -67,14 +73,15 @@
         # Install
         cmake --build build -t install
       fi
-    '';
 
-  programs.ros.buildPackages.orb-slam-3 = pkgs.fetchFromGitHub {
-    owner = "christoskokas";
-    repo = "ORB_SLAM3_noetic";
-    rev = "v1.0-release";
-    sha256 = "15c0fffae526cec2363bcd66d5aae9970c5ec7a12e77333ca92b54072b8e3288";
-  };
+      if [ ! -e /ORB_SLAM3_noetic ]; then
+        cp -r ${orb-slam-3} /ORB_SLAM3_noetic
+        cd /ORB_SLAM3_noetic
+
+        chmod +x build_ros.sh
+        ./build_ros.sh
+      fi
+    '';
 
 
   programs.ros.ubuntuPackages = [
