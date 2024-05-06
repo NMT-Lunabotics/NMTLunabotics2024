@@ -45,13 +45,6 @@
     "apriltag-ros"
   ];
 
-  programs.ros.buildPackages.orb-slam-3 = pkgs.fetchFromGitHub {
-    owner = "christoskokas";
-    repo = "ORB_SLAM3_noetic";
-    rev = "v1.0-release";
-    sha256 = "";
-  };
-
   programs.ros.extraInstallCommands = ''
     mkdir -p /fuckshit
     cd /fuckshit
