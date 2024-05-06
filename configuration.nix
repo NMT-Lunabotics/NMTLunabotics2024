@@ -57,7 +57,7 @@
       };
       patched_viso = pkgs.runCommand "patched" {} ''
         cp -R ${viso_src} $out
-        chmod u+w $out
+        chmod -R u+w $out
 
         sed -i 's/-msse3//g' $out/viso2_ros/CMakeLists.txt
         sed -i 's/-msse3//g' $out/libviso2/CMakeLists.txt
