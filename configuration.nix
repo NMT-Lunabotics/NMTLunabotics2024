@@ -55,16 +55,18 @@
       };
     in
     ''
-      rm -rf /Pangolin
-      cp -r ${src} /Pangolin
-      cd /Pangolin
+      if [ ! -e /Pangolin ]; then
+        rm -rf /Pangolin
+        cp -r ${src} /Pangolin
+        cd /Pangolin
 
-      # Configure and build
-      cmake -B build
-      cmake --build build
+        # Configure and build
+        cmake -B build
+        cmake --build build
 
-      # Install
-      cmake --build build -t install
+        # Install
+        cmake --build build -t install
+      fi
     '';
 
   programs.ros.buildPackages.orb-slam-3 = pkgs.fetchFromGitHub {
@@ -241,4 +243,3 @@
       }
     ];
 }
-
