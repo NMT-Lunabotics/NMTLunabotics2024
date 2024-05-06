@@ -1,3 +1,4 @@
 -I/var/ros/opt/ros/noetic/include
 -I/var/ros/ext_libs/include
+-I/opt/ros/noetic/include
 -Idevel/include

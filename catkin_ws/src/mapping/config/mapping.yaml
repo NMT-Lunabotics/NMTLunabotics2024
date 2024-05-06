@@ -2,11 +2,11 @@ input_sources:
   d455_r:
     type: pointcloud
     topic: /d455_right/depth/color/points_cropped
-    queue_size: 2
+    queue_size: 10
     publish_on_update: true
     sensor_processor:
       type: structured_light
-      ignore_points_above: 0.5
+      ignore_points_above: 1.5
   d455_l:
     type: pointcloud
     topic: /d455_left/depth/color/points_cropped
@@ -14,23 +14,17 @@ input_sources:
     publish_on_update: true
     sensor_processor:
       type: structured_light
-      ignore_points_above: 0.5
-  d435:
-    type: pointcloud
-    topic: /d435/depth/color/points
-    queue_size: 10
-    publish_on_update: true
-    sensor_processor:
-      type: structured_light
-      ignore_points_above: 0.5
+      ignore_points_above: 1.5
 
 map_frame_id: "map"
 robot_base_frame_id: "base_link"
 
-# postprocessor_pipeline_name: postprocessor_pipeline
-#enable_continuous_cleanup: true
-# postprocessor_num_threads: 6
-enable_visibility_cleanup: false
+postprocessor_pipeline_name: postprocessor_pipeline
+enable_continuous_cleanup: false
+postprocessor_num_threads: 4
+enable_visibility_cleanup: true
+visibility_cleanup_rate: 5
+num_callback_threads: 4
 
 scanning_duration: 0.2
 

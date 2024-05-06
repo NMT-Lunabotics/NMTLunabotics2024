@@ -10,6 +10,8 @@ find_package(catkin REQUIRED COMPONENTS
     roslaunch
     grid_map_ros
     grid_map_msgs
+    tf
+    apriltag_ros
 )
 roslaunch_add_file_check(launch)
 
@@ -21,6 +23,8 @@ catkin_package(CATKIN_DEPENDS
     sensor_msgs
     grid_map_ros
     grid_map_msgs
+    tf
+    apriltag_ros
 )
 
 include_directories(include ${catkin_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIR})
@@ -40,7 +44,15 @@ add_dependencies(cvt_occupancy
     ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(cvt_occupancy ${catkin_LIBRARIES})
 
+add_executable(april_tag_loc src/april_tag_loc.cpp)
+add_dependencies(april_tag_loc
+    ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(april_tag_loc ${catkin_LIBRARIES})
+
+
 install(TARGETS
     pose_pub
     pc_pub
+    cvt_occupancy
+    april_tag_loc
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
