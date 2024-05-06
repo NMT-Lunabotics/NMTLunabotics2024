@@ -55,11 +55,18 @@
         sha256 = "sha256-GAyENkEh58G6hffw07Cx4jW9g5kU1r1MhCwpOnNXWDQ=";
         rev = "0c507e8";
       };
+      patched_viso = pkgs.runCommand "patched" ''
+        cp -R ${viso_src} $out
+        chmod u+w $out
+
+        sed -i 's/-msse3//g' $out/viso2_ros/CMakeLists.txt
+        sed -i 's/-msse3//g' $out/libviso2/CMakeLists.txt
+      '';
     in
       {
-        libviso2 = "${viso_src}/libviso2";
-        viso2 = "${viso_src}/viso2";
-        viso2_ros = "${viso_src}/vios2_ros";
+        libviso2 = "${patched_viso}/libviso2";
+        viso2 = "${patched_viso}/viso2";
+        viso2_ros = "${patched_viso}/vios2_ros";
       };
 
   # programs.ros.extraInstallCommands =
