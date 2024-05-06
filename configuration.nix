@@ -45,22 +45,30 @@
     "apriltag-ros"
   ];
 
-  programs.ros.extraInstallCommands = ''
-    mkdir -p /fuckshit
-    cd /fuckshit
-    git clone --recursive https://github.com/stevenlovegrove/Pangolin.git
-    cd Pangolin
+  programs.ros.extraInstallCommands =
+    let
+      src = pkgs.fetchFromGitHub {
+        owner = "stevenlovegrove";
+        repo = "Pangolin";
+        rev = "v0.9.1";
+        sha256 = "sha256-B5YuNcJZHjR3dlVs66rySi68j29O3iMtlQvCjTUZBeY=";
+      };
+    in
+    ''
+      rm -rf /Pangolin
+      cp -r ${src} /Pangolin
+      cd /Pangolin
 
-    # Install dependencies (as described above, or your preferred method)
-    ./scripts/install_prerequisites.sh recommended
+      # # Install dependencies (as described above, or your preferred method)
+      # ./scripts/install_prerequisites.sh recommended
 
-    # Configure and build
-    cmake -B build
-    cmake --build build
+      # Configure and build
+      cmake -B build
+      cmake --build build
 
-    # GIVEME THE PYTHON STUFF!!!! (Check the output to verify selected python version)
-    cmake --build build -t pypangolin_pip_install
-  '';
+      # GIVEME THE PYTHON STUFF!!!! (Check the output to verify selected python version)
+      cmake --build build -t pypangolin_pip_install
+    '';
 
   programs.ros.ubuntuPackages = [
     "libeigen3-dev"
