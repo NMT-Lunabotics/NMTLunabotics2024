@@ -55,7 +55,7 @@
         sha256 = "sha256-GAyENkEh58G6hffw07Cx4jW9g5kU1r1MhCwpOnNXWDQ=";
         rev = "0c507e8";
       };
-      patched_viso = pkgs.runCommand "patched" ''
+      patched_viso = pkgs.runCommand "patched" {} ''
         cp -R ${viso_src} $out
         chmod u+w $out
 
