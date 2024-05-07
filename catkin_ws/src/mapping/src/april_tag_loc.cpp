@@ -68,7 +68,7 @@ int main(int argc, char **argv)
         node.subscribe("tag_detections", 1, &callback_data::aprilTagCallback, &data);
 
     // Set a timer to republish transform.
-    ros::Timer timer = node.createTimer(0.1, &callback_data::timerCallback, &data);
+    ros::Timer timer = node.createTimer(10, &callback_data::timerCallback, &data);
 
     ros::spin();
     return 0;
