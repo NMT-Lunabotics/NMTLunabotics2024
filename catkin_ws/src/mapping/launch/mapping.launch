@@ -20,5 +20,5 @@
 
     <!-- April tag detection. -->
     <include file="$(find mapping)/launch/continuous_detection.launch" />
-    <node pkg="mapping" type="april_tag_loc" output="screen"></node>
+    <node pkg="mapping" type="april_tag_loc" name="april_tag_loc" output="screen"></node>
 </launch>
