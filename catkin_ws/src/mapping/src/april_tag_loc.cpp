@@ -32,7 +32,7 @@ void broadcast_tf(tf::TransformBroadcaster &broadcaster)
         std::cout << "Broadcasting transform\n";
 
         broadcaster.sendTransform(
-            tf::StampedTransform(transform, ros::Time::now(), "map", "d435_link"));
+            tf::StampedTransform(transform, ros::Time::now(), "d435_link", "arena"));
     }
 }
 
