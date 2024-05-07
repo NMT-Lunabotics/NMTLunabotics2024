@@ -141,6 +141,17 @@
       };
     };
 
+    camera-d435 = {
+      packageName = "realsense2_camera";
+      launchFile = "rs_camera.launch";
+      args = {
+        camera = "d435";
+        serial_no = "102122072092";
+        enable_color = "true";
+        pointcloud_texture_stream = "RS2_STREAM_ANY";
+      };
+    };
+
     t265 = {
       packageName = "realsense2_camera";
       launchFile = "rs_t265.launch";
