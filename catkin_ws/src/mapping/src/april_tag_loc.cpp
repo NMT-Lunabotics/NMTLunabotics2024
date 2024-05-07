@@ -54,7 +54,7 @@ struct callback_data
     tf::TransformListener &listener;
     tf::TransformBroadcaster &broadcaster;
 
-    void aprilTagCallback(const apriltag_ros::AprilTagDetectionArray &a)
+    void aprilTagCallback(const apriltag_ros::AprilTagDetectionArray::ConstPtr &a)
     {
         broadTF(a, listener, broadcaster);
     }
