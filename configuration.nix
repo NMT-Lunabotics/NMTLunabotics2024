@@ -46,29 +46,6 @@
     "cv-bridge"
   ];
 
-  programs.ros.buildPackages =
-    let
-      viso_src = pkgs.fetchFromGitHub {
-        # https://github.com/srv/viso2.git
-        owner = "srv";
-        repo = "viso2";
-        sha256 = "sha256-GAyENkEh58G6hffw07Cx4jW9g5kU1r1MhCwpOnNXWDQ=";
-        rev = "0c507e8";
-      };
-      patched_viso = pkgs.runCommand "patched" {} ''
-        cp -R ${viso_src} $out
-        chmod -R u+w $out
-
-        sed -i 's/-msse3//g' $out/viso2_ros/CMakeLists.txt
-        sed -i 's/-msse3//g' $out/libviso2/CMakeLists.txt
-      '';
-    in
-      {
-        libviso2 = "${patched_viso}/libviso2";
-        viso2 = "${patched_viso}/viso2";
-        viso2_ros = "${patched_viso}/vios2_ros";
-      };
-
   # programs.ros.extraInstallCommands =
   #   let
   #     src = pkgs.fetchFromGitHub {
