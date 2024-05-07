@@ -4,7 +4,7 @@
 bool handle_service(digging_autonomy::execute_digging_autonomyRequest &req,
                     digging_autonomy::execute_digging_autonomyResponse &res)
 {
-  return true;
+    return true;
 }
 
 int main(int argc, char **argv)
