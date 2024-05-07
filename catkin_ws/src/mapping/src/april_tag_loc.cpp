@@ -28,8 +28,12 @@ void calculate_tf(const apriltag_ros::AprilTagDetectionArray::ConstPtr &msg,
 void broadcast_tf(tf::TransformBroadcaster &broadcaster)
 {
     if (have_transform)
+    {
+        std::cout << "Broadcasting transform\n";
+
         broadcaster.sendTransform(
             tf::StampedTransform(transform, ros::Time::now(), "map", "d435_link"));
+    }
 }
 
 struct callback_data
