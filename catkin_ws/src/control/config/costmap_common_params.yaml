@@ -10,7 +10,7 @@ raytrace_range: 8
 # Convex hull of the robot, in meters.
 # TODO: Can we get this from the URDF?
 
-footprint: [[-0.8, -0.4], [0.8, -0.4], [-0.8, 0.4], [0.8, 0.4]]
+footprint: [[-0.5, -0.3], [0.8, -0.3], [0.8, 0.3], [-0.5, 0.3]]
 
 # robot_radius: 0.2
 inflation_radius: 0.5
