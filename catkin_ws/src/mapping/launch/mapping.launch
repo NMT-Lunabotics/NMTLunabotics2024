@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <launch>
     <env name="ROSCONSOLE_CONFIG_FILE"
-        value="$(find mapping)/config/rosconsole.conf"/>
+         value="$(find mapping)/config/rosconsole.conf"/>
 
     <include file="$(find mapping)/launch/crop_points.launch" />
     <!-- Pose publisher -->
@@ -17,4 +17,8 @@
     <param name="traversability_cutoff" value="20" />
     <node pkg="mapping" type="cvt_occupancy" name="cvt_occupancy" output="screen">
     </node>
+
+    <!-- April tag detection. -->
+    <include file="$(find mapping)/launch/continuous_detection.launch" />
+    <node pkg="mapping" type="april_tag_loc" output="screen"></node>
 </launch>
