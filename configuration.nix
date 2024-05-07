@@ -46,45 +46,6 @@
     "cv-bridge"
   ];
 
-  # programs.ros.extraInstallCommands =
-  #   let
-  #     src = pkgs.fetchFromGitHub {
-  #       owner = "stevenlovegrove";
-  #       repo = "Pangolin";
-  #       rev = "v0.9.1";
-  #       sha256 = "sha256-B5YuNcJZHjR3dlVs66rySi68j29O3iMtlQvCjTUZBeY=";
-  #     };
-
-  #     orb-slam-3 = pkgs.fetchFromGitHub {
-  #       owner = "christoskokas";
-  #       repo = "ORB_SLAM3_noetic";
-  #       rev = "v1.0-release";
-  #       sha256 = "sha256-51ZPLrE5f5Zdqp6DJpg7OVzITBu+YJ4UTfwaycadIkw=";
-  #     };
-  #   in
-  #   ''
-  #     if [ ! -e /Pangolin ]; then
-  #       cp -r ${src} /Pangolin
-  #       cd /Pangolin
-
-  #       # Configure and build
-  #       cmake -B build
-  #       cmake --build build
-
-  #       # Install
-  #       cmake --build build -t install
-  #     fi
-
-  #     if [ ! -e /ORB_SLAM3_noetic ]; then
-  #       cp -r ${orb-slam-3} /ORB_SLAM3_noetic
-  #       cd /ORB_SLAM3_noetic
-
-  #       chmod +x build_ros.sh
-  #       ./build_ros.sh
-  #     fi
-  #   '';
-
-
   programs.ros.ubuntuPackages = [
     "libeigen3-dev"
   ];
