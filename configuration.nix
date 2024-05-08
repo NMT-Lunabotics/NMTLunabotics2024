@@ -76,6 +76,7 @@
       param_io = "${any_node}/param_io";
       any_node = "${any_node}/any_node";
       any_worker = "${any_node}/any_worker";
+      signal_handler = "${any_node}/signal_handler";
     };
 
   services.ros.realsense2.enable = false;
