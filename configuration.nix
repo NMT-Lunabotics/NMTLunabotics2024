@@ -56,12 +56,26 @@
 
   services.ros.elevationMapping.build = true;
 
-  programs.ros.buildPackages.traversability_estimation = pkgs.fetchFromGitHub {
-    owner = "leggedrobotics";
-    repo = "traversability_estimation";
-    rev = "SRC_Final";
-    sha256 = "sha256-Cb37ar7XnVWkOgncjF5ZctwWpHJ38DTSAVQYUDaL2gQ=";
-  };
+  programs.ros.buildPackages =
+    let
+      any_node = pkgs.fetchFromGitHub {
+        owner = "leggedrobotics";
+        repo = "any_node";
+        rev = "0.5.0";
+        sha256 = "sha256-N9yDfoaF1EAmS1gH7G0YfOpBIzMApgHhYF7OSc7Cbgo=";
+      };
+    in
+    {
+      traversability_estimation = pkgs.fetchFromGitHub {
+        owner = "leggedrobotics";
+        repo = "traversability_estimation";
+        rev = "SRC_Final";
+        sha256 = "sha256-Cb37ar7XnVWkOgncjF5ZctwWpHJ38DTSAVQYUDaL2gQ=";
+      };
+
+      param_io = "${any_node}/param_io";
+      any_node = "${any_node}/any_node";
+    };
 
   services.ros.realsense2.enable = false;
 
