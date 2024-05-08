@@ -78,7 +78,7 @@ struct State
             // Extend the arms until they're at 250mm and the bucket is at
             // 240.
             std::cout << "Time to dump!\n";
-            while (arm_pos < 250 && bucket_pos < 240)
+            while (arm_pos < 250 || bucket_pos < 240)
             {
                 std::cout << "Waiting for arm_pos & bucket_pos\n";
                 send_actuator_commands((arm_pos < 250) ? -5 : 0, (bucket_pos < 240) ? 5 : 0);
@@ -89,12 +89,12 @@ struct State
 
             // Now drive backwards one meter.
             send_drive_commands(-1024, -1024);
-            usleep(0.2e6);
+            usleep(0.5e6);
             send_drive_commands(0, 0);
             std::cout << "Driving done\n";
 
             // And return to 100 on the arms, 60 on the bucket.
-            while (arm_pos > 100 && bucket_pos > 60)
+            while (arm_pos > 100 || bucket_pos > 60)
             {
                 std::cout << "Getting back to retracted state\n";
                 send_actuator_commands((arm_pos > 100) ? 5 : 0, (bucket_pos > 60) ? -5 : 0);
