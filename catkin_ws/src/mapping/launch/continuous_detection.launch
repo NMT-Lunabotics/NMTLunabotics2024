@@ -15,4 +15,6 @@
 
     <param name="publish_tag_detections_image" type="bool" value="true" />      <!-- default: false -->
   </node>
+
+  <node pkg="mapping" type="april_tag_loc" name="april_tag_loc" />
 </launch>
