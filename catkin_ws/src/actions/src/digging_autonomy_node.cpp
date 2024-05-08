@@ -120,7 +120,7 @@ struct State
             std::cout << "Time to dig!\n";
             set_angles(42.7, 17.1);
             std::cout << "Phase 2\n";
-            set_angles(42.7, 9.7);
+            set_angles(32.7, 0);
             std::cout << "Phase 3\n";
             drive(1, 0.8);
             std::cout << "Phase 4\n";
