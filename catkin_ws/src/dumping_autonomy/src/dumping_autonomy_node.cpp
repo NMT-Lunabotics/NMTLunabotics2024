@@ -81,7 +81,7 @@ struct State
             while (arm_pos < 250 && bucket_pos < 240)
             {
                 std::cout << "Waiting for arm_pos & bucket_pos\n";
-                send_actuator_commands(-5, 5);
+                send_actuator_commands((arm_pos < 250) ? -5 : 0, (bucket_pos < 240) ? 5 : 0);
                 usleep(0.1e6);
             }
             send_actuator_commands(0, 0);
@@ -97,7 +97,7 @@ struct State
             while (arm_pos > 100 && bucket_pos > 60)
             {
                 std::cout << "Getting back to retracted state\n";
-                send_actuator_commands(5, -5);
+                send_actuator_commands((arm_pos > 100) ? 5 : 0, (bucket_pos > 60) ? -5 : 0);
                 usleep(0.1e6);
             }
             std::cout << "We're done dumping!\n";
