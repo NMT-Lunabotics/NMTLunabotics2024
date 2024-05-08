@@ -4,6 +4,8 @@
 #include <thread>
 #include <unistd.h>
 
+#include "main_bus.hpp"
+
 // State of the overall program.
 struct State
 {
@@ -27,7 +29,7 @@ struct State
         arm_pos = 0;
         bucket_pos = 0;
 
-        service = nh.advertiseService("excavation", &State::handle_service, this);
+        service = nh.advertiseService("dump", &State::handle_service, this);
         can_subscriber = nh.subscribe("/canbus_input", 16, &State::handle_can_msg, this);
         can_publisher = nh.advertise<can_raw::CanFrame>("/canbus", 16);
 
@@ -35,23 +37,29 @@ struct State
         main_thread = std::thread(&State::thread_main, this);
     }
 
-    void send_actuator_commands(int arm_vel, int bucket_vel)
+    void send_actuator_commands(double arm_vel, double bucket_vel)
     {
+        can::ActuatorVelCommands cmds = {
+            .arm_vel = arm_vel,
+            .bucket_vel = bucket_vel,
+        };
+
         can_raw::CanFrame frame;
-        frame.id = 3;               // ActuatorVelCommands
-        frame.data[0] = arm_vel;    // arm_vel
-        frame.data[1] = bucket_vel; // bucket_vel
+        frame.id = (int)can::FrameID::ActuatorVelCommands;
+        can::to_buffer(frame.data.data(), can::serialize(cmds));
         can_publisher.publish(frame);
     }
 
-    void send_drive_commands(int left_vel, int right_vel)
+    void send_drive_commands(double left_vel, double right_vel)
     {
+        can::MotorCommands cmds = {
+            .left = {.speed = left_vel},
+            .right = {.speed = right_vel},
+        };
+
         can_raw::CanFrame frame;
-        frame.id = 1; // MotorCommands
-        frame.data[0] = left_vel >> 8;
-        frame.data[1] = left_vel & 0xff;
-        frame.data[2] = right_vel >> 8;
-        frame.data[3] = right_vel & 0xff;
+        frame.id = (int)can::FrameID::MotorCommands;
+        can::to_buffer(frame.data.data(), can::serialize(cmds));
         can_publisher.publish(frame);
     }
 
@@ -73,27 +81,27 @@ struct State
             while (arm_pos < 250 && bucket_pos < 240)
             {
                 std::cout << "Waiting for arm_pos & bucket_pos\n";
-                send_actuator_commands(0, 255);
+                send_actuator_commands(-5, 5);
                 usleep(0.1e6);
             }
-            send_actuator_commands(128, 128);
+            send_actuator_commands(0, 0);
             std::cout << "arm_pos & bucket_pos done, time to drive\n";
 
             // Now drive backwards one meter.
-            send_drive_commands(0, 0);
+            send_drive_commands(-1024, -1024);
             usleep(0.2e6);
-            send_drive_commands(32768, 32768);
+            send_drive_commands(0, 0);
             std::cout << "Driving done\n";
 
             // And return to 100 on the arms, 60 on the bucket.
             while (arm_pos > 100 && bucket_pos > 60)
             {
                 std::cout << "Getting back to retracted state\n";
-                send_actuator_commands(255, 0);
+                send_actuator_commands(5, -5);
                 usleep(0.1e6);
             }
             std::cout << "We're done dumping!\n";
-            send_actuator_commands(128, 128);
+            send_actuator_commands(0, 0);
 
             // We're done dumping.
             dumping = false;
