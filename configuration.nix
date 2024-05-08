@@ -56,6 +56,13 @@
 
   services.ros.elevationMapping.build = true;
 
+  programs.ros.buildPackages.traversability_estimation = pkgs.fetchFromGitHub {
+    owner = "leggedrobotics";
+    repo = "traversability_estimation";
+    rev = "SRC_Final";
+    sha256 = "sha256-Cb37ar7XnVWkOgncjF5ZctwWpHJ38DTSAVQYUDaL2gQ=";
+  };
+
   services.ros.realsense2.enable = false;
 
   # services.ros.runServices.canRawNode = {
