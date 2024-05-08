@@ -30,7 +30,7 @@ struct State
         arm_pos = 0;
         bucket_pos = 0;
 
-        service = nh.advertiseService("dump", &State::handle_service, this);
+        service = nh.advertiseService("dig", &State::handle_service, this);
         arm_status_subscriber = nh.subscribe("/arm_status", 16, &State::handle_arm_msg, this);
         can_publisher = nh.advertise<can_raw::CanFrame>("/canbus", 16);
 
