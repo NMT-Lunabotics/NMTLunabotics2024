@@ -239,7 +239,7 @@
         child = "d455_left_link";
         x = inch (0.893);
         y = inch (0.586);
-        z = inch (0.550);
+        z = inch (-0.550);
       }
 
       {
