@@ -22,6 +22,11 @@ struct State
     {
         std::cout << "Dumping autonomy initialized\n";
 
+        // we get to manually initialize things here??
+        dumping = false;
+        arm_pos = 0;
+        bucket_pos = 0;
+
         service = nh.advertiseService("excavation", &State::handle_service, this);
         can_subscriber = nh.subscribe("/canbus_input", 16, &State::handle_can_msg, this);
         can_publisher = nh.advertise<can_raw::CanFrame>("/canbus", 16);
