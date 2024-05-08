@@ -1,16 +1,18 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(dumping_autonomy)
+project(actions)
 
 find_package(catkin REQUIRED COMPONENTS
     roscpp
     std_msgs
     message_generation
     can_raw
+    can_convert
 )
 
 add_service_files(
     FILES
     execute_dumping_autonomy.srv
+    execute_digging_autonomy.srv
 )
 generate_messages(DEPENDENCIES)
 
@@ -26,6 +28,12 @@ add_dependencies(dumping_autonomy
     ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(dumping_autonomy ${catkin_LIBRARIES})
 
+add_executable(digging_autonomy src/digging_autonomy_node.cpp)
+add_dependencies(digging_autonomy
+    ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(digging_autonomy ${catkin_LIBRARIES})
+
 install(TARGETS
     dumping_autonomy
+    digging_autonomy
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-    <name>dumping_autonomy</name>
+    <name>actions</name>
     <version>0.1.0</version>
-    <description>The dumping_autonomy package</description>
+    <description>Pre-recorded robot actions</description>
 
     <maintainer email="alex.b.bethel@gmail.com">Alex Bethel</maintainer>
     <license>GPLv3</license>

@@ -1,5 +1,5 @@
+#include <actions/execute_dumping_autonomy.h>
 #include <can_raw/CanFrame.h>
-#include <dumping_autonomy/execute_dumping_autonomy.h>
 #include <ros/ros.h>
 #include <thread>
 #include <unistd.h>
@@ -108,8 +108,8 @@ struct State
         }
     }
 
-    bool handle_service(dumping_autonomy::execute_dumping_autonomyRequest &req,
-                        dumping_autonomy::execute_dumping_autonomyResponse &res)
+    bool handle_service(actions::execute_dumping_autonomyRequest &req,
+                        actions::execute_dumping_autonomyResponse &res)
     {
         // Hand things off to the thread.
         dumping = true;
