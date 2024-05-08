@@ -11,6 +11,12 @@ class DumpNode
 public:
     DumpNode() : ac_("move_base", true)
     {
+        // Initialize parameters
+        nh_.param("goal_x", goal_x_, 10.0);
+        nh_.param("goal_y", goal_y_, 10.0);
+        nh_.param("goal_yaw", goal_yaw_, 180.0);
+        nh_.param("dump_button", dump_button_, 0);
+
         // Wait for the action server to come up
         while(!ac_.waitForServer(ros::Duration(5.0))){
             ROS_INFO("Waiting for the move_base action server to come up");
@@ -21,14 +27,14 @@ public:
 
     void joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
     {
-        // Check if the button (index 0) is pressed
-        if (joy->buttons[0] == 1)
+        // Check if the configured button is pressed
+        if (joy->buttons[dump_button_] == 1)
         {
-            sendGoal(10.0, 10.0, 180.0);
+            sendGoal(goal_x_, goal_y_, goal_yaw_);
         }
     }
 
-    void sendGoal(float x, float y, float yaw_degrees)
+    void sendGoal(double x, double y, double yaw_degrees)
     {
         move_base_msgs::MoveBaseGoal goal;
         goal.target_pose.header.frame_id = "map";
@@ -55,8 +61,8 @@ public:
 
     void callDumpService()
     {
-        std_srvs::dump srv;
-        if (ros::service::call("dump", srv))
+        std_srvs::Empty srv;
+        if (ros::service::call("Dump", srv))
             ROS_INFO("Successfully called Dump service.");
         else
             ROS_ERROR("Failed to call Dump service.");
@@ -66,6 +72,8 @@ private:
     ros::NodeHandle nh_;
     ros::Subscriber joy_sub_;
     actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> ac_;
+    double goal_x_, goal_y_, goal_yaw_;
+    int dump_button_;
 };
 
 int main(int argc, char** argv)
