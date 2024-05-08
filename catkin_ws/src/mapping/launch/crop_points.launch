@@ -14,7 +14,7 @@
         # true: no points in the box, false: no points outside the box
         negative: true
         min_x: -0.6
-        max_x: 1.2
+        max_x: 1.4
         min_y: -0.5
         max_y: 0.5
         min_z: -4
@@ -31,7 +31,7 @@
         # true: no points in the box, false: no points outside the box
         negative: true
         min_x: -0.6
-        max_x: 1.2
+        max_x: 1.4
         min_y: -0.5
         max_y: 0.5
         min_z: -4
