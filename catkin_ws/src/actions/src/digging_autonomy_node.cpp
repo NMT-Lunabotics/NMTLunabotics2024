@@ -123,8 +123,8 @@ struct State
             drive(1, 2.8);
             set_angles(19.0, 6.3);
             drive(1, 1.0);
-            set_angles(-7.1, 6.3);
-            set_angles(-7.1, 18.2);
+            set_angles(-5.5, 6.3);
+            set_angles(-5.5, 18.2);
             std::cout << "Done!\n";
 
             // We're done digging.
