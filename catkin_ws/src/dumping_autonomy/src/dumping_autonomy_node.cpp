@@ -79,11 +79,11 @@ struct State
             send_actuator_commands(128, 128);
             std::cout << "arm_pos & bucket_pos done, time to drive\n";
 
-            // Now drive backwards one meter.
-            send_drive_commands(0, 0);
-            usleep(0.7e6);
-            send_drive_commands(32768, 32768);
-            std::cout << "Driving done\n";
+            // // Now drive backwards one meter.
+            // send_drive_commands(0, 0);
+            // usleep(0.7e6);
+            // send_drive_commands(32768, 32768);
+            // std::cout << "Driving done\n";
 
             // And return to 100 on the arms, 60 on the bucket.
             while (arm_pos > 100 && bucket_pos > 60)
