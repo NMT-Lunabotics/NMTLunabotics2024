@@ -12,7 +12,7 @@ TebLocalPlannerROS:
  dt_hysteresis: 0.1
  max_samples: 500
  global_plan_overwrite_orientation: True
- allow_init_with_backwards_motion: False
+ allow_init_with_backwards_motion: True
  max_global_plan_lookahead_dist: 3.0
  global_plan_viapoint_sep: -1
  global_plan_prune_distance: 1
@@ -26,25 +26,26 @@ TebLocalPlannerROS:
  min_vel_x: 0.5
  max_vel_x_backwards: 2.0
  max_vel_y: 0.0
+ max_vel_theta: 1.0
  max_vel_theta: 6.0
  acc_lim_x: 1.0
  acc_lim_theta: 1.0
  min_turning_radius: 0.1 # diff-drive robot (can turn on place!)
 
- footprint_model:
-   type: "point"
+ # footprint_model:
+ #   type: "point"
 
  # GoalTolerance
     
  xy_goal_tolerance: 0.2
- yaw_goal_tolerance: 0.1
+ yaw_goal_tolerance: 0.2
  free_goal_vel: False
  complete_global_plan: True
     
  # Obstacles
     
  min_obstacle_dist: 0.7 # This value must also include our robot radius, since footprint_model is set to "point".
- inflation_dist: 0.6
+ # inflation_dist: 0.6
  include_costmap_obstacles: True
  costmap_obstacles_behind_robot_dist: 1.5
  obstacle_poses_affected: 15

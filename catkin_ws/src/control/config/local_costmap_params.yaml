@@ -23,8 +23,8 @@ local_costmap:
 
 
   # In meters.
-  width: 3
-  height: 3
+  width: 6
+  height: 6
 
   # Should probably be the same as the resolution of the static map.
   resolution: 0.1
