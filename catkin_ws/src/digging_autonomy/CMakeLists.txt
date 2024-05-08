@@ -5,6 +5,7 @@ find_package(catkin REQUIRED COMPONENTS
     roscpp
     std_msgs
     message_generation
+    can_raw
 )
 
 add_service_files(
