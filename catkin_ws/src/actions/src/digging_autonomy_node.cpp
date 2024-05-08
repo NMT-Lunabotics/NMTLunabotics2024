@@ -122,7 +122,7 @@ struct State
             std::cout << "Phase 2\n";
             set_angles(38.0, 6.3);
             std::cout << "Phase 3\n";
-            drive(1, 0.8);
+            drive(1, 2.8);
             std::cout << "Phase 4\n";
             set_angles(9.0, 6.3);
             std::cout << "Phase 5\n";
