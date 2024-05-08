@@ -5,7 +5,7 @@
 #include <tf/transform_listener.h>
 
 static bool have_transform = false;
-static tf::Transform map_to_tag;
+static tf::Transform map_to_t265odom;
 
 // Get the transforms that will be added together (i.e. d435 and t265)
 bool getTransform(const std::string &from_frame, const std::string &to_frame,
@@ -33,7 +33,7 @@ void calculate_tf(const apriltag_ros::AprilTagDetectionArray::ConstPtr &msg,
     if (!msg->detections.empty())
     {
         tf::StampedTransform map_to_d435;
-        if (getTransform("map", "d435_color_optical_frame", map_to_d435, listener))
+        if (getTransform("tag", "map", tag_to_map, listener))
         {
             // Set first april tag detected pose
             const auto &detection = msg->detections[0];
@@ -41,8 +41,14 @@ void calculate_tf(const apriltag_ros::AprilTagDetectionArray::ConstPtr &msg,
             // Transform the detected apriltag pose into a tf and add it to the cameras-tf
             tf::Pose d435_to_tag;
             tf::poseMsgToTF(detection.pose.pose.pose, d435_to_tag);
+
+            tf::StampedTransform d435_to_t265odom;
+            getTransform("t265_odom_frame", "d435_color_optical_frame", t265odom_to_d435, listener);
+
             have_transform = true;
-            map_to_tag = map_to_d435 * d435_to_tag;
+            
+            map_to_t265 = tag_to_map * d435_to_tag * t265odom_to_d435;
+ 
         }
     }
 }
