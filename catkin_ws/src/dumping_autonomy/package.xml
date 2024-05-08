@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-    <name>digging_autonomy</name>
+    <name>dumping_autonomy</name>
     <version>0.1.0</version>
-    <description>The digging_autonomy package</description>
+    <description>The dumping_autonomy package</description>
 
     <maintainer email="alex.b.bethel@gmail.com">Alex Bethel</maintainer>
     <license>GPLv3</license>

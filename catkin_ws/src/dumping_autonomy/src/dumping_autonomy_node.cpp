@@ -1,5 +1,5 @@
 #include <can_raw/CanFrame.h>
-#include <digging_autonomy/execute_digging_autonomy.h>
+#include <dumping_autonomy/execute_dumping_autonomy.h>
 #include <ros/ros.h>
 #include <thread>
 #include <unistd.h>
@@ -95,8 +95,8 @@ struct State
         }
     }
 
-    bool handle_service(digging_autonomy::execute_digging_autonomyRequest &req,
-                        digging_autonomy::execute_digging_autonomyResponse &res)
+    bool handle_service(dumping_autonomy::execute_dumping_autonomyRequest &req,
+                        dumping_autonomy::execute_dumping_autonomyResponse &res)
     {
         // Hand things off to the thread.
         dumping = true;
@@ -122,7 +122,7 @@ struct State
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "digging_autonomy");
+    ros::init(argc, argv, "dumping_autonomy");
     State state;
     ros::spin();
 }
