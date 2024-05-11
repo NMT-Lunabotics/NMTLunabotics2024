@@ -117,6 +117,7 @@
       packageName = "leds";
       executable = "leds_node";
     };
+
   };
 
   services.ros.launchServices = {
@@ -129,6 +130,12 @@
     actuator-ctrl = {
       packageName = "actuator_ctrl";
       launchFile = "actuator.launch";
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+    };
+
+    continuous_detection = {
+      packageName = "mapping";
+      launchFile = "continuous_detection.launch";
       workspace = "/home/lunabotics/goliath/catkin_ws";
     };
 
