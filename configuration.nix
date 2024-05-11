@@ -117,6 +117,18 @@
       packageName = "leds";
       executable = "leds_node";
     };
+
+    digging-autonomy = {
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+      packageName = "actions";
+      executable = "digging_autonomy";
+    };
+
+    dumping-autonomy = {
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+      packageName = "actions";
+      executable = "dumping_autonomy";
+    };
   };
 
   services.ros.launchServices = {
@@ -129,6 +141,12 @@
     actuator-ctrl = {
       packageName = "actuator_ctrl";
       launchFile = "actuator.launch";
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+    };
+
+    continuous_detection = {
+      packageName = "mapping";
+      launchFile = "continuous_detection.launch";
       workspace = "/home/lunabotics/goliath/catkin_ws";
     };
 
@@ -175,15 +193,21 @@
     #   };
     # };
 
-    # cameras = {
-    #   packageName = "mapping";
-    #   launchFile = "cameras.launch";
-    #   workspace = "/home/lunabotics/goliath/catkin_ws";
-    # };
+    cameras = {
+      packageName = "mapping";
+      launchFile = "cameras.launch";
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+    };
 
     mapping = {
       packageName = "mapping";
       launchFile = "mapping.launch";
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+    };
+
+    move-base = {
+      packageName = "control";
+      launchFile = "move_base.launch";
       workspace = "/home/lunabotics/goliath/catkin_ws";
     };
   };
