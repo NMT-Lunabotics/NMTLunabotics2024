@@ -87,6 +87,21 @@ struct State
             send_actuator_commands(0, 0);
             std::cout << "arm_pos & bucket_pos done, time to drive\n";
 
+            // Do the jiggle
+            send_drive_commands(-1024, -1024);
+            usleep(0.2e6);
+            send_drive_commands(1024, 1024);
+            usleep(0.2e6);
+            send_drive_commands(-1024, -1024);
+            usleep(0.2e6);
+            send_drive_commands(1024, 1024);
+            usleep(0.2e6);
+            send_drive_commands(-1024, -1024);
+            usleep(0.2e6);
+            send_drive_commands(1024, 1024);
+            usleep(0.2e6);
+            send_drive_commands(0, 0);
+
             // Now drive backwards one meter.
             send_drive_commands(-1024, -1024);
             usleep(0.7e6);
