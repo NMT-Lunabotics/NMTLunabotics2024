@@ -32,7 +32,7 @@ void calculate_tf(const apriltag_ros::AprilTagDetectionArray::ConstPtr &msg,
     // If the detection is found
     if (!msg->detections.empty())
     {
-        tf::StampedTransform map_to_d435;
+        tf::StampedTransform tag_to_map;
         if (getTransform("tag", "map", tag_to_map, listener))
         {
             // Set first april tag detected pose
@@ -42,12 +42,12 @@ void calculate_tf(const apriltag_ros::AprilTagDetectionArray::ConstPtr &msg,
             tf::Pose d435_to_tag;
             tf::poseMsgToTF(detection.pose.pose.pose, d435_to_tag);
 
-            tf::StampedTransform d435_to_t265odom;
+            tf::StampedTransform t265odom_to_d435;
             getTransform("t265_odom_frame", "d435_color_optical_frame", t265odom_to_d435, listener);
 
             have_transform = true;
             
-            map_to_t265 = tag_to_map * d435_to_tag * t265odom_to_d435;
+            map_to_t265odom = tag_to_map * d435_to_tag * t265odom_to_d435;
  
         }
     }
@@ -59,7 +59,7 @@ void broadcast_tf(tf::TransformBroadcaster &broadcaster)
     {
         std::cout << "Broadcasting transform\n";
 
-        broadcaster.sendTransform(tf::StampedTransform(map_to_tag, ros::Time::now(), "map", "tag"));
+        broadcaster.sendTransform(tf::StampedTransform(map_to_t265odom, ros::Time::now(), "map", "t265odom"));
     }
 }
 
