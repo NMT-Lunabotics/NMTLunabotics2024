@@ -59,7 +59,7 @@ void broadcast_tf(tf::TransformBroadcaster &broadcaster)
     {
         std::cout << "Broadcasting transform\n";
 
-        broadcaster.sendTransform(tf::StampedTransform(map_to_t265odom, ros::Time::now(), "map", "t265odom"));
+        broadcaster.sendTransform(tf::StampedTransform(map_to_t265odom, ros::Time::now(), "map", "t265_odom_frame"));
     }
 }
 
