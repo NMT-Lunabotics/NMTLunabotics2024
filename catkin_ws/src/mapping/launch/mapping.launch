@@ -19,5 +19,5 @@
     </node>
 
     <!-- April tag detection. -->
-    <include file="$(find mapping)/launch/continuous_detection.launch" />
+    <!-- <include file="$(find mapping)/launch/continuous_detection.launch" /> -->
 </launch>
