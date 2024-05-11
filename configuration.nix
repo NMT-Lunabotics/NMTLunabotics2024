@@ -118,6 +118,17 @@
       executable = "leds_node";
     };
 
+    digging-autonomy = {
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+      packageName = "actions";
+      executable = "digging_autonomy";
+    };
+
+    dumping-autonomy = {
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+      packageName = "actions";
+      executable = "dumping_autonomy";
+    };
   };
 
   services.ros.launchServices = {
@@ -191,6 +202,12 @@
     mapping = {
       packageName = "mapping";
       launchFile = "mapping.launch";
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+    };
+
+    move-base = {
+      packageName = "control";
+      launchFile = "move_base.launch";
       workspace = "/home/lunabotics/goliath/catkin_ws";
     };
   };
