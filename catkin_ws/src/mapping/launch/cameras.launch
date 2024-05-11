@@ -13,7 +13,6 @@
         <arg name="depth_height" value="480" />
         <arg name="enable_color" value="true" />
         <arg name="pointcloud_texture_stream" value="RS2_STREAM_ANY" />
-        <arg name="respawn" value="true" />
     </include>
 
     <include file="$(find realsense2_camera)/launch/rs_camera.launch">
@@ -25,7 +24,6 @@
         <arg name="depth_height" value="480" />
         <arg name="enable_color" value="true" />
         <arg name="pointcloud_texture_stream" value="RS2_STREAM_ANY" />
-        <arg name="respawn" value="true" />
     </include>
 
     <include file="$(find realsense2_camera)/launch/rs_camera.launch">
@@ -37,11 +35,9 @@
         <arg name="depth_height" value="480" /!-->
         <arg name="enable_color" value="true" />
         <arg name="pointcloud_texture_stream" value="RS2_STREAM_ANY" />
-        <arg name="respawn" value="true" />
     </include>
 
     <include file="$(find realsense2_camera)/launch/rs_t265.launch">
         <arg name="camera" value="t265" />
-        <arg name="respawn" value="true" />
     </include>
 </launch>
