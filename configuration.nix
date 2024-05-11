@@ -51,7 +51,8 @@
   ];
 
   programs.ros.defaultWorkspace = "/home/lunabotics/goliath/catkin_ws";
-  programs.ros.myIP = "192.168.0.207";
+  programs.ros.myIP = "192.168.5.5";
+  # programs.ros.myIP = "192.168.0.207";
   services.ros.rosbridge.enable = true;
 
   services.ros.elevationMapping.build = true;
@@ -193,11 +194,11 @@
     #   };
     # };
 
-    cameras = {
-      packageName = "mapping";
-      launchFile = "cameras.launch";
-      workspace = "/home/lunabotics/goliath/catkin_ws";
-    };
+    # cameras = {
+    #   packageName = "mapping";
+    #   launchFile = "cameras.launch";
+    #   workspace = "/home/lunabotics/goliath/catkin_ws";
+    # };
 
     mapping = {
       packageName = "mapping";
