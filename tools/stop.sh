@@ -10,4 +10,6 @@ while true; do
 
     # Stop the actuators.
     cansend can0 003#80800000
+
+    sleep 0.01
 done
