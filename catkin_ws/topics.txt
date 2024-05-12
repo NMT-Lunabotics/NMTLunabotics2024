@@ -1,6 +1,7 @@
 ------------------------------------------------------
 Topics to bag
 ------------------------------------------------------
+/arm_status
 /canbus
 /canbus_input
 /d455_left/depth/color/points_cropped
