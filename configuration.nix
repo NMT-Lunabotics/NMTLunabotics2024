@@ -320,9 +320,9 @@
         child = "map";
         y = inch (7);
         z = -1.25;
-        roll = 90;
+        # roll = 90;
         # pitch = 90;
-        yaw = 180;
+        # yaw = 180;
       }
 
     ];
