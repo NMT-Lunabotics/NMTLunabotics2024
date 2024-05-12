@@ -308,7 +308,7 @@
         child = "map";
         y = 1.25;
         z = inch (7);
-        roll = 90;
+        roll = 180;
         pitch = -90;
       }
     ];
