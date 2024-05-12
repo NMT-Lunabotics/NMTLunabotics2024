@@ -318,18 +318,19 @@
       {
         parent = "tag";
         child = "map";
-        y = inch (7);
-        z = -1.25;
+        z = inch (7);
+        y = -1.25;
         # roll = 90;
         # pitch = 90;
         # yaw = 180;
       }
 
       {
-        parent = "tag_0";
+        parent = "tag";
         child = "tag_righted";
-        roll = -90;
-        pitch = -90;
+        roll = 0;
+        pitch = 90;
+        yaw = 90;
       }
 
     ];
