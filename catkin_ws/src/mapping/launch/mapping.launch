@@ -3,7 +3,6 @@
     <env name="ROSCONSOLE_CONFIG_FILE"
          value="$(find mapping)/config/rosconsole.conf"/>
 
-    <include file="$(find mapping)/launch/crop_points.launch" />
     <!-- Pose publisher -->
     <node pkg="mapping" name="pose_pub" type="pose_pub" />
 
