@@ -308,6 +308,8 @@
         child = "map";
         y = 1.25;
         z = inch (7);
+        roll = 90;
+        pitch = -90;
       }
     ];
 }
