@@ -51,9 +51,9 @@
   ];
 
   programs.ros.defaultWorkspace = "/home/lunabotics/goliath/catkin_ws";
-  # programs.ros.myIP = "192.168.5.5";
+  programs.ros.myIP = "192.168.5.5";
   # programs.ros.myIP = "192.168.0.213";
-  programs.ros.myIP = "192.168.0.207";
+  # programs.ros.myIP = "192.168.0.207";
   services.ros.rosbridge.enable = true;
 
   services.ros.elevationMapping.build = true;
@@ -97,18 +97,6 @@
     after = [ "rosMaster.service" ];
     script = ''
       /var/ros/nixWrappers/rostopic pub /leds/motion std_msgs/Bool true
-    '';
-  };
-
-  # DHCP insurance. It's stupid.
-  systemd.services.ros-dhcp-insurance = {
-    wantedBy = [ "multi-user.target" ];
-    script = ''
-      sleep 1
-      while true; do
-          sudo systemctl start kea-dhcp4-server
-          sleep 1
-      done
     '';
   };
 
@@ -314,5 +302,16 @@
         z = inch (17.5);
         yaw = 180;
       }
+
+      {
+        parent = "tag";
+        child = "map";
+        y = 1.25;
+        z = inch(7);
+        roll = -90;
+        pitch = -180;
+        yaw = 90;    
+       }
+         
     ];
 }
