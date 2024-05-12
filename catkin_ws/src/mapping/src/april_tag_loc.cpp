@@ -48,6 +48,8 @@ void calculate_tf(const apriltag_ros::AprilTagDetectionArray::ConstPtr &msg,
             have_transform = true;
             
             map_to_t265odom = tag_to_map * d435_to_tag * t265odom_to_d435;
+
+            map_to_t265odom.setRotation(tf::createQuaternionFromRPY(0.0, -1.5708, 0.0));
  
         }
     }
