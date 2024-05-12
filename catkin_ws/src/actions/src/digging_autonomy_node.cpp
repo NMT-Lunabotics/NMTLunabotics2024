@@ -120,11 +120,11 @@ struct State
             std::cout << "Time to dig!\n";
             set_angles(42.7, 17.1);
             set_angles(38.0, 6.3);
-            drive(1, 2.8);
+            drive(1, 3.0);
             set_angles(19.0, 6.3);
-            drive(1, 1.0);
+            drive(1, 3.0);
             set_angles(-5.5, 6.3);
-            set_angles(-5.5, 18.2);
+            set_angles(-5.5, 10.2);
             std::cout << "Done!\n";
 
             // We're done digging.
