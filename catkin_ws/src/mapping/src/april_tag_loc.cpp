@@ -45,15 +45,12 @@ void calculate_tf(const apriltag_ros::AprilTagDetectionArray::ConstPtr &msg,
             tf::StampedTransform t265odom_to_d435;
             getTransform("t265_odom_frame", "d435_color_optical_frame", t265odom_to_d435, listener);
 
-            tf::Transform pitchRotation;
-
-            pitchRotation.setRotation(tf::createQuaternionFromRPY(0.0, -1.5708, 0.0));
-
-            map_to_t265odom = tag_to_map * d435_to_tag * pitch_rotation * t265odom_to_d435;
-
-
             have_transform = true;
             
+            map_to_t265odom = tag_to_map * d435_to_tag * t265odom_to_d435;
+
+            map_to_t265odom.setRotation(tf::createQuaternionFromRPY(0.0, -1.5708, 0.0));
+ 
         }
     }
 }
