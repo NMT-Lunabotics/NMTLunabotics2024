@@ -47,9 +47,13 @@ void calculate_tf(const apriltag_ros::AprilTagDetectionArray::ConstPtr &msg,
 
             tf::Transform pitch_rotation;
 
-            pitch_rotation.setRotation(tf::createQuaternionFromRPY(0.0, -1.5708, 0.0));
+            pitch_rotation.setRotation(tf::createQuaternionFromRPY(0.0, -3.1415/4, 0.0));
 
-            map_to_t265odom = tag_to_map * d435_to_tag * pitch_rotation * t265odom_to_d435;
+            tf::Transform corrected_april;
+
+            corrected_april = d435_to_tag * pitch_rotation;
+
+            map_to_t265odom = tag_to_map * corrected_april * t265odom_to_d435;
 
             have_transform = true;
  
