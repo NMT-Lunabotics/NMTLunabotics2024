@@ -304,10 +304,10 @@
       }
 
       {
-        parent = "map";
-        child = "tag";
-        y = -1.25;
-        z = inch (-7);
+        parent = "tag";
+        child = "map";
+        y = 1.25;
+        z = inch (7);
       }
     ];
 }
