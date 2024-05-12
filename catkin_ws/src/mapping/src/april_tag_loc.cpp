@@ -33,7 +33,7 @@ void calculate_tf(const apriltag_ros::AprilTagDetectionArray::ConstPtr &msg,
     if (!msg->detections.empty())
     {
         tf::StampedTransform tag_to_map;
-        if (getTransform("map", "tag", tag_to_map, listener))
+        if (getTransform("map", "tag_righted", tag_to_map, listener))
         {
             // Set first april tag detected pose
             const auto &detection = msg->detections[0];
