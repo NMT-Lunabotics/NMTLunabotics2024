@@ -33,7 +33,7 @@ void calculate_tf(const apriltag_ros::AprilTagDetectionArray::ConstPtr &msg,
     if (!msg->detections.empty())
     {
         tf::StampedTransform tag_to_map;
-        if (getTransform("tag", "map", tag_to_map, listener))
+        if (getTransform("map", "tag", tag_to_map, listener))
         {
             // Set first april tag detected pose
             const auto &detection = msg->detections[0];
@@ -48,15 +48,15 @@ void calculate_tf(const apriltag_ros::AprilTagDetectionArray::ConstPtr &msg,
             // tf::Transform pitch_rotation;
 
             // pitch_rotation.setRotation(tf::createQuaternionFromRPY(0.0, 0.0, 0.0));
-            // tf::Transform roll_rotation;
 
-            // roll_rotation.setRotation(tf::createQuaternionFromRPY(3.14/2, 0.0, 0.0));
+            tf::Transform rotation;
+            rotation.setRotation(tf::createQuaternionFromRPY(0.0, 0.0, 0.0));
 
-            // tf::Transform corrected_april;
+            tf::Transform corrected_april;
 
-            // corrected_april = d435_to_tag * roll_rotation;
+            corrected_april = d435_to_tag * rotation;
 
-            map_to_t265odom = tag_to_map * d435_to_tag * t265odom_to_d435;
+            map_to_t265odom = tag_to_map * corrected_april  * t265odom_to_d435;
 
             have_transform = true;
  
