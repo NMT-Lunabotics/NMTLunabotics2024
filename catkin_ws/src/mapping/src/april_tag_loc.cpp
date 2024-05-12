@@ -45,15 +45,18 @@ void calculate_tf(const apriltag_ros::AprilTagDetectionArray::ConstPtr &msg,
             tf::StampedTransform t265odom_to_d435;
             getTransform("t265_odom_frame", "d435_color_optical_frame", t265odom_to_d435, listener);
 
-            tf::Transform pitch_rotation;
+            // tf::Transform pitch_rotation;
 
-            pitch_rotation.setRotation(tf::createQuaternionFromRPY(0.0, -3.1415/4, 0.0));
+            // pitch_rotation.setRotation(tf::createQuaternionFromRPY(0.0, 0.0, 0.0));
+            // tf::Transform roll_rotation;
 
-            tf::Transform corrected_april;
+            // roll_rotation.setRotation(tf::createQuaternionFromRPY(3.14/2, 0.0, 0.0));
 
-            corrected_april = d435_to_tag * pitch_rotation;
+            // tf::Transform corrected_april;
 
-            map_to_t265odom = tag_to_map * corrected_april * t265odom_to_d435;
+            // corrected_april = d435_to_tag * roll_rotation;
+
+            map_to_t265odom = tag_to_map * d435_to_tag * t265odom_to_d435;
 
             have_transform = true;
  
