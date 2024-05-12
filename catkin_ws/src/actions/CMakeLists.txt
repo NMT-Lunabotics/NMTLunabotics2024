@@ -13,6 +13,7 @@ add_service_files(
     FILES
     execute_dumping_autonomy.srv
     execute_digging_autonomy.srv
+    execute_script.srv
 )
 generate_messages(DEPENDENCIES)
 
@@ -32,6 +33,11 @@ add_executable(digging_autonomy src/digging_autonomy_node.cpp)
 add_dependencies(digging_autonomy
     ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(digging_autonomy ${catkin_LIBRARIES})
+
+add_executable(funkenstein src/funkenstein.cpp)
+add_dependencies(funkenstein
+    ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(funkenstein ${catkin_LIBRARIES})
 
 install(TARGETS
     dumping_autonomy

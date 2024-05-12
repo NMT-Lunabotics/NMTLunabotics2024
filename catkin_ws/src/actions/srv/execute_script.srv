@@ -1,0 +1,6 @@
+# The script to execute.
+string script_name
+
+---
+
+# No output.
