@@ -302,5 +302,12 @@
         z = inch (17.5);
         yaw = 180;
       }
+
+      {
+        parent = "map";
+        child = "tag";
+        y = -1.25;
+        z = inch (-7);
+      }
     ];
 }
