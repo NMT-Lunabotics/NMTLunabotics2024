@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <package format="2">
-    <name>mapping</name>
+    <name>actions</name>
     <version>0.1.0</version>
-    <description>The mapping package</description>
+    <description>Pre-recorded robot actions</description>
 
-    <maintainer email="niallcdevlin@gmail.com">Niall Devlin</maintainer>
+    <maintainer email="alex.b.bethel@gmail.com">Alex Bethel</maintainer>
     <license>GPLv3</license>
 
     <buildtool_depend>catkin</buildtool_depend>

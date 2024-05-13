@@ -43,6 +43,7 @@
     "theora-image-transport"
     "compressed-image-transport"
     "apriltag-ros"
+    "cv-bridge"
   ];
 
   programs.ros.ubuntuPackages = [
@@ -50,10 +51,35 @@
   ];
 
   programs.ros.defaultWorkspace = "/home/lunabotics/goliath/catkin_ws";
+  # programs.ros.myIP = "192.168.5.5";
+  # programs.ros.myIP = "192.168.0.213";
   programs.ros.myIP = "192.168.0.207";
   services.ros.rosbridge.enable = true;
 
   services.ros.elevationMapping.build = true;
+
+  programs.ros.buildPackages =
+    let
+      any_node = pkgs.fetchFromGitHub {
+        owner = "leggedrobotics";
+        repo = "any_node";
+        rev = "0.5.0";
+        sha256 = "sha256-N9yDfoaF1EAmS1gH7G0YfOpBIzMApgHhYF7OSc7Cbgo=";
+      };
+    in
+    {
+      traversability_estimation = pkgs.fetchFromGitHub {
+        owner = "leggedrobotics";
+        repo = "traversability_estimation";
+        rev = "SRC_Final";
+        sha256 = "sha256-Cb37ar7XnVWkOgncjF5ZctwWpHJ38DTSAVQYUDaL2gQ=";
+      };
+
+      param_io = "${any_node}/param_io";
+      any_node = "${any_node}/any_node";
+      any_worker = "${any_node}/any_worker";
+      signal_handler = "${any_node}/signal_handler";
+    };
 
   services.ros.realsense2.enable = false;
 
@@ -93,6 +119,18 @@
       packageName = "leds";
       executable = "leds_node";
     };
+
+    digging-autonomy = {
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+      packageName = "actions";
+      executable = "digging_autonomy";
+    };
+
+    dumping-autonomy = {
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+      packageName = "actions";
+      executable = "dumping_autonomy";
+    };
   };
 
   services.ros.launchServices = {
@@ -108,47 +146,70 @@
       workspace = "/home/lunabotics/goliath/catkin_ws";
     };
 
-    camera-right = {
-      packageName = "realsense2_camera";
-      launchFile = "rs_camera.launch";
-      args = {
-        camera = "d455_right";
-        device_type = "d455";
-        serial_no = "213522250920";
-        filters = "pointcloud";
-        depth_fps = "30";
-        depth_width = "640";
-        depth_height = "480";
-        enable_color = "true";
-        pointcloud_texture_stream = "RS2_STREAM_ANY";
-      };
+    continuous_detection = {
+      packageName = "mapping";
+      launchFile = "continuous_detection.launch";
+      workspace = "/home/lunabotics/goliath/catkin_ws";
     };
 
-    camera-left = {
-      packageName = "realsense2_camera";
-      launchFile = "rs_camera.launch";
-      args = {
-        camera = "d455_left";
-        device_type = "d455";
-        serial_no = "213522253528";
-        filters = "pointcloud";
-        depth_fps = "30";
-        depth_width = "640";
-        depth_height = "480";
-        enable_color = "true";
-        pointcloud_texture_stream = "RS2_STREAM_ANY";
-      };
-    };
+    # camera-right = {
+    #   packageName = "realsense2_camera";
+    #   launchFile = "rs_camera.launch";
+    #   args = {
+    #     camera = "d455_right";
+    #     device_type = "d455";
+    #     serial_no = "213522250920";
+    #     filters = "pointcloud";
+    #     depth_fps = "30";
+    #     depth_width = "640";
+    #     depth_height = "480";
+    #     enable_color = "true";
+    #     pointcloud_texture_stream = "RS2_STREAM_ANY";
+    #   };
+    # };
 
-    t265 = {
-      packageName = "realsense2_camera";
-      launchFile = "rs_t265.launch";
-      args.camera = "t265";
-    };
+    # camera-left = {
+    #   packageName = "realsense2_camera";
+    #   launchFile = "rs_camera.launch";
+    #   args = {
+    #     camera = "d455_left";
+    #     device_type = "d455";
+    #     serial_no = "213522253528";
+    #     filters = "pointcloud";
+    #     depth_fps = "30";
+    #     depth_width = "640";
+    #     depth_height = "480";
+    #     enable_color = "true";
+    #     pointcloud_texture_stream = "RS2_STREAM_ANY";
+    #   };
+    # };
+
+    # camera-d435 = {
+    #   packageName = "realsense2_camera";
+    #   launchFile = "rs_camera.launch";
+    #   args = {
+    #     camera = "d435";
+    #     serial_no = "102122072092";
+    #     enable_color = "true";
+    #     pointcloud_texture_stream = "RS2_STREAM_ANY";
+    #   };
+    # };
+
+    # cameras = {
+    #   packageName = "mapping";
+    #   launchFile = "cameras.launch";
+    #   workspace = "/home/lunabotics/goliath/catkin_ws";
+    # };
 
     mapping = {
       packageName = "mapping";
       launchFile = "mapping.launch";
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+    };
+
+    move-base = {
+      packageName = "control";
+      launchFile = "move_base.launch";
       workspace = "/home/lunabotics/goliath/catkin_ws";
     };
   };
@@ -171,15 +232,15 @@
         parent = "t265_link";
         child = "base_link_real";
         x = inch (-10.53);
-        y = inch (10.273);
-        z = inch (10.0);
+        y = inch (-10.273);
+        z = inch (-10.0);
         yaw = 90;
       }
 
       {
         parent = "base_link_real";
         child = "base_link";
-        z = inch (-12);
+        z = inch (-36);
       }
 
       {
@@ -188,7 +249,7 @@
         x = inch (10.579);
         y = inch (10.841);
         z = inch (18.034);
-        yaw = 40;
+        yaw = 30;
       }
 
       {
@@ -196,7 +257,7 @@
         child = "d455_left_ud";
         y = inch (0.715);
         z = inch (1.569);
-        pitch = 20;
+        pitch = 21;
       }
 
       {
@@ -204,7 +265,7 @@
         child = "d455_left_link";
         x = inch (0.893);
         y = inch (0.586);
-        z = inch (1.550);
+        z = inch (-0.550);
       }
 
       {
@@ -213,7 +274,7 @@
         x = inch (10.579);
         y = inch (-10.841);
         z = inch (18.034);
-        yaw = -40;
+        yaw = -30;
       }
 
       {
@@ -233,7 +294,7 @@
       }
 
       {
-        parent = "base_link";
+        parent = "base_link_real";
         child = "d435_link";
         # measurements from Niall's phone
         x = inch (-23);
@@ -243,4 +304,3 @@
       }
     ];
 }
-
