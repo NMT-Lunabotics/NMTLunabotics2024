@@ -51,8 +51,9 @@
   ];
 
   programs.ros.defaultWorkspace = "/home/lunabotics/goliath/catkin_ws";
-  programs.ros.myIP = "192.168.5.11";
+  # programs.ros.myIP = "192.168.5.11";
   # programs.ros.myIP = "192.168.0.207";
+  programs.ros.myIP = "192.168.0.121";
   services.ros.rosbridge.enable = true;
 
   services.ros.elevationMapping.build = true;
