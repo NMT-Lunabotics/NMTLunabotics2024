@@ -158,11 +158,11 @@
       workspace = "/home/lunabotics/goliath/catkin_ws";
     };
 
-    continuous_detection = {
-      packageName = "mapping";
-      launchFile = "continuous_detection.launch";
-      workspace = "/home/lunabotics/goliath/catkin_ws";
-    };
+    # continuous_detection = {
+    #   packageName = "mapping";
+    #   launchFile = "continuous_detection.launch";
+    #   workspace = "/home/lunabotics/goliath/catkin_ws";
+    # };
 
     # camera-right = {
     #   packageName = "realsense2_camera";
@@ -231,14 +231,14 @@
       inch = inches: inches * (25.4 / 1000);
     in
     [
-      # {
-      #   parent = "map";
-      #   child = "t265_odom_frame";
-      #   x = inch (10.53);
-      #   y = inch (-10.273);
-      #   z = inch (14.337);
-      #   # pitch = -90;
-      # }
+      {
+        parent = "map";
+        child = "t265_odom_frame";
+        x = inch (10.53);
+        y = inch (-10.273);
+        z = inch (14.337);
+        # pitch = -90;
+      }
 
       {
         parent = "t265_link";
@@ -315,22 +315,21 @@
         yaw = 180;
       }
 
-      {
-        parent = "tag";
-        child = "map";
-        y = -1.25;
-        z = inch (-7);
-        # roll = 90;
-        # pitch = 90;
-        # yaw = 180;
-      }
+      # {
+      #   parent = "tag";
+      #   child = "map";
+      #   y = -1.25;
+      #   z = inch (-7);
+      #   # roll = 90;
+      #   # pitch = 90;
+      #   # yaw = 180;
+      # }
 
-      {
-        parent = "tag_0";
-        child = "tag_righted";
-        roll = -90;
-        pitch = -90;
-      }
-
+      # {
+      #   parent = "tag_0";
+      #   child = "tag_righted";
+      #   roll = -90;
+      #   pitch = -90;
+      # }
     ];
 }
