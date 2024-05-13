@@ -33,7 +33,7 @@ void calculate_tf(const apriltag_ros::AprilTagDetectionArray::ConstPtr &msg,
     if (!msg->detections.empty())
     {
         tf::StampedTransform tag_to_map;
-        getTransform("map", "tag", tag_to_map, listener);
+        getTransform("tag", "map", tag_to_map, listener);
         tf::StampedTransform odom_to_tag;
         if (getTransform("t265_odom_frame", "tag_righted", odom_to_tag, listener))
         {
