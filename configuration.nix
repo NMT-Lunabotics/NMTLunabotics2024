@@ -106,7 +106,7 @@
     script = ''
       sleep 1
       while true; do
-          sudo systemctl start kea-dhcp4-server
+          /usr/bin/systemctl start kea-dhcp4-server
           sleep 1
       done
     '';
