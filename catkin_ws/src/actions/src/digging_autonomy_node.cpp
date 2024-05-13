@@ -118,13 +118,13 @@ struct State
             // Extend the arms until they're at 250mm and the bucket is at
             // 240.
             std::cout << "Time to dig!\n";
-            set_angles(42.7, 17.1);
-            set_angles(38.0, 6.3);
-            drive(1, 3.0);
-            set_angles(19.0, 6.3);
-            drive(1, 3.0);
-            set_angles(-5.5, 6.3);
-            set_angles(-5.5, 10.2);
+            //set_angles(42.7, 17.1);
+            set_angles(10.0, 0.0);
+            drive(1, 2.0);
+            //set_angles(19.0, 6.3);
+            //drive(1, 1.5);
+            //set_angles(-5.5, 6.3);
+            set_angles(-5.5, 12.2);
             std::cout << "Done!\n";
 
             // We're done digging.
