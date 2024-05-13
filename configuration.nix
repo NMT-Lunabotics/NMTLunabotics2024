@@ -96,7 +96,7 @@
     wantedBy = [ "multi-user.target" ];
     after = [ "rosMaster.service" ];
     script = ''
-      /var/ros/nixWrappers/rostopic pub /leds/motion std_msgs/Bool true
+      /var/ros/nixWrappers/rostopic pub --once /leds/motion std_msgs/Bool true
     '';
   };
 
