@@ -100,6 +100,18 @@
     '';
   };
 
+  # DHCP insurance. It's stupid.
+  systemd.services.ros-dhcp-insurance = {
+    wantedBy = [ "multi-user.target" ];
+    script = ''
+      sleep 1
+      while true; do
+          sudo systemctl start kea-dhcp4-server
+          sleep 1
+      done
+    '';
+  };
+
   services.ros.runServices = {
     usb-cam = {
       packageName = "usb_cam";
@@ -307,11 +319,11 @@
         parent = "tag";
         child = "map";
         y = 1.25;
-        z = inch(7);
+        z = inch (7);
         roll = -90;
         pitch = -180;
-        yaw = 90;    
-       }
-         
+        yaw = 90;
+      }
+
     ];
 }

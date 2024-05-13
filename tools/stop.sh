@@ -4,6 +4,8 @@ IFS=$'\n\t'
 
 # Sends a rapid fire of CAN messages that stop the motors.
 
+killall digging_autonomy dumping_autonomy
+
 while true; do
     # Stop the motors.
     cansend can0 001#00800080
