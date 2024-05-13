@@ -325,5 +325,12 @@
         # yaw = 180;
       }
 
+      {
+        parent = "tag_0";
+        child = "tag_righted";
+        roll = 90;
+        yaw = -90;
+      }
+
     ];
 }
