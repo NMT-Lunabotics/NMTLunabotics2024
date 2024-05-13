@@ -195,11 +195,11 @@
     #   };
     # };
 
-    # cameras = {
-    #   packageName = "mapping";
-    #   launchFile = "cameras.launch";
-    #   workspace = "/home/lunabotics/goliath/catkin_ws";
-    # };
+    cameras = {
+      packageName = "mapping";
+      launchFile = "cameras.launch";
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+    };
 
     mapping = {
       packageName = "mapping";
