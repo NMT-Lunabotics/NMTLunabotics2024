@@ -9,7 +9,7 @@ killall digging_autonomy dumping_autonomy
 
 # Shut down move_base. This runs in the background to avoid blocking
 # while we wait for ROS to load.
-rostopic pub move_base/cancel actionlib_msgs/GoalID -- '{}' &
+/var/ros/nixWrappers/rostopic pub move_base/cancel actionlib_msgs/GoalID -- '{}' &
 
 while true; do
     # Stop the motors.
