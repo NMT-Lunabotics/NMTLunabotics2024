@@ -33,20 +33,15 @@ void calculate_tf(const apriltag_ros::AprilTagDetectionArray::ConstPtr &msg,
     if (!msg->detections.empty())
     {
         tf::StampedTransform tag_to_map;
-        if (getTransform("map", "tag", tag_to_map, listener))
+        getTransform("map", "tag", tag_to_map, listener);
+        tf::StampedTransform odom_to_tag;
+        if (getTransform("t265_odom_frame", "tag_righted", odom_to_tag, listener))
         {
-            // Set first april tag detected pose
-            const auto &detection = msg->detections[0];
-
-            // Transform the detected apriltag pose into a tf and add it to the cameras-tf
-            tf::Pose d435_to_tag;
-            tf::poseMsgToTF(detection.pose.pose.pose, d435_to_tag);
-
             tf::StampedTransform t265odom_to_d435;
             getTransform("t265_odom_frame", "d435_color_optical_frame", t265odom_to_d435, listener);
 
-            auto t265odom_to_map = t265odom_to_d435 * d435_to_tag * tag_to_map;
-            map_to_t265odom = t265odom_to_map.inverse();
+            auto odom_to_map = odom_to_tag * tag_to_map;
+            map_to_t265odom = odom_to_map.inverse();
 
             have_transform = true;
         }
