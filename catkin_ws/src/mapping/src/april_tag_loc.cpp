@@ -37,9 +37,6 @@ void calculate_tf(const apriltag_ros::AprilTagDetectionArray::ConstPtr &msg,
         tf::StampedTransform odom_to_tag;
         if (getTransform("t265_odom_frame", "tag_righted", odom_to_tag, listener))
         {
-            tf::StampedTransform t265odom_to_d435;
-            getTransform("t265_odom_frame", "d435_color_optical_frame", t265odom_to_d435, listener);
-
             auto odom_to_map = odom_to_tag * tag_to_map;
             map_to_t265odom = odom_to_map.inverse();
 
