@@ -45,21 +45,10 @@ void calculate_tf(const apriltag_ros::AprilTagDetectionArray::ConstPtr &msg,
             tf::StampedTransform t265odom_to_d435;
             getTransform("t265_odom_frame", "d435_color_optical_frame", t265odom_to_d435, listener);
 
-            // tf::Transform pitch_rotation;
-
-            // pitch_rotation.setRotation(tf::createQuaternionFromRPY(0.0, 0.0, 0.0));
-
-            tf::Transform rotation;
-            rotation.setRotation(tf::createQuaternionFromRPY(0.0, 0.0, 0.0));
-
-            tf::Transform corrected_april;
-
-            corrected_april = d435_to_tag * rotation;
-
-            map_to_t265odom = tag_to_map * corrected_april  * t265odom_to_d435;
+            auto t265odom_to_map = t265odom_to_d435 * d435_to_tag * tag_to_map;
+            map_to_t265odom = t265odom_to_map.inverse();
 
             have_transform = true;
- 
         }
     }
 }
@@ -70,7 +59,8 @@ void broadcast_tf(tf::TransformBroadcaster &broadcaster)
     {
         std::cout << "Broadcasting transform\n";
 
-        broadcaster.sendTransform(tf::StampedTransform(map_to_t265odom, ros::Time::now(), "map", "t265_odom_frame"));
+        broadcaster.sendTransform(
+            tf::StampedTransform(map_to_t265odom, ros::Time::now(), "map", "t265_odom_frame"));
     }
 }
 
