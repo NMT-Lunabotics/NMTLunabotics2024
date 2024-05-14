@@ -114,11 +114,20 @@
   };
 
   services.ros.runServices = {
-    usb-cam = {
+    usb-cam-arducam = {
       packageName = "usb_cam";
       executable = "usb_cam_node";
+      namespace = "arm_cam";
       remap._video_device =
         "/dev/v4l/by-id/usb-Arducam_Technology_Co.__Ltd._Arducam_USB_Camera_UC684-video-index0";
+    };
+
+    usb-cam-logitech = {
+      packageName = "usb_cam";
+      executable = "usb_cam_node";
+      namespace = "funkenstein_cam";
+      remap._video_device =
+        "/dev/v4l/by-id/usb-Sonix_Technology_Co.__Ltd._USB_Live_Camera_SN0001-video-index0";
     };
 
     heartbeat_client = {
@@ -316,21 +325,21 @@
         yaw = 180;
       }
 
-      # {
-      #   parent = "tag";
-      #   child = "map";
-      #   y = -1.25;
-      #   z = inch (-7);
-      #   # roll = 90;
-      #   # pitch = 90;
-      #   # yaw = 180;
-      # }
+      {
+          parent = "tag";
+          child = "map";
+          y = -1.25;
+          z = inch (-7);
+          # roll = 90;
+          # pitch = 90;
+          # yaw = 180;
+      }
 
-      # {
-      #   parent = "tag_0";
-      #   child = "tag_righted";
-      #   roll = -90;
-      #   pitch = -90;
-      # }
+      {
+          parent = "tag_0";
+          child = "tag_righted";
+          roll = -90;
+          pitch = -90;
+      }
     ];
 }
