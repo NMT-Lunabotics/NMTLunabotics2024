@@ -133,7 +133,7 @@ void setup() {
 
     speed = constrain(speed, -max_speed, max_speed);
 
-    if (pos < max_pos || pos > min_pos || speed >= 0) {
+    if ((pos < max_pos || speed <= 0) && (pos > min_pos || speed >= 0)) {
       act.set_speed(-speed);
     } else {
       act.set_speed(0);
