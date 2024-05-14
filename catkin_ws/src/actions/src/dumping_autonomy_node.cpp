@@ -136,6 +136,10 @@ struct State
                         actions::execute_dumping_autonomyResponse &res)
     {
         dumping = true; // Trigger dumping from the service request
+
+        // The move_base success *must* come after the dumping service
+        // request.
+        move_base_success = false;
         return true;
     }
 
