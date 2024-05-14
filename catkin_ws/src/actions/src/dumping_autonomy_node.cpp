@@ -5,22 +5,26 @@
 #include <unistd.h>
 
 #include "main_bus.hpp"
+#include <actionlib_msgs/GoalStatus.h>
+#include <move_base_msgs/MoveBaseActionResult.h>
 
 // State of the overall program.
 struct State
 {
     std::atomic<bool> dumping;
+    std::atomic<bool> move_base_success; // New variable to store move base result
     std::atomic<int> arm_pos;
     std::atomic<int> bucket_pos;
 
     ros::NodeHandle nh;
     ros::ServiceServer service;
     ros::Subscriber can_subscriber;
+    ros::Subscriber move_base_subscriber; // New subscriber for move base results
     ros::Publisher can_publisher;
 
     std::thread main_thread;
 
-    State()
+    State() : move_base_success(false) // Initialize move_base_success
     {
         std::cout << "Dumping autonomy initialized\n";
 
@@ -31,6 +35,9 @@ struct State
 
         service = nh.advertiseService("dump", &State::handle_service, this);
         can_subscriber = nh.subscribe("/canbus_input", 16, &State::handle_can_msg, this);
+        move_base_subscriber =
+            nh.subscribe("/move_base/result", 10, &State::handle_move_base_result,
+                         this); // Listen to move base results
         can_publisher = nh.advertise<can_raw::CanFrame>("/canbus", 16);
 
         // Spawn the thread.
@@ -67,13 +74,14 @@ struct State
     {
         while (true)
         {
-            // Wait until we're dumping.
-            usleep(0.5e6);
-            if (!dumping)
+            usleep(0.5e6);                      // Wait for a half-second before checking again
+            if (!dumping || !move_base_success) // Only proceed if dumping is
+                                                // triggered and move base succeeded
             {
-                std::cout << "Not dumping yet\n";
                 continue;
             }
+
+            std::cout << "Move base success, starting dump sequence.\n";
 
             // Extend the arms until they're at 250mm and the bucket is at
             // 240.
@@ -118,17 +126,25 @@ struct State
             std::cout << "We're done dumping!\n";
             send_actuator_commands(0, 0);
 
-            // We're done dumping.
-            dumping = false;
+            // Reset move base success state
+            move_base_success = false;
+            dumping = false; // Reset dumping state at the end
         }
     }
 
     bool handle_service(actions::execute_dumping_autonomyRequest &req,
                         actions::execute_dumping_autonomyResponse &res)
     {
-        // Hand things off to the thread.
-        dumping = true;
+        dumping = true; // Trigger dumping from the service request
         return true;
+    }
+
+    void handle_move_base_result(const move_base_msgs::MoveBaseActionResult::ConstPtr &result)
+    {
+        if (result->status.status == actionlib_msgs::GoalStatus::SUCCEEDED)
+        {
+            move_base_success = true;
+        }
     }
 
     void handle_can_msg(const can_raw::CanFrame &frame)
