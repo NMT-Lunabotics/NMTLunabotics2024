@@ -20,6 +20,8 @@ generate_messages(DEPENDENCIES)
 catkin_package(CATKIN_DEPENDS
     std_msgs
     roscpp
+    can_raw
+    can_convert
 )
 
 include_directories(include ${catkin_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIR})

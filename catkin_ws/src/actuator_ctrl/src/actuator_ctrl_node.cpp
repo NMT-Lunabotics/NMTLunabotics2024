@@ -32,8 +32,8 @@ void callback(const sensor_msgs::Joy::ConstPtr& msg) {
         prev_bucket_vel = bucket;
 
         can::ActuatorVelCommands cmd = {
-          .arm_vel = arm,
-          .bucket_vel = bucket,
+          .arm_vel = (double)arm,
+          .bucket_vel = (double)bucket,
         };
         uint8_t buffer[8];
         can::to_buffer(buffer, can::serialize(cmd));

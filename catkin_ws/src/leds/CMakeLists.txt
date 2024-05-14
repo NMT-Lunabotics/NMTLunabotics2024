@@ -9,7 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## Declare a catkin package
 catkin_package(
-  CATKIN_DEPENDS roscpp
+  CATKIN_DEPENDS roscpp can_raw
 )
 
 ## Specify additional locations of header files

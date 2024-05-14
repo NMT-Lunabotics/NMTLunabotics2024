@@ -18,4 +18,6 @@
     <depend>grid_map_msgs</depend>
     <depend>tf</depend>
     <depend>apriltag_ros</depend>
+    <depend>can_raw</depend>
+    <depend>can_convert</depend>
 </package>
