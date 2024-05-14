@@ -49,10 +49,15 @@ add_dependencies(april_tag_loc
     ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(april_tag_loc ${catkin_LIBRARIES})
 
+add_executable(create_occupancy src/create_occupancy.cpp)
+add_dependencies(create_occupancy
+    ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(create_occupancy ${catkin_LIBRARIES})
 
 install(TARGETS
     pose_pub
     pc_pub
     cvt_occupancy
     april_tag_loc
+    create_occupancy
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
