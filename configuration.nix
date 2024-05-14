@@ -125,7 +125,7 @@
     usb-cam-logitech = {
       packageName = "usb_cam";
       executable = "usb_cam_node";
-      namespace = "funkenstein_cam";
+      namespace = "funk_cam";
       remap._video_device =
         "/dev/v4l/by-id/usb-Sonix_Technology_Co.__Ltd._USB_Live_Camera_SN0001-video-index0";
     };
