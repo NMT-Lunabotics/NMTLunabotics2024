@@ -34,7 +34,7 @@ void elevationMapCallback(const grid_map_msgs::GridMap& msg) {
 
     // Check if the traversability layer exists
     if (!map.exists(layer)) {
-        ROS_WARN("%s layer not found in the grid map.", layer);
+        ROS_WARN("%s layer not found in the grid map.", layer.c_str());
         return;
     }
 

@@ -24,10 +24,10 @@ void callback(const geometry_msgs::Twist::ConstPtr& msg) {
 
     can::MotorCommands cmd = {
         .left = {
-            .speed = rpm_left
+            .speed = (double)rpm_left
         },
         .right = {
-            .speed = rpm_right
+            .speed = (double)rpm_right
         }
     };
     uint8_t buffer[8];

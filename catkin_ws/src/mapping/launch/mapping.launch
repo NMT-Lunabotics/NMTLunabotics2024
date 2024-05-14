@@ -1,8 +1,11 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <launch>
     <env name="ROSCONSOLE_CONFIG_FILE"
          value="$(find mapping)/config/rosconsole.conf"/>
 
+    <arg name="plan_b" default="false" />
+
+    <include file="$(find mapping)/launch/crop_points.launch" />
     <!-- Pose publisher -->
     <node pkg="mapping" name="pose_pub" type="pose_pub" />
 
@@ -10,13 +13,16 @@
     <node pkg="elevation_mapping" type="elevation_mapping" name="elevation_mapping" output="screen">
         <rosparam command="load" file="$(find mapping)/config/mapping.yaml" />
         <rosparam command="load" file="$(find mapping)/config/postprocessor_pipeline.yaml" />
-    </node>
+    </node>z
 
-    <!-- Occupancy grid node -->
-    <param name="traversability_cutoff" value="30" />
-    <node pkg="mapping" type="cvt_occupancy" name="cvt_occupancy" output="screen">
-    </node>
+    <!-- Conditionally launch occupancy grid node based on plan_b -->
+    <group if="$(arg plan_b)">
+        <node pkg="mapping" type="create_occupancy" name="create_occupancy" output="screen" />
+    </group>
+    <group unless="$(arg plan_b)">
+        <node pkg="mapping" type="cvt_occupancy" name="cvt_occupancy" output="screen" />
+    </group>
 
-    <!-- April tag detection. -->
+    <!-- April tag detection -->
     <!-- <include file="$(find mapping)/launch/continuous_detection.launch" /> -->
 </launch>

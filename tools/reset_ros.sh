@@ -6,6 +6,6 @@ IFS=$'\n\t'
 # into $HOME, as is `ros4nix`.
 
 cd ~/ros4nix
-git pull || true                # allow failure in case of no internet
+# git pull || true                # allow failure in case of no internet
 cp ~/goliath/*.nix .
 ./ros4nix switch configuration.nix

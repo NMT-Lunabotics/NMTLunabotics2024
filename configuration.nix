@@ -90,6 +90,12 @@
       workspace = "/home/lunabotics/goliath/catkin_ws";
     };
 
+    # continuous_detection = {
+    #   packageName = "mapping";
+    #   launchFile = "continuous_detection.launch";
+    #   workspace = "/home/lunabotics/goliath/catkin_ws";
+    # };
+
     l515 = {
       packageName = "realsense2_camera";
       launchFile = "rs_camera.launch";
@@ -151,5 +157,22 @@
         z = inch (3.5);
 	pitch = 15;
       }
+
+      # {
+      #   parent = "tag";
+      #   child = "map";
+      #   y = -1.25;
+      #   z = inch (-7);
+      #   # roll = 90;
+      #   # pitch = 90;
+      #   # yaw = 180;
+      # }
+
+      # {
+      #   parent = "tag_0";
+      #   child = "tag_righted";
+      #   roll = -90;
+      #   pitch = -90;
+      # }
     ];
 }

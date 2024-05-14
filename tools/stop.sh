@@ -4,7 +4,17 @@ IFS=$'\n\t'
 
 # Sends a rapid fire of CAN messages that stop the motors.
 
-killall digging_autonomy dumping_autonomy
+# This needs to run as sudo.
+if [ "$(whoami)" != root ]; then
+    exec sudo "$0"
+fi
+
+# Shut down autonomy that can't be cancelled.
+killall digging_autonomy dumping_autonomy move_base || true
+
+# Shut down move_base. This runs in the background to avoid blocking
+# while we wait for ROS to load.
+/var/ros/nixWrappers/rostopic pub move_base/cancel actionlib_msgs/GoalID -- '{}' &
 
 while true; do
     # Stop the motors.

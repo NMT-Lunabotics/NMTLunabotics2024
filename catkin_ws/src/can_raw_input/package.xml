@@ -11,5 +11,6 @@
   <build_depend>message_generation</build_depend>
   <exec_depend>message_runtime</exec_depend>
   <buildtool_depend>catkin</buildtool_depend>
+  <depend>can_raw</depend>
   <depend>roscpp</depend>
 </package>
