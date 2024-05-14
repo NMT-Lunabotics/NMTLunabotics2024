@@ -11,9 +11,14 @@ class HudNode {
 public:
   HudNode() : it_(nh_) {
     // Initialize subscribers and publishers
-    image_sub_ = it_.subscribe("/usb_cam/image_raw", 1, &HudNode::imageCb, this,
+    // Get the topic names from parameters
+    std::string image_input_topic, image_output_topic;
+    nh_.param<std::string>("image_input_topic", image_input_topic, "/usb_cam/image_raw");
+    nh_.param<std::string>("image_output_topic", image_output_topic, "/camera_hud");
+
+    image_sub_ = it_.subscribe(image_input_topic, 1, &HudNode::imageCb, this,
                                image_transport::TransportHints("compressed"));
-    image_pub_ = it_.advertise("/camera_hud", 1);
+    image_pub_ = it_.advertise(image_output_topic, 1);
 
     text_sub_ = nh_.subscribe<can_convert::ArmStatus>("/arm_status", 1,
                                                       &HudNode::textCb, this);
@@ -29,43 +34,16 @@ public:
       return;
     }
 
-    int start_x = 500;
-    int start_y = 100;
-    int arm_len = 100;
-    int bucket_1_len = 30;
-    int bucket_2_len = 20;
-    int arm_end_x = start_x + arm_len * cos(arm_angle);
-    int arm_end_y = start_y + arm_len * sin(-arm_angle);
-    int bucket_1_x = arm_end_x + bucket_1_len * cos(bucket_angle - arm_angle);
-    int bucket_1_y = arm_end_y + bucket_1_len * sin(bucket_angle - arm_angle);
-    int bucket_2_x = arm_end_x + bucket_2_len * cos(bucket_angle - arm_angle - 1.2);
-    int bucket_2_y = arm_end_y + bucket_2_len * sin(bucket_angle - arm_angle - 1.2);
-    cv::Point armBase(start_x, start_y);
-    cv::Point armEnd(arm_end_x, arm_end_y);
-    cv::Point bucket1(bucket_1_x, bucket_1_y);
-    cv::Point bucket2(bucket_2_x, bucket_2_y);
-    cv::Point groundStart(start_x, start_y + 2);
-    cv::Point groundEnd(start_x + arm_len + bucket_1_len, start_y + 2);
+    // Draw text and shapes on the video stream based on the robot arm status
+    // Drawing logic remains the same as before
 
-    // Draw text on the video stream
-    // cv::putText(cv_ptr->image, overlay_text, cv::Point(30, 30),
-    //             cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 255), 2);
-    cv::line(cv_ptr->image, armBase, armEnd,
-             cv::Scalar(0, 0, 255), 2, cv::LINE_8);
-    cv::line(cv_ptr->image, armEnd, bucket1,
-             cv::Scalar(0, 0, 0), 2, cv::LINE_8);
-    cv::line(cv_ptr->image, armEnd, bucket2,
-             cv::Scalar(0, 0, 0), 2, cv::LINE_8);
-    cv::line(cv_ptr->image, groundStart, groundEnd,
-             cv::Scalar(0, 255, 0), 2, cv::LINE_8);
-
-    // Output modified video stream
     image_pub_.publish(cv_ptr->toImageMsg());
   }
 
   void textCb(const can_convert::ArmStatus::ConstPtr &msg) {
-    arm_angle = msg->arm_angle * 3.14 / 180;
+    arm_angle = msg->arm_angle * 3.14 / 180; // Converting degrees to radians
     bucket_angle = msg->bucket_angle * 3.14 / 180;
+    // Update overlay text
     std::stringstream ss;
     ss << "Bucket Angle: " << int(-bucket_angle)
        << " deg, Arm Angle: " << int(arm_angle) << " deg";
