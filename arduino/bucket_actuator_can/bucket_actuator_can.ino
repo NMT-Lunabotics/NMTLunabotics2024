@@ -12,6 +12,7 @@ int target_vel = 0; // in mm/s
 int max_speed = 240; // 5 mm/s
 float threshold = 1; // in mm
 int min_pos = 17;
+int max_pos = 270;
 
 int stroke = 300; // stroke length, in mm:
 int potMin = 34;  // Calibrated, pot val at min stroke
@@ -37,7 +38,7 @@ public:
 
   int pos_mm() { return map(pot.read_analog_raw(), potMin, potMax, 0, stroke); }
 
-  void set_speed(int signed_sipeed) {
+  void set_speed(int signed_speed) {
     if (invert_direction)
       dir.write(signed_speed > 0);
     else
@@ -132,7 +133,7 @@ void setup() {
 
     speed = constrain(speed, -max_speed, max_speed);
 
-    if (pos > min_pos || speed >= 0) {
+    if ((pos < max_pos || speed <= 0) && (pos > min_pos || speed >= 0)) {
       act.set_speed(-speed);
     } else {
       act.set_speed(0);
