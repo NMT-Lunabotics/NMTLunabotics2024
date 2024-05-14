@@ -10,7 +10,7 @@ if [ "$(whoami)" != root ]; then
 fi
 
 # Shut down autonomy that can't be cancelled.
-killall digging_autonomy dumping_autonomy move_base
+killall digging_autonomy dumping_autonomy move_base || true
 
 # Shut down move_base. This runs in the background to avoid blocking
 # while we wait for ROS to load.
