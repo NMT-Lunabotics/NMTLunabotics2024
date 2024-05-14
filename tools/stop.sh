@@ -4,6 +4,11 @@ IFS=$'\n\t'
 
 # Sends a rapid fire of CAN messages that stop the motors.
 
+# This needs to run as sudo.
+if [ "$(whoami)" != root ]; then
+    exec sudo "$0"
+fi
+
 # Shut down autonomy that can't be cancelled.
 killall digging_autonomy dumping_autonomy move_base
 
