@@ -32,11 +32,12 @@ struct State
         move_base_subscriber =
             nh.subscribe("/move_base/result", 10, &State::handle_move_base_done, this);
 
-        main_thread = std::thread(&State::main_thread, this);
+        main_thread = std::thread(&State::thread_main, this);
     }
 
     void thread_main()
     {
+        std::cout << "thread_main()\n";
         while (true)
         {
             usleep(0.5e6);
