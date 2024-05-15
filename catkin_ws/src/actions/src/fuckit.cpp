@@ -42,6 +42,7 @@ struct State
             usleep(0.5e6);
             if (!going)
             {
+                std::cout << "Not full autonomy yet\n";
                 continue;
             }
 
@@ -105,6 +106,7 @@ struct State
 
     bool handle_service(actions::fuckitRequest &req, actions::fuckitResponse &resp)
     {
+        std::cout << "Service received\n";
         going = true;
         return true;
     }
