@@ -360,9 +360,10 @@
 
       {
         parent = "map";
-        child = "dig_center";
+        child = "dump_center";
         x = 3.88 + 1.5;
-        y = 0.6;
+        y = 1;
+        yaw = -90;
       }
     ];
 }

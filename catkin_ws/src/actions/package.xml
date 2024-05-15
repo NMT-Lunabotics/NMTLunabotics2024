@@ -20,4 +20,5 @@
     <depend>apriltag_ros</depend>
     <depend>can_raw</depend>
     <depend>can_convert</depend>
+    <depend>move_to</depend>
 </package>
