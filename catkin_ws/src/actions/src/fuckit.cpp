@@ -105,8 +105,8 @@ struct State
 
     bool handle_service(actions::fuckitRequest &req, actions::fuckitResponse &resp)
     {
-        return true;
         going = true;
+        return true;
     }
 };
 
