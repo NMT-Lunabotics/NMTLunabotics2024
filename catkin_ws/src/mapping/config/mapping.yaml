@@ -1,15 +1,15 @@
 input_sources: 
   d455_r:
     type: pointcloud
-    topic: /d455_right/depth/color/points_cropped
+    topic: /d455_right/depth/color/points_cropped_limited
     queue_size: 2
-    # publish_on_update: false
+    publish_on_update: false
     sensor_processor:
       type: structured_light
       ignore_points_above: 1.0
   d455_l:
     type: pointcloud
-    topic: /d455_left/depth/color/points_cropped
+    topic: /d455_left/depth/color/points_cropped_limited
     queue_size: 2
     publish_on_update: true
     sensor_processor:
@@ -19,7 +19,7 @@ input_sources:
     type: pointcloud
     topic: /d435/depth/color/points
     queue_size: 2
-    # publish_on_update: false
+    publish_on_update: false
     sensor_processor:
       type: structured_light
       ignore_points_above: 1.0
