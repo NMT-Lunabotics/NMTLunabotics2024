@@ -14,6 +14,7 @@ add_service_files(
     execute_dumping_autonomy.srv
     execute_digging_autonomy.srv
     execute_script.srv
+    fuckit.srv
 )
 generate_messages(DEPENDENCIES)
 
