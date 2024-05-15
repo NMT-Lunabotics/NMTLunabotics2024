@@ -27,6 +27,10 @@ struct State
 
     State()
     {
+        going = false;
+        done_digging = false;
+        done_navigating = false;
+
         service = nh.advertiseService("fuckit", &State::handle_service, this);
         dig_done_subscribero = nh.subscribe("digging_done", 16, &State::handle_dig_done, this);
         move_base_subscriber =
