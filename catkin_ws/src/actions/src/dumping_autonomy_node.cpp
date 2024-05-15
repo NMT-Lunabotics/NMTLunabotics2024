@@ -86,10 +86,10 @@ struct State
             // Extend the arms until they're at 250mm and the bucket is at
             // 240.
             std::cout << "Time to dump!\n";
-            while (arm_pos < 250 || bucket_pos < 230)
+            while (arm_pos < 210 || bucket_pos < 230)
             {
                 std::cout << "Waiting for arm_pos & bucket_pos\n";
-                send_actuator_commands((arm_pos < 250) ? -5 : 0, (bucket_pos < 230) ? 5 : 0);
+                send_actuator_commands((arm_pos < 210) ? -5 : 0, (bucket_pos < 230) ? 5 : 0);
                 usleep(0.1e6);
             }
             send_actuator_commands(0, 0);
