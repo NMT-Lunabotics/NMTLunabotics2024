@@ -37,6 +37,11 @@ add_dependencies(digging_autonomy
     ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(digging_autonomy ${catkin_LIBRARIES})
 
+add_executable(fuckit src/fuckit_node.cpp)
+add_dependencies(fuckit
+    ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(fuckit ${catkin_LIBRARIES})
+
 add_executable(funkenstein src/funkenstein.cpp)
 add_dependencies(funkenstein
     ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -45,4 +50,5 @@ target_link_libraries(funkenstein ${catkin_LIBRARIES})
 install(TARGETS
     dumping_autonomy
     digging_autonomy
+    fuckit
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
