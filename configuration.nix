@@ -107,6 +107,7 @@
     script = ''
       sleep 1
       while true; do
+          /usr/sbin/ifconfig eth0 192.168.5.5
           /usr/bin/systemctl start kea-dhcp4-server
           sleep 1
       done
