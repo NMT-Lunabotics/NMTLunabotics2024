@@ -48,6 +48,7 @@ struct Node
 
 int main(int argc, char **argv)
 {
+    ros::init(argc, argv, "move_to");
     Node n;
     ros::spin();
 }
