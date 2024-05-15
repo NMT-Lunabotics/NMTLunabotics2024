@@ -343,5 +343,26 @@
         pitch = -90;
       }
 
+      # ---- Arena waypoints ----
+      {
+        parent = "map";
+        child = "robot_start";
+        x = 1;
+        y = 1;
+      }
+
+      {
+        parent = "map";
+        child = "excavation_center";
+        x = 3.88 + 1.5;
+        y = 2 + 1.5;
+      }
+
+      {
+        parent = "map";
+        child = "dig_center";
+        x = 3.88 + 1.5;
+        y = 0.6;
+      }
     ];
 }
