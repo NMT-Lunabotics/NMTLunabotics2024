@@ -37,7 +37,7 @@ add_dependencies(digging_autonomy
     ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(digging_autonomy ${catkin_LIBRARIES})
 
-add_executable(fuckit src/fuckit_node.cpp)
+add_executable(fuckit src/fuckit.cpp)
 add_dependencies(fuckit
     ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(fuckit ${catkin_LIBRARIES})
