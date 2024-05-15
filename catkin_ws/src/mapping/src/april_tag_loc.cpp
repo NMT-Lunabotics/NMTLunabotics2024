@@ -63,7 +63,9 @@ struct callback_data
 
     void aprilTagCallback(const apriltag_ros::AprilTagDetectionArray::ConstPtr &a)
     {
-        calculate_tf(a, listener, broadcaster);
+        if (!have_transform) {
+            calculate_tf(a, listener, broadcaster);
+        }
     }
 
     void timerCallback(const ros::TimerEvent &ev)
@@ -81,9 +83,7 @@ int main(int argc, char **argv)
     tf::TransformListener listener;
     tf::TransformBroadcaster broadcaster;
 
-    if (have_transform) {
-        callback_data data = {.listener = listener, .broadcaster = broadcaster};
-    }
+    callback_data data = {.listener = listener, .broadcaster = broadcaster};
 
     // Subscribe to AprilTag detections
     ros::Subscriber sub =
