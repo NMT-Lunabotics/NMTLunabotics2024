@@ -81,7 +81,9 @@ int main(int argc, char **argv)
     tf::TransformListener listener;
     tf::TransformBroadcaster broadcaster;
 
-    callback_data data = {.listener = listener, .broadcaster = broadcaster};
+    if (have_transform) {
+        callback_data data = {.listener = listener, .broadcaster = broadcaster};
+    }
 
     // Subscribe to AprilTag detections
     ros::Subscriber sub =
