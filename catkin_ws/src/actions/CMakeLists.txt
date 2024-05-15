@@ -7,6 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
     message_generation
     can_raw
     can_convert
+    move_to
 )
 
 add_service_files(
@@ -23,6 +24,7 @@ catkin_package(CATKIN_DEPENDS
     roscpp
     can_raw
     can_convert
+    move_to
 )
 
 include_directories(include ${catkin_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIR})
