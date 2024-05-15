@@ -2,3 +2,4 @@
 -I/var/ros/ext_libs/include
 -I/opt/ros/noetic/include
 -Idevel/include
+-I/var/ros/opencv/include
