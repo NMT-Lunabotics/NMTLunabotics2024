@@ -4,6 +4,9 @@
   <arg name="joy_dev" default="/dev/input/js0" />
   <arg name="joystick" default="true" />
 
+  <param name="arm_cam/hud/compressed/jpeg_quality" value="15" />
+  <param name="funk_cam/hud/compressed/jpeg_quality" value="15" />
+
   <group ns="joy_teleop" if="$(arg joystick)">
     <rosparam command="load" file="$(find control)/config/teleop_logitech.yaml" />
     <param name="joy_node/dev" value="$(arg joy_dev)" />
@@ -18,13 +21,26 @@
 
   <node pkg="heartbeat" type="heartbeat_server_node" name="heartbeat_server_node" />
 
-  <node pkg="hud" type="hud_node" name="hud_node" output="screen">
+  <node pkg="hud" type="hud_node" name="hud_node_arm" output="screen">
     <param name="image_transport" value="compressed" />
+    <param name="image_in" value="/arm_cam/usb_cam/image_raw" />
+    <param name="image_out" value="/arm_cam/hud" />
   </node>
 
-  <node pkg="image_view" type="image_view" name="image_view" output="screen">
+  <node pkg="hud" type="hud_node" name="hud_node_funk" output="screen">
     <param name="image_transport" value="compressed" />
-    <remap from="image" to="/camera_hud"/>
+    <param name="image_in" value="/funk_cam/usb_cam/image_raw" />
+    <param name="image_out" value="/funk_cam/hud" />
+  </node>
+
+  <node pkg="image_view" type="image_view" name="image_view_arm" output="screen">
+    <param name="image_transport" value="compressed" />
+    <remap from="image" to="/arm_cam/hud"/>
+  </node>
+
+  <node pkg="image_view" type="image_view" name="image_view_hud" output="screen">
+    <param name="image_transport" value="compressed" />
+    <remap from="image" to="/funk_cam/hud"/>
   </node>
 
 </launch>

@@ -23,6 +23,8 @@
         <node pkg="mapping" type="cvt_occupancy" name="cvt_occupancy" output="screen" />
     </group>
 
+    <node pkg="mapping" type="marker_node" name="marker_node" />
+
     <!-- April tag detection -->
     <!-- <include file="$(find mapping)/launch/continuous_detection.launch" /> -->
 </launch>

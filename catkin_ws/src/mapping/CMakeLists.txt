@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
     grid_map_msgs
     tf
     apriltag_ros
+    visualization_msgs
 )
 roslaunch_add_file_check(launch)
 
@@ -25,6 +26,7 @@ catkin_package(CATKIN_DEPENDS
     grid_map_msgs
     tf
     apriltag_ros
+    visualization_msgs
 )
 
 include_directories(include ${catkin_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIR})
@@ -54,10 +56,16 @@ add_dependencies(create_occupancy
     ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(create_occupancy ${catkin_LIBRARIES})
 
+add_executable(marker_node src/marker_node.cpp)
+add_dependencies(marker_node
+    ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(marker_node ${catkin_LIBRARIES})
+
 install(TARGETS
     pose_pub
     pc_pub
     cvt_occupancy
     april_tag_loc
     create_occupancy
+    marker_node
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

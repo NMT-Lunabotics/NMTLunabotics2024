@@ -18,4 +18,5 @@
     <depend>grid_map_msgs</depend>
     <depend>tf</depend>
     <depend>apriltag_ros</depend>
+    <depend>visualization_msgs</depend>
 </package>
