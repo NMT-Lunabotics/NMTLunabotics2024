@@ -335,7 +335,7 @@
         );
         # z = inch (-7);
         z = inch (-14.5);
-        x = 0.17;               # Pipe width
+        x = -0.17;              # Pipe width
         # roll = 90;
         # pitch = 90;
         # yaw = 180;
