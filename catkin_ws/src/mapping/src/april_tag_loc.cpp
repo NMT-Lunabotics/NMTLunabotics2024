@@ -55,6 +55,14 @@ void broadcast_tf(tf::TransformBroadcaster &broadcaster)
 {
     if (have_transform)
     {
+        // This avoids a race condition
+        static int elevation_mapping_resets = 0;
+        if (elevation_mapping_resets++ < 10)
+        {
+            std_srvs::Empty service;
+            ros::service::call("elevation_mapping/clear_map", service);
+        }
+
         std::cout << "Broadcasting transform\n";
 
         broadcaster.sendTransform(
