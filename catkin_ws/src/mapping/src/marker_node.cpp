@@ -17,7 +17,7 @@ int main(int argc, char **argv)
     float berm_width = 2;
     float berm_height = 0.7;
 
-    float column_size = 0.5;
+    float column_size = 0.35;
     float column_x = 3.88 - column_size / 2;
     float column_y = 2.5;
 
