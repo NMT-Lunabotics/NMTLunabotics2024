@@ -165,13 +165,13 @@
       workspace = "/home/lunabotics/goliath/catkin_ws";
       packageName = "limiter";
       executable = "pointcloud_limiter";
-      rawArgs = [ "/d455_left/depth/color/points_cropped" ];
+      rawArgs = [ "left" "/d455_left/depth/color/points_cropped" ];
     };
     limiter-right = {
       workspace = "/home/lunabotics/goliath/catkin_ws";
       packageName = "limiter";
       executable = "pointcloud_limiter";
-      rawArgs = [ "/d455_right/depth/color/points_cropped" ];
+      rawArgs = [ "right" "/d455_right/depth/color/points_cropped" ];
     };
   };
 

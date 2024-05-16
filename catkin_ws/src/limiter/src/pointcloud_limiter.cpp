@@ -7,14 +7,15 @@
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "pointcloud_limiter");
-
-    if (argc != 2)
+    if (argc != 3)
     {
-        fprintf(stderr, "usage: limiter <topic>\n");
+        fprintf(stderr, "usage: limiter <name> <topic>\n");
         return 1;
     }
 
-    Limiter<sensor_msgs::PointCloud2> l(argv[1]);
+    std::string name = "pointcloud_limiter";
+    ros::init(argc, argv, name + argv[1]);
+
+    Limiter<sensor_msgs::PointCloud2> l(argv[2]);
     ros::spin();
 }
