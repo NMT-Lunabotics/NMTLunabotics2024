@@ -135,7 +135,7 @@
       rosParams = pkgs.writeText "params" ''
         framerate: 10
         image_width: 320
-        image_height: 180
+        image_height: 240
       '';
     };
 
