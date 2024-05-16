@@ -1,4 +1,6 @@
-rostopic pub /move_base/result move_base_msgs/MoveBaseActionResult "header:
+#!/usr/bin/env bash
+
+rostopic pub --once /move_base/result move_base_msgs/MoveBaseActionResult "header:
   seq: 0
   stamp:
     secs: 0
