@@ -188,6 +188,12 @@
       workspace = "/home/lunabotics/goliath/catkin_ws";
     };
 
+    hud = {
+      packageName = "hud";
+      launchFile = "hud.launch";
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+    };
+
     # continuous_detection = {
     #   packageName = "mapping";
     #   launchFile = "continuous_detection.launch";
