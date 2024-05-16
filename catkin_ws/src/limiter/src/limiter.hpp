@@ -10,7 +10,7 @@ template <typename T> struct Limiter
     ros::Publisher pub;
     ros::Timer timer;
 
-    bool have_data;
+    bool have_data = false;
     T last;
 
     Limiter(const std::string &topic_name)
