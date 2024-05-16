@@ -110,21 +110,21 @@ struct State
             usleep(0.2e6);
             send_drive_commands(0, 0);
 
-            // Now drive backwards one meter.
-            send_drive_commands(-1024, -1024);
-            usleep(0.7e6);
-            send_drive_commands(0, 0);
-            std::cout << "Driving done\n";
+            // // Now drive backwards one meter.
+            // send_drive_commands(-1024, -1024);
+            // usleep(0.7e6);
+            // send_drive_commands(0, 0);
+            // std::cout << "Driving done\n";
 
-            // And return to 100 on the arms, 60 on the bucket.
-            while (arm_pos > 100 || bucket_pos > 60)
-            {
-                std::cout << "Getting back to retracted state\n";
-                send_actuator_commands((arm_pos > 100) ? 5 : 0, (bucket_pos > 60) ? -5 : 0);
-                usleep(0.1e6);
-            }
-            std::cout << "We're done dumping!\n";
-            send_actuator_commands(0, 0);
+            // // And return to 100 on the arms, 60 on the bucket.
+            // while (arm_pos > 100 || bucket_pos > 60)
+            // {
+            //     std::cout << "Getting back to retracted state\n";
+            //     send_actuator_commands((arm_pos > 100) ? 5 : 0, (bucket_pos > 60) ? -5 : 0);
+            //     usleep(0.1e6);
+            // }
+            // std::cout << "We're done dumping!\n";
+            // send_actuator_commands(0, 0);
 
             // Reset move base success state
             move_base_success = false;

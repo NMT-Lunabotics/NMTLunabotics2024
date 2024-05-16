@@ -51,8 +51,8 @@
   ];
 
   programs.ros.defaultWorkspace = "/home/lunabotics/goliath/catkin_ws";
-  # programs.ros.myIP = "192.168.5.5";
-  programs.ros.myIP = "192.168.0.213";
+  programs.ros.myIP = "192.168.5.5";
+  # programs.ros.myIP = "192.168.0.213";
   # programs.ros.myIP = "192.168.0.207";
   # programs.ros.myIP = "192.168.124.35";
   services.ros.rosbridge.enable = true;
@@ -107,6 +107,7 @@
     script = ''
       sleep 1
       while true; do
+          /usr/sbin/ifconfig eth0 192.168.5.5
           /usr/bin/systemctl start kea-dhcp4-server
           sleep 1
       done
@@ -125,7 +126,7 @@
     usb-cam-logitech = {
       packageName = "usb_cam";
       executable = "usb_cam_node";
-      namespace = "funkenstein_cam";
+      namespace = "funk_cam";
       remap._video_device =
         "/dev/v4l/by-id/usb-Sonix_Technology_Co.__Ltd._USB_Live_Camera_SN0001-video-index0";
     };
@@ -326,20 +327,43 @@
       }
 
       {
-          parent = "tag";
-          child = "map";
-          y = -1.25;
-          z = inch (-7);
-          # roll = 90;
-          # pitch = 90;
-          # yaw = 180;
+        parent = "tag";
+        child = "map";
+        y = -1.25;
+        z = inch (-7);
+        # roll = 90;
+        # pitch = 90;
+        # yaw = 180;
       }
 
       {
-          parent = "tag_0";
-          child = "tag_righted";
-          roll = -90;
-          pitch = -90;
+        parent = "tag_0";
+        child = "tag_righted";
+        roll = -90;
+        pitch = -90;
+      }
+
+      # ---- Arena waypoints ----
+      {
+        parent = "map";
+        child = "robot_start";
+        x = 1;
+        y = 1;
+      }
+
+      {
+        parent = "map";
+        child = "excavation_center";
+        x = 3.88 + 1.5;
+        y = 2 + 1.5;
+      }
+
+      {
+        parent = "map";
+        child = "dump_center";
+        x = 3.88 + 1.5;
+        y = 1.5;
+        yaw = -90;
       }
     ];
 }

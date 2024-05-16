@@ -7,6 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
     message_generation
     can_raw
     can_convert
+    move_to
 )
 
 add_service_files(
@@ -14,6 +15,7 @@ add_service_files(
     execute_dumping_autonomy.srv
     execute_digging_autonomy.srv
     execute_script.srv
+    fuckit.srv
 )
 generate_messages(DEPENDENCIES)
 
@@ -22,6 +24,7 @@ catkin_package(CATKIN_DEPENDS
     roscpp
     can_raw
     can_convert
+    move_to
 )
 
 include_directories(include ${catkin_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIR})
@@ -36,6 +39,11 @@ add_dependencies(digging_autonomy
     ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(digging_autonomy ${catkin_LIBRARIES})
 
+add_executable(fuckit src/fuckit.cpp)
+add_dependencies(fuckit
+    ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(fuckit ${catkin_LIBRARIES})
+
 add_executable(funkenstein src/funkenstein.cpp)
 add_dependencies(funkenstein
     ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -44,4 +52,5 @@ target_link_libraries(funkenstein ${catkin_LIBRARIES})
 install(TARGETS
     dumping_autonomy
     digging_autonomy
+    fuckit
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

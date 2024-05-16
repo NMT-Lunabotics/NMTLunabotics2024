@@ -2,6 +2,7 @@
 #include <can_convert/ArmStatus.h>
 #include <can_raw/CanFrame.h>
 #include <ros/ros.h>
+#include <std_msgs/Empty.h>
 #include <thread>
 #include <unistd.h>
 
@@ -18,6 +19,7 @@ struct State
     ros::ServiceServer service;
     ros::Subscriber arm_status_subscriber;
     ros::Publisher can_publisher;
+    ros::Publisher done_publisher;
 
     std::thread main_thread;
 
@@ -31,8 +33,9 @@ struct State
         bucket_pos = 0;
 
         service = nh.advertiseService("dig", &State::handle_service, this);
-        arm_status_subscriber = nh.subscribe("/arm_status", 16, &State::handle_arm_msg, this);
-        can_publisher = nh.advertise<can_raw::CanFrame>("/canbus", 16);
+        arm_status_subscriber = nh.subscribe("arm_status", 16, &State::handle_arm_msg, this);
+        can_publisher = nh.advertise<can_raw::CanFrame>("canbus", 16);
+        done_publisher = nh.advertise<std_msgs::Empty>("digging_done", 16);
 
         // Spawn the thread.
         main_thread = std::thread(&State::thread_main, this);
@@ -118,16 +121,18 @@ struct State
             // Extend the arms until they're at 250mm and the bucket is at
             // 240.
             std::cout << "Time to dig!\n";
-            //set_angles(42.7, 17.1);
+            // set_angles(42.7, 17.1);
             set_angles(10.0, 0.0);
             drive(1, 2.0);
-            //set_angles(19.0, 6.3);
-            //drive(1, 1.5);
-            //set_angles(-5.5, 6.3);
+            // set_angles(19.0, 6.3);
+            // drive(1, 1.5);
+            // set_angles(-5.5, 6.3);
             set_angles(-5.5, 12.2);
             std::cout << "Done!\n";
 
             // We're done digging.
+            std_msgs::Empty done_msg;
+            done_publisher.publish(done_msg);
             digging = false;
         }
     }
