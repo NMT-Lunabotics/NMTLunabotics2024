@@ -329,8 +329,12 @@
       {
         parent = "tag";
         child = "map";
-        y = -1.25;
-        z = inch (-7);
+        # y = -1.25;
+        y = -(
+          2 - inch (8.5)
+        );
+        # z = inch (-7);
+        z = inch (-14.5);
         # roll = 90;
         # pitch = 90;
         # yaw = 180;
