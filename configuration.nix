@@ -160,6 +160,19 @@
       packageName = "actions";
       executable = "dumping_autonomy";
     };
+
+    limiter-left = {
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+      packageName = "limiter";
+      executable = "pointcloud_limiter";
+      rawArgs = [ "left" "/d455_left/depth/color/points_cropped" ];
+    };
+    limiter-right = {
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+      packageName = "limiter";
+      executable = "pointcloud_limiter";
+      rawArgs = [ "right" "/d455_right/depth/color/points_cropped" ];
+    };
   };
 
   services.ros.launchServices = {
@@ -172,6 +185,12 @@
     actuator-ctrl = {
       packageName = "actuator_ctrl";
       launchFile = "actuator.launch";
+      workspace = "/home/lunabotics/goliath/catkin_ws";
+    };
+
+    hud = {
+      packageName = "hud";
+      launchFile = "hud.launch";
       workspace = "/home/lunabotics/goliath/catkin_ws";
     };
 
