@@ -134,6 +134,8 @@
         "/dev/v4l/by-id/usb-Sonix_Technology_Co.__Ltd._USB_Live_Camera_SN0001-video-index0";
       rosParams = pkgs.writeText "params" ''
         framerate: 10
+        image_width: 160
+        image_height: 90
       '';
     };
 
