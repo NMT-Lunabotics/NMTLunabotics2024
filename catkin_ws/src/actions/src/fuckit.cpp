@@ -60,7 +60,7 @@ struct State
             schedule_dump();
             nav_to_dump();
             std::cout << "Done dumping, let's exit\n";
-            exit(0);
+            return;
         }
     }
 
