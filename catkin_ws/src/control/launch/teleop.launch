@@ -36,7 +36,7 @@
   -->
 
   <node pkg="image_view" type="image_view" name="image_view_arm" output="screen">
-    <param name="image_transport" value="compressed" />
+    <param name="image_transport" value="theora" />
     <!-- 
     <remap from="image" to="/arm_cam/usb_cam/image_raw"/>
     -->
@@ -44,7 +44,7 @@
   </node>
 
   <node pkg="image_view" type="image_view" name="image_view_hud" output="screen">
-    <param name="image_transport" value="compressed" />
+    <param name="image_transport" value="theora" />
     <!-- 
     <remap from="image" to="/funk_cam/usb_cam/image_raw"/>
     -->
