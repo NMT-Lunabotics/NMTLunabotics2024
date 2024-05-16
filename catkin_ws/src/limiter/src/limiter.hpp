@@ -2,6 +2,7 @@
 #define LIMITER_H
 
 #include <ros/ros.h>
+#include <stdio.h>
 
 template <typename T> struct Limiter
 {
@@ -29,7 +30,14 @@ template <typename T> struct Limiter
     void handle_timer(const ros::TimerEvent &ev)
     {
         if (have_data)
+        {
+            printf("publishing real data\n");
             pub.publish(last);
+        }
+        else
+        {
+            printf("no data yet\n");
+        }
     }
 };
 
