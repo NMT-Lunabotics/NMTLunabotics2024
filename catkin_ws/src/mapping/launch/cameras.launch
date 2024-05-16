@@ -8,9 +8,10 @@
         <arg name="device_type" value="d455" />
         <arg name="serial_no" value="213522250920" />
         <arg name="filters" value="pointcloud" />
-        <arg name="depth_fps" value="3" />
-        <arg name="depth_width" value="480" />
-        <arg name="depth_height" value="270" />
+        <!-- <arg name="depth_fps" value="15" /> -->
+        <!-- <arg name="color_fps" value="15" /> -->
+        <!-- <arg name="depth_width" value="480" /> -->
+        <!-- <arg name="depth_height" value="270" /> -->
         <arg name="enable_color" value="true" />
         <arg name="pointcloud_texture_stream" value="RS2_STREAM_ANY" />
     </include>
@@ -19,9 +20,10 @@
         <arg name="camera" value="d455_left" />
         <arg name="serial_no" value="213522253528" />
         <arg name="filters" value="pointcloud" />
-        <arg name="depth_fps" value="3" />
-        <arg name="depth_width" value="480" />
-        <arg name="depth_height" value="270" />
+        <!-- <arg name="depth_fps" value="15" /> -->
+        <!-- <arg name="color_fps" value="15" /> -->
+        <!-- <arg name="depth_width" value="480" /> -->
+        <!-- <arg name="depth_height" value="270" /> -->
         <arg name="enable_color" value="true" />
         <arg name="pointcloud_texture_stream" value="RS2_STREAM_ANY" />
     </include>
