@@ -33,16 +33,22 @@
     <param name="image_in" value="/funk_cam/usb_cam/image_raw" />
     <param name="image_out" value="/funk_cam/hud" />
   </node>
+  -->
 
   <node pkg="image_view" type="image_view" name="image_view_arm" output="screen">
     <param name="image_transport" value="compressed" />
+    <!-- 
+    <remap from="image" to="/arm_cam/usb_cam/image_raw"/>
+    -->
     <remap from="image" to="/arm_cam/hud"/>
   </node>
 
   <node pkg="image_view" type="image_view" name="image_view_hud" output="screen">
     <param name="image_transport" value="compressed" />
+    <!-- 
+    <remap from="image" to="/funk_cam/usb_cam/image_raw"/>
+    -->
     <remap from="image" to="/funk_cam/hud"/>
   </node>
-  -->
 
 </launch>
