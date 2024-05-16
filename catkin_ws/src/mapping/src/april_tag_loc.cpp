@@ -1,5 +1,6 @@
 #include <apriltag_ros/AprilTagDetectionArray.h>
 #include <ros/ros.h>
+#include <std_srvs/Empty.h>
 #include <string>
 #include <tf/transform_broadcaster.h>
 #include <tf/transform_listener.h>
@@ -41,6 +42,11 @@ void calculate_tf(const apriltag_ros::AprilTagDetectionArray::ConstPtr &msg,
             map_to_t265odom = odom_to_map.inverse();
 
             have_transform = true;
+
+            // At this point we should reset the elevation_map because
+            // we've just moved the entire reference frame.
+            std_srvs::Empty service;
+            ros::service::call("elevation_mapping/clear_map", service);
         }
     }
 }
@@ -63,7 +69,8 @@ struct callback_data
 
     void aprilTagCallback(const apriltag_ros::AprilTagDetectionArray::ConstPtr &a)
     {
-        if (!have_transform) {
+        if (!have_transform)
+        {
             calculate_tf(a, listener, broadcaster);
         }
     }
