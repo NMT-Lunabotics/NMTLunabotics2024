@@ -51,9 +51,9 @@
   ];
 
   programs.ros.defaultWorkspace = "/home/lunabotics/goliath/catkin_ws";
-  # programs.ros.myIP = "192.168.5.5";
+  programs.ros.myIP = "192.168.5.5";
   # programs.ros.myIP = "192.168.0.213";
-  programs.ros.myIP = "192.168.0.207";
+  # programs.ros.myIP = "192.168.0.207";
   # programs.ros.myIP = "192.168.124.35";
   services.ros.rosbridge.enable = true;
 
@@ -329,8 +329,13 @@
       {
         parent = "tag";
         child = "map";
-        y = -1.25;
-        z = inch (-7);
+        # y = -1.25;
+        y = -(
+          2 - inch (8.5)
+        );
+        # z = inch (-7);
+        z = inch (-14.5);
+        x = -0.17;              # Pipe width
         # roll = 90;
         # pitch = 90;
         # yaw = 180;
