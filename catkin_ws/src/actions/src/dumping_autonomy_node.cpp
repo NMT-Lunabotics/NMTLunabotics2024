@@ -89,6 +89,7 @@ struct State
             while (arm_pos < 210 || bucket_pos < 230)
             {
                 std::cout << "Waiting for arm_pos & bucket_pos\n";
+                std::cout << "arm_pos " << arm_pos << " bucket_pos " << bucket_pos << "\n";
                 send_actuator_commands((arm_pos < 210) ? -5 : 0, (bucket_pos < 230) ? 5 : 0);
                 usleep(0.1e6);
             }
