@@ -5,12 +5,8 @@ IFS=$'\n\t'
 blink=1
 
 while true; do
-    if ps -e | grep -q move_base; then
-        if [ $blink = 1 ]; then
-            rostopic pub /leds/error std_msgs/Bool true --once &
-        else
-            rostopic pub /leds/error std_msgs/Bool false --once &
-        fi
+    if [ $blink = 1 ]; then
+        rostopic pub /leds/error std_msgs/Bool true --once &
     else
         rostopic pub /leds/error std_msgs/Bool false --once &
     fi
