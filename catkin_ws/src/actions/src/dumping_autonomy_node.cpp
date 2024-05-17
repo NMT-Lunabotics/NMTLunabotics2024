@@ -154,17 +154,20 @@ struct State
 
     void handle_can_msg(const can_raw::CanFrame &frame)
     {
-        if (frame.id == 4)
+        auto fid = (can::FrameID)frame.id;
+        if (fid == can::FrameID::ActuatorArmPos)
         {
-            // ActuatorArmPos
-            int left_pos = frame.data[0];
-            int right_pos = frame.data[1];
+            can::ActuatorArmPos data = can::ActuatorArmPos_deserialize(
+                can::from_buffer((const unsigned char *)&frame.data));
+            int left_pos = data.left_pos;
+            int right_pos = data.right_pos;
             arm_pos = (left_pos + right_pos) / 2;
         }
-        else if (frame.id == 5)
+        else if (fid == can::FrameID::ActuatorBucketPos)
         {
-            // ActuatorBucketPos
-            bucket_pos = frame.data[0];
+            can::ActuatorBucketPos data = can::ActuatorBucketPos_deserialize(
+                can::from_buffer((const unsigned char *)&frame.data));
+            bucket_pos = data.pos;
         }
     }
 };
