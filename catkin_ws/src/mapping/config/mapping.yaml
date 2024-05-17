@@ -3,7 +3,7 @@ input_sources:
     type: pointcloud
     topic: /d455_right/depth/color/points_cropped_limited
     queue_size: 10
-    publish_on_update: false
+    publish_on_update: true
     sensor_processor:
       type: structured_light
       ignore_points_above: 1.0
