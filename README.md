@@ -1,5 +1,7 @@
 # NMT Lunabotics 2024
 
+[[./bowie.png]]
+
 This repository contains the codebase for NMT Lunabotics' 2024 robot,
 which is named BOWIE.
 
